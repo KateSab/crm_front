@@ -16,7 +16,7 @@ import { ref } from 'vue'
 export default {
   props: {
     orderData: {
-      type: Array,
+      type: Object,
       required: true
     }
   },

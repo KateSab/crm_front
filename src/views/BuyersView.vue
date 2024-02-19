@@ -1,20 +1,20 @@
 <template>
   <div>   
       <h2>Заказы покупателей</h2>
-  </div>
-  <div class="">
-    <Top />
-  </div>
-  <div class="page-container">
-    <div v-if="orders.length > 0">
-      <div v-for="order in orders" :key="order.id">
-        <Order :orderData="order"/>
+      </div>
+      <div class="">
+        <Top />
+      </div>
+    <div class="page-container">
+      <div v-if="orders.length > 0">
+        <div v-for="order in orders" :key="order.id">
+          <Order :orderData="order"/>
+        </div>
+      </div>
+      <div v-else>
+        Загрузка данных...
       </div>
     </div>
-    <div v-else>
-      Загрузка данных...
-    </div>
-  </div>
 </template>
 
 
@@ -22,7 +22,6 @@
 
 import Order from '../components/blocks/buyers_order/Order.vue';
 import Top from '../components/blocks/buyers_order/Top.vue';
-import CreateBuyersOrder from './CreateBuyersOrder.vue';
 import axios from 'axios'
 
 const params= {
@@ -36,12 +35,6 @@ export default {
   components: {
     Top,
     Order,
-    CreateBuyersOrder,
-  },
-  watch: {
-    '$route'(to, from) {
-      this.currentTab = to.path;
-    }
   },
   data() {
     return {

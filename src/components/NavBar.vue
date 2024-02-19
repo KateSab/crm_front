@@ -40,6 +40,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: auto;
 }
 
 .nav-link {
@@ -59,5 +60,13 @@ nav {
 .active {
   background-color: rgb(108, 108, 209);
   color: white;
+}
+
+@media screen and (max-width: 1240px) { /* Пример: меняем стили для экранов шириной до 768px */
+  .nav-link {
+    font-size: 14px; /* Уменьшаем размер текста */
+    padding: 8px 12px; /* Уменьшаем отступы */
+    margin: 5px; /* Уменьшаем отступы между ссылками */
+  }
 }
 </style>

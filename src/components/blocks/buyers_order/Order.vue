@@ -1,6 +1,6 @@
 <template>
     <div class="orders">
-      <hr class="line"/>
+      <el-divider></el-divider>
         <TopOrder :orderData="orderData"/>
       <Table :orderData="orderData"/>
     </div>
@@ -32,15 +32,8 @@ export default {
   align-items: center;
 }
 
-.line {
-  width: 100%; /* Ширина линии */
-  border: none; /* Убираем рамку */
-  border-top: 1px solid rgb(88, 88, 88); /* Цвет и стиль линии */
-  margin: 20px 0; /* Отступы сверху и снизу */
-}
-
-.table-container {
-  width: 80%; /* Ширина таблицы */
+/* .table-container {
+  width: 80%;
   margin: 10px;
-}
+  } */
 </style>

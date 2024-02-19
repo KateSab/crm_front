@@ -6,17 +6,36 @@
             class="w-50 m-2"
             placeholder="Введите параметры поиска"
             />
-            <el-button color="rgba(187, 187, 243, 0.631)" type="primary" round>найти <el-icon class="el-icon--right"><Search /></el-icon></el-button>
-            <el-button color="rgb(255, 226, 111)" type="primary" :icon="Plus" style="margin-left: 50px">создать заказ</el-button>
+            <el-button color="rgba(187, 187, 243, 0.631)" type="primary" round>
+              найти 
+              <el-icon class="el-icon--right"><Search /></el-icon>
+            </el-button>
+            <router-link to="/suppliers/create">
+              <el-button color="rgb(255, 226, 111)" type="primary" style="margin-left: 50px">
+                <el-icon class="el-icon--left"><Plus /></el-icon>
+                создать заказ
+              </el-button>
+          </router-link>
         </div>
     </div>
+    <router-wiew></router-wiew>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { Plus } from '@element-plus/icons-vue'
+<script>
+import { Plus, Search } from '@element-plus/icons-vue'
+import CreateSuppliersOrder from '@/views/CreateSuppliersOrder.vue'
 
-const input2 = ref('')
+export default {
+  name: 'Top',
+  data() {
+    return {
+      input2: ''
+    };
+  },
+  components: {
+    CreateSuppliersOrder,
+  }
+};
 </script>
 
 <style>

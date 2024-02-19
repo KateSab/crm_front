@@ -9,6 +9,7 @@ import BillsView from '../views/BillsView.vue'
 import StockView from '../views/StockView.vue'
 import PartnersView from '../views/PartnersView.vue'
 import CreateBuyersOrder from '../views/CreateBuyersOrder.vue'
+import CreateSuppliersOrder from '../views/CreateSuppliersOrder.vue'
 
 const routes = [
   {
@@ -32,14 +33,19 @@ const routes = [
     component: SuppliersView
   },
   {
+    path: '/suppliers/create',
+    name: 'createSuppliersOrder',
+    component: CreateSuppliersOrder
+  },
+  {
     path: '/buyers',
     name: 'buyers',
-    component: BuyersView,
-    children: [{
-      path: '/buyers/create',
-      name: 'createBuyersOrder',
-      component: CreateBuyersOrder
-    }]
+    component: BuyersView
+  },
+  {
+    path: '/buyers/create',
+    name: 'createBuyersOrder',
+    component: CreateBuyersOrder
   },
   {
     path: '/moving',
