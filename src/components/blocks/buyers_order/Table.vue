@@ -10,56 +10,31 @@
         </el-table>
 </template>
 
-<script lang="ts" setup>
+<script>
 import { ref } from 'vue'
 
-const tableData = ref([
-  {
-    name: 'Папка-конверт А4',
-    count: '0/400',
-    index: 'Оазис: Е1-00006944',
-    type: 'Макеты',
-    print_type: 'Тампопечать',
-    status: 'Склад НСК: не отгружено',
-    comment: 'Ожидается прибытие от поставщика',
+export default {
+  props: {
+    orderData: {
+      type: Array,
+      required: true
+    }
   },
-  {
-    name: 'Папка-конверт А4',
-    count: '0/400',
-    index: 'Оазис: Е1-00006944',
-    type: 'Макеты',
-    print_type: 'Тампопечать',
-    status: 'Склад НСК: не отгружено',
-    comment: 'Ожидается прибытие от поставщика',
-  },
-  {
-    name: 'Папка-конверт А4',
-    count: '0/400',
-    index: 'Оазис: Е1-00006944',
-    type: 'Макеты',
-    print_type: 'Тампопечать',
-    status: 'Склад НСК: не отгружено',
-    comment: 'Ожидается прибытие от поставщика',
-  },
-  {
-    name: 'Папка-конверт А4',
-    count: '0/400',
-    index: 'Оазис: Е1-00006944',
-    type: 'Макеты',
-    print_type: 'Тампопечать',
-    status: 'Склад НСК: не отгружено',
-    comment: 'Ожидается прибытие от поставщика',
-  },
-  {
-    name: 'Папка-конверт А4',
-    count: '0/400',
-    index: 'Оазис: Е1-00006944',
-    type: 'Макеты',
-    print_type: 'Тампопечать',
-    status: 'Склад НСК: не отгружено',
-    comment: 'Ожидается прибытие от поставщика',
-  },
-])
+  setup(props) {
+    const tableData = ref([{
+      name: 'ждем данные',
+      count: 'ждем данные',
+      index: 'ждем данные',
+      type: 'ждем данные',
+      print_type: 'ждем данные',
+      status: 'ждем данные',
+      comment: props.orderData.instructions,
+    }]);
+
+    return { tableData }; // Возвращение данных таблицы для использования в шаблоне
+  }
+};
+
 </script>
 
 <style>
@@ -68,6 +43,6 @@ const tableData = ref([
     font-weight: 200;
 }
 .el-table th div.cell {
-  color: rgb(77, 77, 142); /* Замените на желаемый цвет */
+  color: rgb(77, 77, 142);
 }
 </style>

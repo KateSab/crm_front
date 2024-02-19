@@ -1,10 +1,10 @@
 <template>
   <nav>
     <router-link to="/" class="nav-link" :class="{ 'active': currentTab === '/' }">Логин и вход в учетку</router-link>
-    <router-link to="/buyers" class="nav-link" :class="{ 'active': currentTab === '/buyers' }">Заказчики</router-link>
-    <router-link to="/suppliers" class="nav-link" :class="{ 'active': currentTab === '/suppliers' }">Поставщики</router-link>
-    <router-link to="/contractors" class="nav-link" :class="{ 'active': currentTab === '/contractors' }">Подрядчики</router-link>
-    <router-link to="/carriers" class="nav-link" :class="{ 'active': currentTab === '/carriers' }">Перевозчики</router-link>
+    <router-link to="/buyers" class="nav-link" :class="{ 'active': currentTab === '/buyers' }">Заказы покупателей</router-link>
+    <router-link to="/suppliers" class="nav-link" :class="{ 'active': currentTab === '/suppliers' }">Заказы поставщикам</router-link>
+    <router-link to="/contractors" class="nav-link" :class="{ 'active': currentTab === '/contractors' }">Заказы подрядчикам</router-link>
+    <router-link to="/carriers" class="nav-link" :class="{ 'active': currentTab === '/carriers' }">Заказы перевозчикам</router-link>
     <router-link to="/moving" class="nav-link" :class="{ 'active': currentTab === '/moving' }">Задачи на перемещение</router-link>
     <router-link to="/bills" class="nav-link" :class="{ 'active': currentTab === '/bills' }">Счета на оплату</router-link>
     <router-link to="/stock" class="nav-link" :class="{ 'active': currentTab === '/stock' }">Склад</router-link>

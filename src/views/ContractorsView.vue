@@ -1,10 +1,15 @@
 <template>
     <div class="contractors">
       <h1>This page is an about contractors</h1>
-      <div v-for="post in posts" :key="post.id">
-      <h2>{{ post.id }} {{ post.title }}</h2>
-      <p>{{ post.body }}</p>
-  </div>
+      <!-- <div v-for="order in orders" :key="order.id">
+      <h2>order ID: {{ order.id }}, create date: {{ order.create_date }}</h2>
+      <p>{{ post.body }}</p> -->
+  <!-- </div> -->
+      <div v-for="order in orders" :key="order.id">
+        order: {{ order.id }}
+        order create_date: {{ order.create_date }}
+        order instructions: {{ order.instructions }}
+      </div>
     </div>
     
     <!-- <button @click="getData">Get Data</button> -->
@@ -18,14 +23,14 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      posts: []
+      orders: []
     }
   },
   mounted() {
     axios
-      .get('https://jsonplaceholder.typicode.com/posts/')
+      .get('http://89.104.68.248:8000/api/customerorder/get_filter?offset=0&limit=50&status_id=1')
       .then((response) => {
-        this.posts = response.data
+        this.orders = response.data
       })
   }
 }

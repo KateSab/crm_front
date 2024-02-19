@@ -8,6 +8,7 @@ import MovingView from '../views/MovingView.vue'
 import BillsView from '../views/BillsView.vue'
 import StockView from '../views/StockView.vue'
 import PartnersView from '../views/PartnersView.vue'
+import CreateBuyersOrder from '../views/CreateBuyersOrder.vue'
 
 const routes = [
   {
@@ -33,7 +34,12 @@ const routes = [
   {
     path: '/buyers',
     name: 'buyers',
-    component: BuyersView
+    component: BuyersView,
+    children: [{
+      path: '/buyers/create',
+      name: 'createBuyersOrder',
+      component: CreateBuyersOrder
+    }]
   },
   {
     path: '/moving',
