@@ -30,10 +30,6 @@ export default {
 
 <style lang="scss">
 
-// *{
-//   margin: 0%;
-// }
-
 nav {
   height: 13lvh;
   background: rgba(170, 170, 252, 0.897);

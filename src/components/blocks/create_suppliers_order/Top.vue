@@ -29,7 +29,7 @@ export default {
 .top {
   display: flex;
   align-items: left;
-  margin: 15px 70px 0px 70px;
+  margin: 1rem 4rem 0px 4rem;
   align-items: center; /* Выравнивание по вертикали */
 }
 

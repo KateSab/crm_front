@@ -1,25 +1,25 @@
 <template>
     <div class="page-wrapper">
-        <div class="top-wrapper">
-            <el-input
-            v-model="input2"
-            class="w-50 m-2"
-            placeholder="Введите параметры поиска"
-            />
-            <el-button color="rgba(187, 187, 243, 0.631)" type="primary" round>
-              найти 
-              <el-icon class="el-icon--right"><Search /></el-icon>
-            </el-button>
-            
-            <router-link to="/buyers/create">
-              <el-button color="rgb(255, 226, 111)" type="primary" style="margin-left: 50px">
-                <el-icon class="el-icon--left"><Plus /></el-icon>
-                создать заказ
-                
-              </el-button>
-            </router-link>
+      <div class="top-wrapper">
+        <el-input
+          v-model="input2"
+          class="w-50 m-2"
+          placeholder="Введите параметры поиска"
+        />
+        <el-button color="rgba(187, 187, 243, 0.631)" type="primary" round>
+          найти 
+          <el-icon class="el-icon--right"><Search /></el-icon>
+        </el-button>
+          
+        <router-link to="/buyers/create">
+          <el-button color="rgb(255, 226, 111)" type="primary" style="margin-left: 50px">
+            <el-icon class="el-icon--left"><Plus /></el-icon>
+            создать заказ
+              
+          </el-button>
+        </router-link>
          
-        </div>
+      </div>
     </div>
     <router-view></router-view>
 </template>
@@ -44,7 +44,7 @@ export default {
 <style>
 .page-wrapper {
   display: flex;
-  margin: 0px 70px 0px 70px;
+  margin: 0px 4rem;
   justify-content: right; /* Выравнивание по горизонтали */
   align-items: center; /* Выравнивание по вертикали */
 }

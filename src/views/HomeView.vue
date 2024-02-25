@@ -1,25 +1,25 @@
 <template>
-  <div class="hello">
+  <div>
     <h1>Capibara CRM</h1>
     <img class="logo" alt="Vue logo" src="../assets/logo.jpg">
   </div>
+  <Authorization/>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import Authorization from '../components/Authorization.vue';
 
-// export default {
-//   name: 'HomeView',
-//   components: {
-//     HelloWorld
-//   }
-// }
+export default {
+  name: 'HomeView',
+  components: {
+    Authorization
+  }
+}
 </script>
 
 <style>
 .logo {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
 }
 </style>

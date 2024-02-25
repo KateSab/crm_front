@@ -1,6 +1,6 @@
 <template>
-        <el-table :data="tableData" border style="display: flex; align-items: center" max-height="300" width="350">
-            <el-table-column prop="name" label="Наименование" width="200" />
+        <el-table :data="tableData" :show-header="false" style="display: flex; align-items: center" width="350">
+            <el-table-column style="background-color: yellow;" prop="name" label="Наименование" width="200" />
             <el-table-column prop="count" label="Количество" width="120" />
             <el-table-column prop="index" label="Индекс" width="170" />
             <el-table-column prop="type" label="Тип" width="100" />

@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import ElementPlus from 'element-plus'
+import ruLocale from 'element-plus/dist/locale/ru';
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios';
@@ -18,7 +19,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 // Устанавливаем плагины и компоненты Vue
 app.use(store)
     .use(router)
-    .use(ElementPlus)
+    .use(ElementPlus, { locale: ruLocale })
     .config.globalProperties.$axios = axios;
 
 app.mount('#app');

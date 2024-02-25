@@ -5,12 +5,15 @@
         Назад
       </el-button>
       <div class="path">
-        <el-text class="mx-1">Заказы покупателей 
-          <el-icon><ArrowRight /></el-icon>
+        <el-link @click="goBack" :underline="false">Заказы покупателей 
+        </el-link>
+          <el-icon class="arrow-icon"><ArrowRight /></el-icon>
+          <el-text>
           Создание
         </el-text>
       </div>
     </div>
+    <el-divider></el-divider>
 </template>
 
 <script>
@@ -27,11 +30,16 @@ export default {
 .top {
   display: flex;
   align-items: left;
-  margin: 15px 70px 0px 70px;
+  margin: 2rem 4rem 0px 4rem;
   align-items: center; /* Выравнивание по вертикали */
 }
 
 .path {
-  margin-left: 40px;
+  margin-left: 2.5rem;
+}
+
+.arrow-icon {
+  vertical-align: middle; /* Выравнивание иконки посередине вертикально */
+  margin-left: 0.5rem;
 }
 </style>
