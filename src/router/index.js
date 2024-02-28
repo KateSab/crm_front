@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import index from '../store'
+import MainPage from '../views/MainPage.vue'
+import Login from '../views/Login.vue'
 import CarriersView from '../views/CarriersView.vue'
 import ContractorsView from '../views/ContractorsView.vue'
 import SuppliersView from '../views/SuppliersView.vue'
@@ -13,65 +15,112 @@ import CreateSuppliersOrder from '../views/CreateSuppliersOrder.vue'
 
 const routes = [
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'MainPage',
+    component: MainPage
   },
   {
     path: '/carriers',
     name: 'carriers',
-    component: CarriersView
+    component: CarriersView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/contractors',
     name: 'contractors',
-    component: ContractorsView
+    component: ContractorsView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/suppliers',
     name: 'suppliers',
-    component: SuppliersView
+    component: SuppliersView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/suppliers/create',
     name: 'createSuppliersOrder',
-    component: CreateSuppliersOrder
+    component: CreateSuppliersOrder,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/buyers',
     name: 'buyers',
-    component: BuyersView
+    component: BuyersView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/buyers/create',
     name: 'createBuyersOrder',
-    component: CreateBuyersOrder
+    component: CreateBuyersOrder,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/moving',
     name: 'moving',
-    component: MovingView
+    component: MovingView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/bills',
     name: 'bills',
-    component: BillsView
+    component: BillsView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/stock',
     name: 'stock',
-    component: StockView
+    component: StockView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/partners',
     name: 'partners',
-    component: PartnersView
+    component: PartnersView,
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (index.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -35,8 +35,7 @@
     </el-table-column>
   </el-table>
   <el-footer>
-    <el-button class="mt-4" style="width: 100%; align-items: center" @click="onAddItem">Добавить позицию</el-button>
-    <el-button class="mt-4" style="width: 50%; margin-top: 1rem; align-items: center;">Сохранить заказ</el-button>
+    <el-button style="width: 40%; margin-top: 1rem;" type="primary" @click="onAddItem">Добавить товар</el-button>
   </el-footer>
 </template>
 
@@ -172,10 +171,17 @@ const saveRow = (row) => {
 }
 
 .el-table th div.cell {
-  color: rgb(77, 77, 142);
+  color: #3d9cfb;
 }
 
 .el-table_1_column_9, .el-table_1_column_11, .el-table_1_column_12,.el-table_1_column_13 {
+  background-color: rgba(166, 166, 166, 0.418);
+}
+
+.el-table .el-table__row:hover .el-table_1_column_9,
+.el-table .el-table__row:hover .el-table_1_column_11,
+.el-table .el-table__row:hover .el-table_1_column_12,
+.el-table .el-table__row:hover .el-table_1_column_13 {
   background-color: rgba(128, 128, 128, 0.418);
 }
 

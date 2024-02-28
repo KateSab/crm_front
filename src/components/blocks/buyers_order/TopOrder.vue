@@ -52,8 +52,8 @@ export default {
   margin-left: 40px; /* Помещаем текст справа от TopOrder */
   padding: 10px 10px 10px 10px;
   border-radius: 5px;
-  background-color: rgba(187, 187, 243, 0.631);
-  color: rgb(65, 65, 113);
+  background-color: #3d9cfb54;
+  color: #0466c8;
 }
 
 .el-row {
@@ -84,8 +84,9 @@ export default {
 
 .markered {
     font-weight: 200; 
-    font-size: medium; 
-    background: rgb(187, 187, 243);
+    font-size: medium;
+    color: white;
+    background: #3d9cfb;
 }
 
 .wrap {

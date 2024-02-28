@@ -2,7 +2,7 @@
   <div>   
       <h2>Заказы покупателей</h2>
       </div>
-      <div class="">
+      <div>
         <Top />
       </div>
     <div class="page-container">
@@ -68,5 +68,9 @@ export default {
   align-items: center;
   justify-content: top;
   height: 100vh; /* 100% высоты видимой части страницы */
+}
+
+h2 {
+  color: #4c4c4c;
 }
 </style>

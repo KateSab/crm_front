@@ -1,6 +1,6 @@
 <template>
     <div class="top">
-      <el-button @click="goBack" color="rgba(187, 187, 243, 0.631)" type="primary" round>
+      <el-button @click="goBack" type="primary" plain>
         <el-icon class="el-icon--right"><ArrowLeft /></el-icon>
         Назад
       </el-button>

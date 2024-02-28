@@ -1,5 +1,5 @@
 <template>
-        <el-table :data="tableData" border style="display: flex; align-items: center" max-height="300" width="350">
+        <el-table :data="tableData" style="display: flex; align-items: center" max-height="300" width="350">
             <el-table-column prop="name" label="Наименование" width="200" />
             <el-table-column prop="count" label="Количество" width="120" />
             <el-table-column prop="print_type" label="Тип печати" width="170" />
@@ -58,13 +58,3 @@ const tableData = ref([
   },
 ])
 </script>
-
-<style>
-.el-table-column {
-    font-size: medium;
-    font-weight: 200;
-}
-.el-table th div.cell {
-  color: rgb(77, 77, 142); /* Замените на желаемый цвет */
-}
-</style>

@@ -1,6 +1,7 @@
 <template>
   <nav>
-    <router-link to="/" class="nav-link" :class="{ 'active': currentTab === '/' }">Логин и вход в учетку</router-link>
+    <img src="../assets/logohead.png" alt="россувенир" width="120">
+    <!-- <router-link to="/" class="nav-link" :class="{ 'active': currentTab === '/' }">Логин и вход в учетку</router-link> -->
     <router-link to="/buyers" class="nav-link" :class="{ 'active': currentTab === '/buyers' }">Заказы покупателей</router-link>
     <router-link to="/suppliers" class="nav-link" :class="{ 'active': currentTab === '/suppliers' }">Заказы поставщикам</router-link>
     <router-link to="/contractors" class="nav-link" :class="{ 'active': currentTab === '/contractors' }">Заказы подрядчикам</router-link>
@@ -31,17 +32,21 @@ export default {
 <style lang="scss">
 
 nav {
-  height: 13lvh;
-  background: rgba(170, 170, 252, 0.897);
+  height: 9lvh;
+  background: white;
+  box-shadow: 0 5px 7px rgba(0,0,0,0.2);
   display: flex;
   justify-content: center;
   align-items: center;
   overflow-x: auto;
+  padding: 0rem 1rem;
 }
 
 .nav-link {
+  font-family: 'Arimo', sans-serif;
+  font-size: 12px;
   font-weight: bold;
-  color: #2c3e50;
+  color: #4c4c4c;
   padding: 10px 20px;
   border-radius: 20px;
   margin: 0 10px;
@@ -49,12 +54,12 @@ nav {
 }
 
 .nav-link:hover {
-  background-color: rgba(108, 108, 209, 0.2);
+  background-color: #3d9cfb54;
   transform: translateY(-3px);
 }
 
 .active {
-  background-color: rgb(108, 108, 209);
+  background-color: #3d9cfb;
   color: white;
 }
 

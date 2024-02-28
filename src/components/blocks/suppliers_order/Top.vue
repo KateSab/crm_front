@@ -6,12 +6,12 @@
             class="w-50 m-2"
             placeholder="Введите параметры поиска"
             />
-            <el-button color="rgba(187, 187, 243, 0.631)" type="primary" round>
+            <el-button type="primary">
               найти 
               <el-icon class="el-icon--right"><Search /></el-icon>
             </el-button>
             <router-link to="/suppliers/create">
-              <el-button color="rgb(255, 226, 111)" type="primary" style="margin-left: 50px">
+              <el-button color="#FFFF6F" style="margin-left: 50px; color: #4d4d4d">
                 <el-icon class="el-icon--left"><Plus /></el-icon>
                 создать заказ
               </el-button>

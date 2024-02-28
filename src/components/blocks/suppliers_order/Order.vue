@@ -1,6 +1,6 @@
 <template>
     <div class="orders">
-      <hr class="line"/>
+      <el-divider></el-divider>
         <TopOrder/>
       <Table />
     </div>
@@ -24,13 +24,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.line {
-  width: 100%; /* Ширина линии */
-  border: none; /* Убираем рамку */
-  border-top: 1px solid rgb(88, 88, 88); /* Цвет и стиль линии */
-  margin: 20px; /* Отступы сверху и снизу */
 }
 
 .table-container {

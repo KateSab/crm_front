@@ -1,25 +1,21 @@
 <template>
-      <MainPage />
-      <!-- <Login /> -->
+    <div class="header">
+    <TopBar />
+    <NavBar />
+  </div>
+  <router-view></router-view>
 </template>
 
-
 <script>
-import MainPage from './views/MainPage.vue';
-import Login from './views/Login.vue';
+import TopBar from '@/components/TopBar.vue';
+import NavBar from '../components/NavBar.vue';
 
 export default {
-  name: 'App',
-  components: {
-    MainPage,
-    Login,
+  name: 'MainPage',
+  components :{
+      TopBar,
+      NavBar,
   },
-
-  // computed: {
-  //   isLoggedIn: function() {
-  //     return this.$store.getters.isLoggedIn
-  //   }
-  // }
 }
 </script>
 
@@ -34,8 +30,7 @@ export default {
 }
 body {
   padding: 0;
-  margin-top: 3.5rem;
-  padding-top: 30px;
+  margin: 0;
 }
 .header {
   width: 100%;

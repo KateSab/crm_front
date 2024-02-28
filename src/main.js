@@ -2,12 +2,17 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
-import store from './store'
+import index from './store'
 import ElementPlus from 'element-plus'
-import ruLocale from 'element-plus/dist/locale/ru';
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios';
+
+// Vue.prototype.$http = axios;
+// const token = localStorage.getItem('token');
+// if (token) {
+//     Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
+// }
 
 const app = createApp(App); // Создаем объект приложения Vue
 
@@ -17,9 +22,14 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 // Устанавливаем плагины и компоненты Vue
-app.use(store)
+app.use(index)
     .use(router)
-    .use(ElementPlus, { locale: ruLocale })
+    .use(ElementPlus)
     .config.globalProperties.$axios = axios;
+
+const token = localStorage.getItem('token');
+if (token) {
+    axios.defaults.headers.common['Authorization'] = token;
+}
 
 app.mount('#app');

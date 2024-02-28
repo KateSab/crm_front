@@ -8,13 +8,12 @@
         show-password
         style="width: 30%"
       ></el-input>
-      <el-button @click="login" color="rgb(255, 226, 111)" style="width: 15%; margin-top: 2rem;">Войти</el-button>
+      <el-button color="rgb(255, 226, 111)" style="width: 15%; margin-top: 2rem;" @click="login">Войти</el-button>
     </el-footer>
   </template>
   
   <script>
-  import axios from 'axios';
-
+  // import axios from 'axios';
   
   export default {
   data() {
@@ -25,23 +24,16 @@
   },
   
   methods: {
-    login() {
-        const url = 'http://89.104.68.248:8000/api/auth/jwt/login';
-        const formData = new FormData();
+    login: function () {
+      const user = {
+      email: this.email,
+      password: this.password
+    };
 
-        formData.append('username', this.email);
-        formData.append('password', this.password);
-
-        axios.post(
-            url,
-            formData,
-        )
-          .then((response) => {
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
+      this.$store.dispatch('login', user)
+        .then(() =>  this.$router.push('/'))
+        .catch(err => console.log(err))
+      
     }
   }
 };
@@ -56,3 +48,25 @@
     }
   </style>
   
+
+
+
+  <!-- // login() {
+    //     const url = 'http://89.104.68.248:8000/api/auth/jwt/login';
+    //     const formData = new FormData();
+
+    //     formData.append('username', this.email);
+    //     formData.append('password', this.password);
+
+    //     axios.post(
+    //         url,
+    //         formData,
+    //     )
+    //       .then((response) => {
+    //         console.log(response.data);
+    //         this.$router.push({ name: 'MainPage' });
+    //       })
+    //       .catch((error) => {
+    //         console.error('Error:', error);
+    //       });
+    // }, -->
