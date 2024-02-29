@@ -1,8 +1,8 @@
 <template>
-  <div>   
+  <div class="header-page">   
       <h2>Заказы поставщикам</h2>
   </div>
-  <div class="">
+  <div>
     <Top />
   </div>
   <div class="page-container">
@@ -28,11 +28,16 @@ export default {
 </script>
 
 <style>
+.header-page {
+  margin-top: 7vh;
+}
 .page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: top;
   height: 100vh; /* 100% высоты видимой части страницы */
+  margin-left: 6vw;
+  position: absolute;
 }
 </style>

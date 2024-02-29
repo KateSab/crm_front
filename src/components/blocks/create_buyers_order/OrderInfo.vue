@@ -1,5 +1,5 @@
 <template>
-    <el-row class="row-bg" justify="space-around" :gutter="175">
+    <el-row class="row-bg" justify="space-around" :gutter="175" style="margin-top: 2rem;">
         <el-colomn :span="8">
             <el-form
                 :model="form"
@@ -8,7 +8,7 @@
                 label-width="auto"
             >
                 <el-form-item label="Инструкция по сборке заказа">
-                    <el-input v-model="form.instruction" />
+                    <el-input v-model="form.instruction" :rows="4" type="textarea"/>
                 </el-form-item>
             </el-form>
         </el-colomn>
@@ -20,6 +20,7 @@
                 label-position="left"
                 size="small"
                 label-width="auto"
+                class="base-color"
             >
                 <el-form-item label="СС Итого" prop="costs_of_moving">
                     <el-input v-model="form.self_cost_total" disabled />
@@ -49,3 +50,9 @@ const form = reactive({
   marginality_total_in_percents: 0,
 })
 </script>
+
+<style>
+.base-color {
+  background-color: #3d9cfb;
+}
+</style>

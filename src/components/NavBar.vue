@@ -64,6 +64,16 @@ nav {
 }
 
 @media screen and (max-width: 1240px) { /* Пример: меняем стили для экранов шириной до 768px */
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    width: 9vw;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 1rem;
+  }
   .nav-link {
     font-size: 14px; /* Уменьшаем размер текста */
     padding: 8px 12px; /* Уменьшаем отступы */

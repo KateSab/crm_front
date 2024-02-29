@@ -68,6 +68,8 @@ export default {
   align-items: center;
   justify-content: top;
   height: 100vh; /* 100% высоты видимой части страницы */
+  margin-left: 6vw;
+  position: absolute;
 }
 
 h2 {

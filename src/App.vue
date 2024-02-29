@@ -37,11 +37,4 @@ body {
   margin-top: 3.5rem;
   padding-top: 30px;
 }
-.header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-}
 </style>

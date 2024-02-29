@@ -7,7 +7,7 @@
     форма заполнения заказа
     <Table />
     <OrderInfo />
-    <el-button color="#FFFF6F" style="width: 70%; margin-top: 1rem; color: #4d4d4d;">Сформировать заказ</el-button>
+    <el-button type="primary" style="width: 70%; margin-top: 1rem;">Сформировать заказ</el-button>
   </div>
 </template>
 
