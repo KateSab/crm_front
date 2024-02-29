@@ -43,7 +43,7 @@
                 status-icon
             >
                 <el-form-item label="Базовая наценка" prop="base_margin">
-                    <el-input v-model="ruleForm.base_margin" :precision="2" :step="0.1" :max="100" />
+                    <el-input v-model.number="ruleForm.base_margin" :precision="2" :step="0.1" :max="100" />
                 </el-form-item>
             </el-form>
         </el-colomn>
@@ -58,13 +58,13 @@
                 status-icon
             >
                 <el-form-item label="Расходы на перемещение" prop="costs_of_moving">
-                    <el-input v-model="ruleForm.costs_of_moving" />
+                    <el-input v-model.number="ruleForm.costs_of_moving" />
                 </el-form-item>
                 <el-form-item label="Расходы на доставку" prop="costs_of_deliver">
-                    <el-input v-model="ruleForm.costs_of_deliver" />
+                    <el-input v-model.number="ruleForm.costs_of_deliver" />
                 </el-form-item>
                 <el-form-item label="Прочие расходы" prop="another_costs">
-                    <el-input v-model="ruleForm.another_costs" />
+                    <el-input v-model.number="ruleForm.another_costs" />
                 </el-form-item>
             </el-form>
         </el-colomn>

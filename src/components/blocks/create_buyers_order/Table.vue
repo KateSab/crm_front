@@ -1,6 +1,7 @@
 <!-- сделать колонку со ссылками кликабельной -->
 
 <template>
+  <el-container style="margin-top: 2rem;">
   <el-table :data="tableData" style="width: 100%" size="small">
     <el-table-column v-for="column in tableColumns" :key="column.prop" :prop="column.prop" :label="column.label" :width="column.width">
       <template #default="{ row }">
@@ -37,6 +38,7 @@
   <el-footer>
     <el-button style="width: 40%; margin-top: 1rem;" type="primary" @click="onAddItem">Добавить товар</el-button>
   </el-footer>
+</el-container>
 </template>
 
 <script setup>

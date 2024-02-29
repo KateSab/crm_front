@@ -2,9 +2,8 @@
   <div>
     <Top />
   </div>
-  <div class="create">
+  <div class="create-buyers-order">
     <OrderData />
-    форма заполнения заказа
     <Table />
     <OrderInfo />
     <el-button type="primary" style="width: 70%; margin-top: 1rem;">Сформировать заказ</el-button>
@@ -29,10 +28,10 @@ export default {
 </script>
 
 <style>
-.create {
+.create-buyers-order {
   display: fixed;
   flex-direction: column;
-  justify-content: right; 
+  /* justify-content: right;  */
   align-items: center;
   margin: 1rem 2rem 2rem 2rem;
 }

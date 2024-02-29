@@ -12,7 +12,7 @@
         
       </div>
     </div>
-    
+    <el-divider></el-divider>
 </template>
 
 <script>
