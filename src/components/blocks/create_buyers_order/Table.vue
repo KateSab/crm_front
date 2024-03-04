@@ -72,6 +72,34 @@ const tableData = ref([
   }
 ]);
 
+const tableColumns = ref([
+  { prop: 'name', label: 'Наименование', width: '125', editable: true },
+  { prop: 'link', label: 'Описание', width: '120', editable: true },
+  { prop: 'edition', label: 'Тираж', width: '60', editable: true },
+  { prop: 'supplier', label: 'Поставщик', width: '100', editable: true, type: 'select', options: [
+    { value: 'Оазис', label: 'Оазис' },
+    { value: 'ПромТорг', label: 'ПромТорг' },
+    { value: 'Альфа-Комплект', label: 'Альфа-Комплект' },
+  ] },
+  { prop: 'type_of_application', label: 'Вид нанесения', width: '150', editable: true, type: 'select', options: [
+    { value: 'Тампопечать', label: 'Тампопечать' },
+    { value: 'Лазерная гравировка', label: 'Лазерная гравировка' },
+    { value: 'Термотрансфер', label: 'Термотрансфер' }
+  ] },
+  { prop: 'contractor', label: 'Подрядчик', width: '120', editable: true, type: 'select', options: [
+    { value: 'Нанесение у поставщика', label: 'Нанесение у поставщика' },
+    { value: 'Собственное нанесение', label: 'Собственное нанесение' },
+    { value: 'Аутсорсинговая компания', label: 'Аутсорсинговая компания' }
+  ] },
+  { prop: 'cost_price_of_good', label: 'СС товара руб.', width: '80', editable: true },
+  { prop: 'cost_of_application_price', label: 'СС нанесения руб.', width: '60', editable: true },
+  { prop: 'cost_price', label: 'СС итого руб.', width: '80', editable: false }, // без возможности редактирования
+  { prop: 'rrc_per_one', label: 'РРЦ / шт. руб.', width: '80', editable: true },
+  { prop: 'rrc_global', label: 'РРЦ итого руб.', width: '100', editable: true },
+  { prop: 'marginality', label: 'Маржа руб.', width: '100', editable: false }, // без возможности редактирования
+  { prop: 'marginality_in_percents', label: 'Маржинальность %', width: '80', editable: false }, // без возможности редактирования
+]);
+
 const calculateCostPrice = (row) => {
   const costPriceOfGood = parseFloat(row.cost_price_of_good.replace(',', '.'));
   const costOfApplicationPrice = parseFloat(row.cost_of_application_price.replace(',', '.'));
@@ -112,34 +140,6 @@ const handleInput = (row, prop) => {
     row.marginality_in_percents = calculateMarginalityInPercents(row);
   }
 };
-
-const tableColumns = ref([
-  { prop: 'name', label: 'Наименование', width: '125', editable: true },
-  { prop: 'link', label: 'Описание', width: '120', editable: true },
-  { prop: 'edition', label: 'Тираж', width: '60', editable: true },
-  { prop: 'supplier', label: 'Поставщик', width: '100', editable: true, type: 'select', options: [
-    { value: 'Оазис', label: 'Оазис' },
-    { value: 'ПромТорг', label: 'ПромТорг' },
-    { value: 'Альфа-Комплект', label: 'Альфа-Комплект' },
-  ] },
-  { prop: 'type_of_application', label: 'Вид нанесения', width: '150', editable: true, type: 'select', options: [
-    { value: 'Тампопечать', label: 'Тампопечать' },
-    { value: 'Лазерная гравировка', label: 'Лазерная гравировка' },
-    { value: 'Термотрансфер', label: 'Термотрансфер' }
-  ] },
-  { prop: 'contractor', label: 'Подрядчик', width: '120', editable: true, type: 'select', options: [
-    { value: 'Нанесение у поставщика', label: 'Нанесение у поставщика' },
-    { value: 'Собственное нанесение', label: 'Собственное нанесение' },
-    { value: 'Аутсорсинговая компания', label: 'Аутсорсинговая компания' }
-  ] },
-  { prop: 'cost_price_of_good', label: 'СС товара руб.', width: '80', editable: true },
-  { prop: 'cost_of_application_price', label: 'СС нанесения руб.', width: '60', editable: true },
-  { prop: 'cost_price', label: 'СС итого руб.', width: '80', editable: false }, // без возможности редактирования
-  { prop: 'rrc_per_one', label: 'РРЦ / шт. руб.', width: '80', editable: true },
-  { prop: 'rrc_global', label: 'РРЦ итого руб.', width: '100', editable: true },
-  { prop: 'marginality', label: 'Маржа руб.', width: '100', editable: false }, // без возможности редактирования
-  { prop: 'marginality_in_percents', label: 'Маржинальность %', width: '80', editable: false }, // без возможности редактирования
-]);
 
 const deleteRow = (index) => {
   tableData.value.splice(index, 1);
