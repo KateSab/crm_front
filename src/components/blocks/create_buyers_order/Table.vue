@@ -11,9 +11,9 @@
             <el-select v-model="row[column.prop]" class="m-2">
               <el-option
                 v-for="item in column.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item"
+                :label="item"
+                :value="item"
               />
             </el-select>
           </template>
@@ -41,10 +41,17 @@
 </el-container>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script>
+import { defineComponent, ref } from 'vue';
 import { Delete } from '@element-plus/icons-vue'
 import { Edit } from '@element-plus/icons-vue'
+
+export default {
+  name: 'Table',
+}
+</script>  
+
+<script setup>
 
 const tableData = ref([
   {
@@ -164,6 +171,11 @@ const editRow = (row) => {
 const saveRow = (row) => {
   row.editing = false;
 };
+
+defineExpose({
+  // вместо define export переменных
+})
+// export { tableData, calculateCostPrice, calculateRRCGlobal, calculateMarginality, calculateMarginalityInPercents, handleInput, deleteRow, onAddItem, editRow, saveRow, tableColumns };
 </script>
 
 <style>

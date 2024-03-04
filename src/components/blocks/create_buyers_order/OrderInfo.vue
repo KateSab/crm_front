@@ -23,23 +23,35 @@
                 class="base-color"
             >
                 <el-form-item label="СС Итого" prop="costs_of_moving">
-                    <el-input v-model="form.self_cost_total" disabled />
+                    <el-input 
+                    v-model="form.self_cost_total" disabled>
+                    <template #append>руб.</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="РРЦ Итого" prop="costs_of_deliver">
-                    <el-input v-model="form.rrc_total" disabled />
+                    <el-input 
+                    v-model="form.rrc_total" disabled>
+                    <template #append>руб.</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="Итого маржа" prop="another_costs">
-                    <el-input v-model="form.marginality_total" disabled />
+                    <el-input 
+                    v-model="form.marginality_total" disabled>
+                    <template #append>руб.</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="Общая маржинальность" prop="another_costs">
-                    <el-input v-model="form.marginality_total_in_percents" disabled />
+                    <el-input 
+                    v-model="form.marginality_total_in_percents" disabled>
+                    <template #append>%</template>
+                    </el-input>
                 </el-form-item>
             </el-form>
         </el-colomn>
     </el-row>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import { reactive, ref } from 'vue'
 
 const form = reactive({
@@ -49,6 +61,15 @@ const form = reactive({
   marginality_total: 0,
   marginality_total_in_percents: 0,
 })
+
+export default {
+    name: 'OrderInfo',
+  data() {
+    return {
+      form
+    }
+  }
+}
 </script>
 
 <style>

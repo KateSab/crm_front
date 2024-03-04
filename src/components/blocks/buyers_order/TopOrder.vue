@@ -49,7 +49,7 @@ export default {
 }
 
 .status-order {
-  margin-left: 40px; /* Помещаем текст справа от TopOrder */
+  margin-left: 4rem; /* Помещаем текст справа от TopOrder */
   padding: 10px 10px 10px 10px;
   border-radius: 5px;
   background-color: #3d9cfb54;
@@ -68,10 +68,10 @@ export default {
   padding-bottom: 5px;
 }
 
-.grid-content {
+/* .grid-content {
   border-radius: 4px;
   min-height: 36px;
-}
+} */
 
 .order {
     width: 800px;
@@ -89,9 +89,7 @@ export default {
     background: #3d9cfb;
 }
 
-.wrap {
+/* .wrap {
     display: inline-block;
-}
-
-
+} */
 </style>

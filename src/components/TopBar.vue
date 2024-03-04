@@ -1,5 +1,6 @@
 <template>
     <div class="top-bar">
+        <el-icon color="white"><UserFilled /></el-icon>
         <text class="manager">Советкин Андрей | Начальник склада</text>
         <el-button class="logout" size="small" @click="logout">Выйти</el-button>
     </div>

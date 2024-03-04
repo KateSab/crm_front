@@ -34,7 +34,13 @@ export default {
 }
 body {
   padding: 0;
-  margin-top: 3.5rem;
-  padding-top: 30px;
+  margin-top: 20vh;
+}
+
+@media screen and (max-width: 1240px) {
+  body {
+    margin-top: 0;
+    margin-left: 5rem;
+  }
 }
 </style>

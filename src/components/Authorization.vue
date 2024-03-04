@@ -31,7 +31,7 @@
     };
 
       this.$store.dispatch('login', user)
-        .then(() =>  this.$router.push('/'))
+        .then(() =>  this.$router.push('/buyers'))
         .catch(err => console.log(err))
       
     }

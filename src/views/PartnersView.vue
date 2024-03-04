@@ -1,5 +1,5 @@
 <template>
-    <div class="partners">
-      <h1>This page is an about partners</h1>
+    <div class="header-page"> 
+      <h2>This page is an about partners</h2>
     </div>
   </template>

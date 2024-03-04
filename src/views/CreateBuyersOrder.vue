@@ -10,21 +10,35 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { defineAsyncComponent, defineProps, reactive } from 'vue';
 import Top from '../components/blocks/create_buyers_order/Top.vue';
-import Table from '../components/blocks/create_buyers_order/Table.vue';
 import OrderData from '../components/blocks/create_buyers_order/OrderData.vue';
 import OrderInfo from '../components/blocks/create_buyers_order/OrderInfo.vue';
+import Table from "../components/blocks/create_buyers_order/Table.vue";
 
-export default {
-  name: 'CreateBuyersOrder',
-  components: {
-    Top,
-    OrderData,
-    Table,
-    OrderInfo,
-  }
+interface buyersOrderForm {
+  id_deal: string
+  client: string
+  date: string
+  base_margin: string
+  costs_of_moving: string
+  costs_of_deliver: string
+  another_costs: string
 }
+
+const props = defineProps<buyersOrderForm>()
+
+const orderDataForm = reactive<buyersOrderForm>({
+  id_deal: '',
+  client: '',
+  date: '',
+  base_margin: '',
+  costs_of_moving: '',
+  costs_of_deliver: '',
+  another_costs: '',
+})
+
 </script>
 
 <style>

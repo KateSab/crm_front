@@ -1,5 +1,5 @@
 <template>
-  <div>   
+  <div class="header-page">   
       <h2>Заказы покупателей</h2>
       </div>
       <div>

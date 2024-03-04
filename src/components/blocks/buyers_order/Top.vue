@@ -44,8 +44,8 @@ export default {
 <style>
 .page-wrapper {
   display: flex;
-  margin: 0px 4rem;
-  justify-content: right; /* Выравнивание по горизонтали */
+  margin: 1rem 4rem;
+  /* justify-content: right; Выравнивание по горизонтали */
   align-items: center; /* Выравнивание по вертикали */
 }
 

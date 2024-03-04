@@ -26,8 +26,8 @@ export default {
   align-items: center;
 }
 
-.table-container {
-  width: 100%; /* Ширина таблицы */
+/* .table-container {
+  width: 100%; /* Ширина таблицы 
   margin: 10px;
-}
+} */
 </style>

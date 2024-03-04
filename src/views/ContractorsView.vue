@@ -1,6 +1,6 @@
 <template>
-    <div class="contractors">
-      <h1>This page is an about contractors</h1>
+    <div class="header-page"> 
+      <h2>This page is an about contractors</h2>
       <!-- <div v-for="order in orders" :key="order.id">
       <h2>order ID: {{ order.id }}, create date: {{ order.create_date }}</h2>
       <p>{{ post.body }}</p> -->

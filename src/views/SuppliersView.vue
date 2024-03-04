@@ -30,6 +30,7 @@ export default {
 <style>
 .header-page {
   margin-top: 7vh;
+  align-items: center;
 }
 .page-container {
   display: flex;
@@ -37,7 +38,19 @@ export default {
   align-items: center;
   justify-content: top;
   height: 100vh; /* 100% высоты видимой части страницы */
-  margin-left: 6vw;
-  position: absolute;
+  /* margin-left: 6vw;
+  position: absolute; */
+}
+
+@media screen and (max-width: 1240px) {
+  .page-container {
+    /* display: flex;
+    flex-direction: column; */
+    align-items: left;
+    justify-content: left;
+    height: 100vh; /* 100% высоты видимой части страницы */
+    /* margin-left: 6vw;
+    position: absolute; */
+  }
 }
 </style>

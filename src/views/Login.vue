@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>Capibara CRM</h1>
+    <h2>Capibara CRM</h2>
     <img class="logo" alt="Vue logo" src="../assets/logo.jpg">
   </div>
   <router-view><Authorization/></router-view>
