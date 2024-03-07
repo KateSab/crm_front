@@ -112,6 +112,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log(index.getters.isLoggedIn)
+  console.log(index.state.token)
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (index.getters.isLoggedIn) {
       next()

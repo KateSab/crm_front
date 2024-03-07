@@ -5,19 +5,27 @@ export default createStore({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    user: {}
+    user: {},
+    email: localStorage.getItem('email') || '',
+    clients: [],
   },
   mutations: {
     auth_request(state) {
       state.status = 'loading'
     },
-    auth_success(state, { token, user }) {
+    auth_success(state, { token }) {
       state.status = 'success'
       state.token = token
-      state.user = user
+      console.log("token: ", token);
     },
     auth_error(state) {
       state.status = 'error'
+    },
+    user_data(state, email) {
+      state.email = email
+    },
+    get_clients(state, clients) {
+      state.clients = clients;
     },
     logout(state) {
       state.status = ''
@@ -25,7 +33,7 @@ export default createStore({
     },
   },
   actions: {
-    login({ commit }, user) {
+    login({ commit, dispatch }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
         const url = 'http://89.104.68.248:8000/api/auth/jwt/login';
@@ -40,10 +48,11 @@ export default createStore({
         )
           .then(resp => {
             const token = resp.data.access_token; // Изменили на правильный ключ для токена
-            const user = resp.data.user;
             localStorage.setItem('token', token)
-            commit('auth_success', { token, user })
+            commit('auth_success', { token })
+            dispatch('get_user')
             resolve(resp)
+            console.log("auth success");
           })
           .catch(err => {
             commit('auth_error')
@@ -51,14 +60,74 @@ export default createStore({
             reject(err)
           })
       })
-    },
-    logout({ commit }) {
-      return new Promise((resolve, reject) => {
-        commit('logout')
-        localStorage.removeItem('token')
-        resolve()
-      })
-    },
+    }
+  },
+  logout({ commit }) {
+    return new Promise((resolve, reject) => {
+      commit('logout')
+      localStorage.removeItem('token')
+      resolve()
+    })
+  },
+  get_user({ commit }, token) {
+    return new Promise((resolve, reject) => {
+      if (localStorage.token) {
+        fetch('http://89.104.68.248:8000/api/users/me', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.token
+          }
+        })
+          .then(resp => {
+            if (!resp.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return resp.text(); // Получаем текстовое представление данных ответа
+          })
+          .then(text => {
+            const data = JSON.parse(text); // Преобразуем текст в объект JSON
+            const email = data.email; // Получаем email из данных ответа
+            localStorage.setItem('email', email);
+            commit('user_data', email);
+            console.log("email: ", email);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    })
+  },
+  get_clients({ commit }) {
+    console.log("xuuuuuuuui");
+    return new Promise((resolve, reject) => {
+      const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+      const formData = new FormData();
+      formData.append('limit', 1000);
+      formData.append('is_client', 'true');
+
+
+      axios.get(url, formData)
+        .then(resp => {
+
+          // Получаем данные о клиентах из ответа и обрабатываем их
+          const clientsData = resp.data; // Предположим, что данные о клиентах приходят в виде массива объектов [{ id: 1, name: 'Client 1' }, { id: 2, name: 'Client 2' }, ...]
+
+          // Создаем списки словарей для каждого клиента
+          const clientsList = clientsData.map(client => ({
+            id: client.id,
+            name: client.name
+          }));
+
+          // Вызываем мутацию для обновления состояния хранилища
+          commit('get_clients', clientsList);
+
+          console.log("clients: ", clientsList);
+          resolve(resp);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   },
   getters: {
     isLoggedIn: state => !!state.token,

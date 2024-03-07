@@ -6,7 +6,7 @@
     <!-- OrderData -->
     <div>
         <el-row class="row-bg" justify="space-around">
-            <el-colomn :span="8">
+            <el-col :span="8">
                 <el-form
                     ref="ruleFormRef"
                     :model="ruleForm"
@@ -16,19 +16,19 @@
                     label-width="auto"
                     status-icon
                 >
-                    <el-form-item label="Номер сделки продажи" prop="id_deal">
-                        <el-input v-model="ruleForm.id_deal" />
+                    <el-form-item label="Номер сделки продажи" prop="sell_order_id">
+                        <el-input v-model="ruleForm.sell_order_id" />
                     </el-form-item>
-                    <el-form-item label="Клиент" prop="client">
-                        <el-select v-model="ruleForm.client" placeholder="Клиент">
-                            <el-option label="Клиент 1" value="client1" />
-                            <el-option label="Клиент 2" value="client2" />
+                    <el-form-item label="Клиент" prop="client_id">
+                        <el-select v-model="ruleForm.client_id" placeholder="Клиент">
+                            <el-option label="Клиент 1" value="client_id1" />
+                            <el-option label="Клиент 2" value="client_id2" />
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Дата отгрузки (план)" required>
-                        <el-form-item prop="date">
+                        <el-form-item prop="sgipment_date_planned">
                             <el-date-picker
-                                v-model="ruleForm.date"
+                                v-model="ruleForm.sgipment_date_planned"
                                 type="date"
                                 label="Pick a date"
                                 placeholder="Pick a date"
@@ -37,8 +37,8 @@
                         </el-form-item>
                     </el-form-item>
                 </el-form>
-            </el-colomn>
-            <el-colomn :span="8">
+            </el-col>
+            <el-col :span="8">
                 <el-form
                     ref="ruleFormRef"
                     :model="ruleForm"
@@ -52,8 +52,8 @@
                         <el-input v-model="ruleForm.base_margin" />
                     </el-form-item>
                 </el-form>
-            </el-colomn>
-            <el-colomn :span="8">
+            </el-col>
+            <el-col :span="8">
                 <el-form
                     ref="ruleFormRef"
                     :model="ruleForm"
@@ -63,26 +63,26 @@
                     label-width="auto"
                     status-icon
                 >
-                    <el-form-item label="Расходы на перемещение" prop="costs_of_moving">
+                    <el-form-item label="Расходы на перемещение" prop="delivery_cost_planned">
                         <el-input
-                        v-model="ruleForm.costs_of_moving">
+                        v-model="ruleForm.delivery_cost_planned">
                         <template #append>руб.</template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="Расходы на доставку" prop="costs_of_deliver">
+                    <el-form-item label="Расходы на доставку" prop="shipment_cost_planned">
                         <el-input 
-                        v-model="ruleForm.costs_of_deliver">
+                        v-model="ruleForm.shipment_cost_planned">
                         <template #append>руб.</template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="Прочие расходы" prop="another_costs">
+                    <el-form-item label="Прочие расходы" prop="other_expenses_planned">
                         <el-input 
-                        v-model="ruleForm.another_costs">
+                        v-model="ruleForm.other_expenses_planned">
                         <template #append>руб.</template>
                         </el-input>
                     </el-form-item>
                 </el-form>
-            </el-colomn>
+            </el-col>
         </el-row>
     </div>
     <!-- Table -->
@@ -129,7 +129,7 @@
     <!-- OrderInfo -->
     <div>
       <el-row class="row-bg" justify="space-around" :gutter="175" style="margin-top: 2rem;">
-        <el-colomn :span="8">
+        <el-col :span="8">
             <el-form
                 :model="ruleForm"
                 label-position="top"
@@ -137,13 +137,13 @@
                 label-width="auto"
             >
                 <el-form-item label="Инструкция по сборке заказа">
-                    <el-input v-model="ruleForm.instruction" :rows="4" type="textarea"/>
+                    <el-input v-model="ruleForm.instructions" :rows="4" type="textarea"/>
                 </el-form-item>
             </el-form>
-        </el-colomn>
-        <el-colomn :span="8">
-        </el-colomn>
-        <el-colomn :span="8">
+        </el-col>
+        <el-col :span="8">
+        </el-col>
+        <el-col :span="8">
             <el-form
                 :model="ruleForm"
                 label-position="left"
@@ -151,48 +151,49 @@
                 label-width="auto"
                 class="base-color"
             >
-                <el-form-item label="СС Итого" prop="costs_of_moving">
+                <el-form-item label="СС Итого" prop="delivery_cost_planned">
                     <el-input 
                     v-model="ruleForm.self_cost_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
-                <el-form-item label="РРЦ Итого" prop="costs_of_deliver">
+                <el-form-item label="РРЦ Итого" prop="shipment_cost_planned">
                     <el-input 
                     v-model="ruleForm.rrc_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
-                <el-form-item label="Итого маржа" prop="another_costs">
+                <el-form-item label="Итого маржа" prop="other_expenses_planned">
                     <el-input 
                     v-model="ruleForm.marginality_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
-                <el-form-item label="Общая маржинальность" prop="another_costs">
+                <el-form-item label="Общая маржинальность" prop="other_expenses_planned">
                     <el-input 
                     v-model="ruleForm.marginality_total_in_percents" disabled>
                     <template #append>%</template>
                     </el-input>
                 </el-form-item>
             </el-form>
-        </el-colomn>
+        </el-col>
     </el-row>
     </div>
     <el-button @click="submitForm" type="primary" style="width: 70%; margin-top: 1rem;">Сформировать заказ</el-button>
   </div>
   <div>
-      <p>id_deal: {{ ruleForm.id_deal }}</p>
-      <p>client: {{ ruleForm.client }}</p>
-      <p>date: {{ ruleForm.date }}</p>
+      <p>sell_order_id: {{ ruleForm.sell_order_id }}</p>
+      <p>client_id: {{ ruleForm.client_id }}</p>
+      <p>sgipment_date_planned: {{ ruleForm.sgipment_date_planned }}</p>
       <p>base_margin: {{ ruleForm.base_margin }}</p>
-      <p>costs_of_moving: {{ ruleForm.costs_of_moving }}</p>
-      <p>costs_of_deliver: {{ ruleForm.costs_of_deliver }}</p>
-      <p>another_costs: {{ ruleForm.another_costs }}</p>
-      <p>instruction: {{ ruleForm.instruction }}</p>
+      <p>delivery_cost_planned: {{ ruleForm.delivery_cost_planned }}</p>
+      <p>shipment_cost_planned: {{ ruleForm.shipment_cost_planned }}</p>
+      <p>other_expenses_planned: {{ ruleForm.other_expenses_planned }}</p>
+      <p>instructions: {{ ruleForm.instructions }}</p>
       <p>self_cost_total: {{ ruleForm.self_cost_total }}</p>
       <p>rrc_total: {{ ruleForm.rrc_total }}</p>
       <p>marginality_total: {{ ruleForm.marginality_total }}</p>
+      <!-- <p>table: {{ ruleForm.table }}</p> -->
     </div>
 </template>
 
@@ -209,60 +210,79 @@ export default {
     // Table,
     // OrderData, 
     // OrderInfo
-  }
+  },
+  
+  
 }
 </script>
 
 <script lang="ts" setup>
-import { defineComponent, reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus';
+import { defineComponent, reactive, ref, onMounted } from 'vue'
+import { useStore } from 'vuex';
+import { FormInstance, FormRules } from 'element-plus';
+
+const store = useStore();
+
+onMounted(() => {
+      store.dispatch('get_clients')
+        .then(() => {
+          console.log("Got clients successfully");
+        })
+        .catch(error => {
+          console.error("Failed to get clients:", error);
+        });
+    });
+
 
 interface RuleForm {
-  id_deal: string
-  client: string
-  date: string
-  base_margin: string
-  costs_of_moving: string
-  costs_of_deliver: string
-  another_costs: string
+  status_id: string
 
-  instruction: string,
-  self_cost_total: string,
-  rrc_total: string,
-  marginality_total: string,
-  marginality_total_in_percents: string,
+  sell_order_id: number
+  client_id: number
+  sgipment_date_planned: string
+  base_margin: number
+  delivery_cost_planned: number
+  shipment_cost_planned: number
+  other_expenses_planned: number
+
+  instructions: string,
+  self_cost_total: number,
+  rrc_total: number,
+  marginality_total: number,
+  marginality_total_in_percents: number,
 
   // tableData: [string : string],
 }
 
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive<RuleForm>({
+  status_id: '1',
   //шапка формы
-  id_deal: '',
-  client: '',
-  date: '',
-  base_margin: '',
-  costs_of_moving: '',
-  costs_of_deliver: '',
-  another_costs: '',
+  sell_order_id: 0,
+  client_id: 0,
+  sgipment_date_planned: '',
+  base_margin: 1.5,
+  delivery_cost_planned: 0,
+  shipment_cost_planned: 0,
+  other_expenses_planned: 0,
 
   //общая информация и комментарий
-  instruction: ' ',
-  self_cost_total: '15712',
-  rrc_total: '22400',
-  marginality_total: '6400',
-  marginality_total_in_percents: '28.57',
+  instructions: ' ',
+  self_cost_total: 15712,
+  rrc_total: 22400,
+  marginality_total: 6400,
+  marginality_total_in_percents: 28.57,
 
   //таблица общие переменные
   // tableData: [ 
-  //   id_deal: '',
-  //   client: '',
-  //   date: '',
+  //   sell_order_id: '',
+  //   client_id: '',
+  //   sgipment_date_planned: '',
   //   base_margin: '',
-  //   costs_of_moving: '',
-  //   costs_of_deliver: '',
-  //   another_costs: '',
-  //   instruction: '',
+  //   delivery_cost_planned: '',
+  //   shipment_cost_planned: '',
+  //   other_expenses_planned: '',
+  //   instructions: '',
   //   self_cost_total: '',
   //   rrc_total: '',
   //   marginality_total: '',
@@ -402,18 +422,18 @@ const saveRow = (row) => {
 
 //валидация ввода в шапку заказа
 const rules = reactive<FormRules<RuleForm>>({
-  id_deal: [
+  sell_order_id: [
   { required: true, message: 'Введите номер сделки', trigger: 'blur' },
   { min: 8, max: 8, message: 'Номер должен состоять из 8 цифр', trigger: 'blur' },
   ],
-  client: [
+  client_id: [
   {
         required: true,
   message: 'Выберите клиента',
   trigger: 'change',
   },
   ],
-  date: [
+  sgipment_date_planned: [
   {
         type: 'date',
   required: true,
@@ -424,13 +444,13 @@ const rules = reactive<FormRules<RuleForm>>({
   base_margin: [
   { required: true, message: 'Введите базовую наценку', trigger: 'blur' },
   ],
-  costs_of_moving: [
+  delivery_cost_planned: [
   { required: true, message: 'Заполните поле', trigger: 'blur' },
   ],
-  costs_of_deliver: [
+  shipment_cost_planned: [
   { required: true, message: 'Заполните поле', trigger: 'blur' },
   ],
-  another_costs: [
+  other_expenses_planned: [
   { required: true, message: 'Заполните поле', trigger: 'blur' },
   ],
 })
@@ -441,13 +461,13 @@ function formatDate(dateString) {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Месяцы начинаются с 0
   const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
+  return `${year}-${month}-${day}`;
 }
 
 //отправка данных на бек(без таблицы)
 function submitForm() {
-  ruleForm.date = formatDate(ruleForm.date);
-  fetch('/api/customerorder/create', {
+  ruleForm.sgipment_date_planned = formatDate(ruleForm.sgipment_date_planned);
+  fetch('http://89.104.68.248:8000/api/customerorder/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -468,6 +488,16 @@ function submitForm() {
     console.error('There was an error creating the order:', error);
   });
 }
+
+
+  // const store = useStore();
+  // const clients = () => {
+  //   store.dispatch('get_clients');
+  // };
+
+  // onMounted(() => {
+  //   clients();
+  // });
 
 </script>
 

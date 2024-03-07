@@ -1,27 +1,26 @@
 <template>
     <div class="top-bar">
         <el-icon color="white"><UserFilled /></el-icon>
-        <text class="manager">Советкин Андрей | Начальник склада</text>
+        <text class="manager">{{ email }} | роль</text>
         <el-button class="logout" size="small" @click="logout">Выйти</el-button>
     </div>
 </template>
 
-<script>
-export default {
-    computed: {
-        isLoggedIn: function() {
-            return this.$store.getters.isLoggedIn
-        }
-    },
-    methods: {
-        logout: function() {
-            this.$store.dispatch('logout')
-            .then(() =>  {
-                this.$router.push('/login')
-            })
-        }
-    },
-}
+<script setup>
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
+
+const logout = () => {
+  store.dispatch('logout')
+    .then(() =>  {
+      router.push('/login');
+    });
+};
+
+const email = store.state.email
 </script>
 
 <style>
