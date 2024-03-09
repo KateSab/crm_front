@@ -8,6 +8,7 @@ export default createStore({
     user: {},
     email: localStorage.getItem('email') || '',
     clients: [],
+    contractors: [],
   },
   mutations: {
     auth_request(state) {
@@ -26,6 +27,9 @@ export default createStore({
     },
     get_clients(state, clients) {
       state.clients = clients;
+    },
+    get_contractors(state, contractors) {
+      state.contractors = contractors;
     },
     logout(state) {
       state.status = ''
@@ -60,7 +64,59 @@ export default createStore({
             reject(err)
           })
       })
-    }
+    },
+    get_clients({ commit }) {
+      console.log("get_clients");
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const params = {
+          'limit': 1000,
+          'is_client': true
+        }
+        axios.get(url, { params })
+          .then(resp => {
+            const clientsData = resp.data;
+            // Создаем списки словарей для каждого клиента
+            const clientsList = clientsData.map(client => ({
+              id: client.id,
+              name: client.name
+            }));
+            // Вызываем мутацию для обновления состояния хранилища
+            commit('get_clients', clientsList);
+
+            console.log("clients: ", clientsList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    get_contractors({ commit }) {
+      console.log("get_contractors");
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const params = {
+          'limit': 1000,
+          'is_contractor': true
+        }
+        axios.get(url, { params })
+          .then(resp => {
+            const contractorsData = resp.data;
+            // Создаем списки словарей для каждого клиента
+            const contractorsList = contractorsData.map(contractor => ({
+              id: contractor.id,
+              name: contractor.name
+            }));
+            commit('get_contractors', contractorsList);
+            console.log("contractors: ", contractorsList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
   },
   logout({ commit }) {
     return new Promise((resolve, reject) => {
@@ -97,41 +153,11 @@ export default createStore({
       }
     })
   },
-  get_clients({ commit }) {
-    console.log("xuuuuuuuui");
-    return new Promise((resolve, reject) => {
-      const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
-      const formData = new FormData();
-      formData.append('limit', 1000);
-      formData.append('is_client', 'true');
 
-
-      axios.get(url, formData)
-        .then(resp => {
-
-          // Получаем данные о клиентах из ответа и обрабатываем их
-          const clientsData = resp.data; // Предположим, что данные о клиентах приходят в виде массива объектов [{ id: 1, name: 'Client 1' }, { id: 2, name: 'Client 2' }, ...]
-
-          // Создаем списки словарей для каждого клиента
-          const clientsList = clientsData.map(client => ({
-            id: client.id,
-            name: client.name
-          }));
-
-          // Вызываем мутацию для обновления состояния хранилища
-          commit('get_clients', clientsList);
-
-          console.log("clients: ", clientsList);
-          resolve(resp);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status
+    authStatus: state => state.status,
+    clients: state => state.clients,
   },
   modules: {
   }

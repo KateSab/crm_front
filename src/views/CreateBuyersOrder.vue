@@ -5,7 +5,7 @@
   <div class="create-buyers-order">
     <!-- OrderData -->
     <div>
-        <el-row class="row-bg" justify="space-around">
+        <el-row justify="space-around">
             <el-col :span="8">
                 <el-form
                     ref="ruleFormRef"
@@ -20,15 +20,14 @@
                         <el-input v-model="ruleForm.sell_order_id" />
                     </el-form-item>
                     <el-form-item label="Клиент" prop="client_id">
-                        <el-select v-model="ruleForm.client_id" placeholder="Клиент">
-                            <el-option label="Клиент 1" value="client_id1" />
-                            <el-option label="Клиент 2" value="client_id2" />
+                        <el-select v-model="ruleForm.client_id">
+                            <el-option v-for="client in options_clients" :label="client.name" :value="client.id" :key="client.id" />
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Дата отгрузки (план)" required>
                         <el-form-item prop="sgipment_date_planned">
                             <el-date-picker
-                                v-model="ruleForm.sgipment_date_planned"
+                                v-model="ruleForm.shipment_date_planned"
                                 type="date"
                                 label="Pick a date"
                                 placeholder="Pick a date"
@@ -88,7 +87,7 @@
     <!-- Table -->
     <div>
         <el-container style="margin-top: 2rem;">
-        <el-table :data="tableData" style="width: 100%" size="small">
+        <el-table :data="productsList" style="width: 100%" size="small">
           <el-table-column v-for="column in tableColumns" :key="column.prop" :prop="column.prop" :label="column.label" :width="column.width">
             <template #default="{ row }">
               <template v-if="!row.editing || column.editable === false">{{ row[column.prop] }}</template>
@@ -128,8 +127,8 @@
     </div>
     <!-- OrderInfo -->
     <div>
-      <el-row class="row-bg" justify="space-around" :gutter="175" style="margin-top: 2rem;">
-        <el-col :span="8">
+      <el-row class="order-info" justify="space-between" style="margin-top: 2rem">
+        <el-col :span="12">
             <el-form
                 :model="ruleForm"
                 label-position="top"
@@ -141,9 +140,7 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-col :span="8">
-        </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
             <el-form
                 :model="ruleForm"
                 label-position="left"
@@ -181,20 +178,6 @@
     </div>
     <el-button @click="submitForm" type="primary" style="width: 70%; margin-top: 1rem;">Сформировать заказ</el-button>
   </div>
-  <div>
-      <p>sell_order_id: {{ ruleForm.sell_order_id }}</p>
-      <p>client_id: {{ ruleForm.client_id }}</p>
-      <p>sgipment_date_planned: {{ ruleForm.sgipment_date_planned }}</p>
-      <p>base_margin: {{ ruleForm.base_margin }}</p>
-      <p>delivery_cost_planned: {{ ruleForm.delivery_cost_planned }}</p>
-      <p>shipment_cost_planned: {{ ruleForm.shipment_cost_planned }}</p>
-      <p>other_expenses_planned: {{ ruleForm.other_expenses_planned }}</p>
-      <p>instructions: {{ ruleForm.instructions }}</p>
-      <p>self_cost_total: {{ ruleForm.self_cost_total }}</p>
-      <p>rrc_total: {{ ruleForm.rrc_total }}</p>
-      <p>marginality_total: {{ ruleForm.marginality_total }}</p>
-      <!-- <p>table: {{ ruleForm.table }}</p> -->
-    </div>
 </template>
 
 <script lang="ts">
@@ -211,18 +194,16 @@ export default {
     // OrderData, 
     // OrderInfo
   },
-  
-  
 }
 </script>
 
 <script lang="ts" setup>
-import { defineComponent, reactive, ref, onMounted } from 'vue'
-import { useStore } from 'vuex';
+import { reactive, ref, onMounted } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
+import store from '../store/index';
+import {computed} from "vue";
 
-const store = useStore();
-
+// получаем всех клиентов для шапки
 onMounted(() => {
       store.dispatch('get_clients')
         .then(() => {
@@ -231,15 +212,31 @@ onMounted(() => {
         .catch(error => {
           console.error("Failed to get clients:", error);
         });
+
+        store.dispatch('get_contractors')
+        .then(() => {
+          console.log("Got contractors successfully");
+        })
+        .catch(error => {
+          console.error("Failed to get contractors:", error);
+        });
     });
 
+    const options_clients = computed(() => {
+      return store.state.clients;
+    })
+
+    const options_contractors = computed(() => {
+      return store.state.contractors;
+    })
+// добавить запросы 
 
 interface RuleForm {
   status_id: string
 
   sell_order_id: number
   client_id: number
-  sgipment_date_planned: string
+  shipment_date_planned: string
   base_margin: number
   delivery_cost_planned: number
   shipment_cost_planned: number
@@ -250,8 +247,6 @@ interface RuleForm {
   rrc_total: number,
   marginality_total: number,
   marginality_total_in_percents: number,
-
-  // tableData: [string : string],
 }
 
 const ruleFormRef = ref<FormInstance>()
@@ -260,7 +255,7 @@ const ruleForm = reactive<RuleForm>({
   //шапка формы
   sell_order_id: 0,
   client_id: 0,
-  sgipment_date_planned: '',
+  shipment_date_planned: '',
   base_margin: 1.5,
   delivery_cost_planned: 0,
   shipment_cost_planned: 0,
@@ -272,67 +267,69 @@ const ruleForm = reactive<RuleForm>({
   rrc_total: 22400,
   marginality_total: 6400,
   marginality_total_in_percents: 28.57,
-
-  //таблица общие переменные
-  // tableData: [ 
-  //   sell_order_id: '',
-  //   client_id: '',
-  //   sgipment_date_planned: '',
-  //   base_margin: '',
-  //   delivery_cost_planned: '',
-  //   shipment_cost_planned: '',
-  //   other_expenses_planned: '',
-  //   instructions: '',
-  //   self_cost_total: '',
-  //   rrc_total: '',
-  //   marginality_total: '',
-  //   marginality_total_in_percents: '',
-  // ],
-
-  //таблица референс
 })
 
-const tableData = ref([
-  {
-    name: 'Папка-конверт А4',
-    link: 'https://www.koderhq.com/tutorial/vue/http-axios/#get',
-    edition: '400',
-    supplier: 'Оазис',
-    type_of_application: 'Тампопечать',
-    contractor: 'Нанесение у поставщика',
-    cost_price_of_good: '39,28',
-    cost_of_application_price: '0',
-    cost_price: '39,28',  //поле с формулой расчета
-    rrc_per_one: '56',
-    rrc_global: '22 400',  //поле с формулой расчета
-    marginality: '6 400',  //поле с формулой расчета
-    marginality_in_percents: '28,57',
-    editing: false,
-  }
-]);
+interface Product {
+  name: string;
+  link: string;
+  edition: number;
+  supplier: string;
+  type_of_application: string;
+  contractor: string;
+  cost_price_of_good: number;
+  cost_of_application_price: number;
+  cost_price_global: number;
+  rrc_per_one: number;
+  rrc_global: number;
+  marginality: number,  
+  marginality_in_percents: number,
+  editable: boolean;
+}
+
+// Референс списка продуктов
+const productsList = ref<Product[]>([]);
+
+// Функция для добавления нового продукта в список
+function addProduct() {
+  const newProduct: Product = {
+    name: '',
+    link: '',
+    edition: 0,
+    supplier: '',
+    type_of_application: '',
+    contractor: '',
+    cost_price_of_good: 0,
+    cost_of_application_price: 0,
+    cost_price_global: 0,
+    rrc_per_one: 0,
+    rrc_global: 0,
+    marginality: 0,
+    marginality_in_percents: 0,
+    editable: true,
+  };
+  productsList.value.push(newProduct);
+}
 
 const tableColumns = ref([
   { prop: 'name', label: 'Наименование', width: '125', editable: true },
   { prop: 'link', label: 'Описание', width: '120', editable: true },
   { prop: 'edition', label: 'Тираж', width: '60', editable: true },
   { prop: 'supplier', label: 'Поставщик', width: '100', editable: true, type: 'select', options: [
-    { value: 'Оазис', label: 'Оазис' },
-    { value: 'ПромТорг', label: 'ПромТорг' },
-    { value: 'Альфа-Комплект', label: 'Альфа-Комплект' },
+    'Оазис' ,
+    'ПромТорг' ,
+    'Альфа-Комплект' ,
   ] },
   { prop: 'type_of_application', label: 'Вид нанесения', width: '150', editable: true, type: 'select', options: [
-    { value: 'Тампопечать', label: 'Тампопечать' },
-    { value: 'Лазерная гравировка', label: 'Лазерная гравировка' },
-    { value: 'Термотрансфер', label: 'Термотрансфер' }
+    'Тампопечать',
+    'Лазерная гравировка',
+    'Термотрансфер'
   ] },
-  { prop: 'contractor', label: 'Подрядчик', width: '120', editable: true, type: 'select', options: [
-    { value: 'Нанесение у поставщика', label: 'Нанесение у поставщика' },
-    { value: 'Собственное нанесение', label: 'Собственное нанесение' },
-    { value: 'Аутсорсинговая компания', label: 'Аутсорсинговая компания' }
-  ] },
+  { prop: 'contractor', label: 'Подрядчик', width: '120', editable: true, type: 'select', options: [] 
+    
+  },
   { prop: 'cost_price_of_good', label: 'СС товара руб.', width: '80', editable: true },
   { prop: 'cost_of_application_price', label: 'СС нанесения руб.', width: '60', editable: true },
-  { prop: 'cost_price', label: 'СС итого руб.', width: '80', editable: false }, // без возможности редактирования
+  { prop: 'cost_price_global', label: 'СС итого руб.', width: '80', editable: false }, // без возможности редактирования
   { prop: 'rrc_per_one', label: 'РРЦ / шт. руб.', width: '80', editable: true },
   { prop: 'rrc_global', label: 'РРЦ итого руб.', width: '100', editable: true },
   { prop: 'marginality', label: 'Маржа руб.', width: '100', editable: false }, // без возможности редактирования
@@ -343,36 +340,39 @@ const tableColumns = ref([
 
 //функции для подсчета данных
 const calculateCostPrice = (row) => {
-  const costPriceOfGood = parseFloat(row.cost_price_of_good.replace(',', '.'));
-  const costOfApplicationPrice = parseFloat(row.cost_of_application_price.replace(',', '.'));
-  const edition = parseFloat(row.edition.replace(',', '.'));
-  return (costPriceOfGood + costOfApplicationPrice) * edition;
+  const costPriceOfGood = parseFloat(row.cost_price_of_good);
+  const costOfApplicationPrice = parseFloat(row.cost_of_application_price);
+  const edition = parseFloat(row.edition);
+  const costPrice = parseFloat(((costPriceOfGood + costOfApplicationPrice) * edition).toFixed(2));
+  return costPrice;
 };
 
 const calculateRRCGlobal = (row) => {
-  const rrcPerOne = parseFloat(row.rrc_per_one.replace(',', '.'));
-  const edition = parseFloat(row.edition.replace(',', '.'));
-  return rrcPerOne * edition;
+  const rrcPerOne = row.rrc_per_one;
+  const edition = row.edition;
+  const rrcGlobal = ((rrcPerOne * edition).toFixed(2));
+  return rrcGlobal;
 };
 
 const calculateMarginality = (row) => {
-  const costPriceOfGood = parseFloat(row.cost_price_of_good.replace(',', '.'));
-  const rrcPerOne = parseFloat(row.rrc_per_one.replace(',', '.'));
-  const edition = parseFloat(row.edition.replace(',', '.'));
-  return (rrcPerOne - costPriceOfGood) * edition;
+  const costPriceGlobal = row.cost_price_global;
+  const rrcGlobal = row.rrc_global;
+  const marginality = ((rrcGlobal - costPriceGlobal).toFixed(2));
+  return marginality;
 };
 
 const calculateMarginalityInPercents = (row) => {
-  const costPriceOfGood = parseFloat(row.cost_price_of_good.replace(',', '.'));
-  const rrcPerOne = parseFloat(row.rrc_per_one.replace(',', '.'));
-  return ((rrcPerOne - costPriceOfGood) / rrcPerOne) * 100;
+  const costPriceGlobal = row.cost_price_global;
+  const rrcGlobal = row.rrc_global;
+  const marginalityInPercents = ((((rrcGlobal - costPriceGlobal) / rrcGlobal) * 100).toFixed(2));
+  return marginalityInPercents;
 };
 
 //функции для обработки и валидации входных данных
 //ввод данных
 const handleInput = (row, prop) => {
   if (prop === 'cost_price_of_good' || prop === 'cost_of_application_price') {
-    row.cost_price = calculateCostPrice(row);
+    row.cost_price_global = calculateCostPrice(row);
   }
   if (prop === 'rrc_per_one' || prop === 'edition') {
     row.rrc_global = calculateRRCGlobal(row);
@@ -387,26 +387,26 @@ const handleInput = (row, prop) => {
 
 //удаление строки
 const deleteRow = (index) => {
-  tableData.value.splice(index, 1);
+  productsList.value.splice(index, 1);
 };
 
 //добавление строки
 const onAddItem = () => {
-  tableData.value.push({
+  productsList.value.push({
     name: '',
     link: '',
-    edition: '',
+    edition: 0,
     supplier: '',
     type_of_application: '',
     contractor: '',
-    cost_price_of_good: '',
-    cost_of_application_price: '',
-    cost_price: '',  //поле с формулой расчета без возможности редактирования
-    rrc_per_one: '',
-    rrc_global: '',  //поле с формулой расчета, но с возможностью редактирования
-    marginality: '',  //поле с формулой расчета без возможности редактирования
-    marginality_in_percents: '',  //поле с формулой расчета без возможности редактирования
-    editing: true,
+    cost_price_of_good: 0,
+    cost_of_application_price: 0,
+    cost_price_global: 0,  //поле с формулой расчета без возможности редактирования
+    rrc_per_one: 0,
+    rrc_global: 0,  //поле с формулой расчета, но с возможностью редактирования
+    marginality: 0,  //поле с формулой расчета без возможности редактирования
+    marginality_in_percents: 0,  //поле с формулой расчета без возможности редактирования
+    editable: true,
   });
 };
 
@@ -418,6 +418,8 @@ const editRow = (row) => {
 //сохранение строки при редактировании
 const saveRow = (row) => {
   row.editing = false;
+  addProduct();
+  console.log(productsList.value);
 };
 
 //валидация ввода в шапку заказа
@@ -433,7 +435,7 @@ const rules = reactive<FormRules<RuleForm>>({
   trigger: 'change',
   },
   ],
-  sgipment_date_planned: [
+  shipment_date_planned: [
   {
         type: 'date',
   required: true,
@@ -466,7 +468,7 @@ function formatDate(dateString) {
 
 //отправка данных на бек(без таблицы)
 function submitForm() {
-  ruleForm.sgipment_date_planned = formatDate(ruleForm.sgipment_date_planned);
+  ruleForm.shipment_date_planned = formatDate(ruleForm.shipment_date_planned);
   fetch('http://89.104.68.248:8000/api/customerorder/add', {
     method: 'POST',
     headers: {
@@ -489,35 +491,31 @@ function submitForm() {
   });
 }
 
-
-  // const store = useStore();
-  // const clients = () => {
-  //   store.dispatch('get_clients');
-  // };
-
-  // onMounted(() => {
-  //   clients();
-  // });
-
 </script>
 
 <style>
 .create-buyers-order {
-  display: fixed;
+  display: flex;
   flex-direction: column;
-  /* justify-content: right;  */
   align-items: center;
   margin: 1rem 2rem 2rem 2rem;
 }
 
+.order-info {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
 .el-form {
     width: 23rem;
+    margin: 2rem;
     padding: 1rem;
     border-radius: 5px;
     background-color: #4d4d4d23;
   }
 
-  .el-table {
+.el-table {
   font-size: small;
   font-weight: 200;
 }

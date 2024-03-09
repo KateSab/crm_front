@@ -14,12 +14,6 @@ export default {
     MainPage,
     Login,
   },
-
-  // computed: {
-  //   isLoggedIn: function() {
-  //     return this.$store.getters.isLoggedIn
-  //   }
-  // }
 }
 </script>
 
