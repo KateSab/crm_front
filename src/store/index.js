@@ -8,7 +8,10 @@ export default createStore({
     user: {},
     email: localStorage.getItem('email') || '',
     clients: [],
+    shipment_locations: [],
     contractors: [],
+    suppliers: [],
+    typesOfApplications: [],
   },
   mutations: {
     auth_request(state) {
@@ -28,8 +31,17 @@ export default createStore({
     get_clients(state, clients) {
       state.clients = clients;
     },
+    get_shipment_locations(state, shipment_locations) {
+      state.shipment_locations = shipment_locations;
+    },
     get_contractors(state, contractors) {
       state.contractors = contractors;
+    },
+    get_suppliers(state, suppliers) {
+      state.suppliers = suppliers;
+    },
+    get_types_of_applications(state, typesOfApplications) {
+      state.typesOfApplications = typesOfApplications;
     },
     logout(state) {
       state.status = ''
@@ -92,6 +104,33 @@ export default createStore({
           });
       });
     },
+    get_shipment_locations({ commit }) {
+      console.log("get shipment locations");
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/locations/get_filter';
+        const params = {
+          'limit': 1000,
+          'contractor_id': -1
+        }
+        axios.get(url, { params })
+          .then(resp => {
+            const shipmentLocationsData = resp.data;
+            // Создаем списки словарей для каждого клиента
+            const shipmentLocationsList = shipmentLocationsData.map(shipment_location => ({
+              id: shipment_location.id,
+              name: shipment_location.name
+            }));
+            // Вызываем мутацию для обновления состояния хранилища
+            commit('get_shipment_locations', shipmentLocationsList);
+
+            console.log("shipment locations: ", shipmentLocationsList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
     get_contractors({ commit }) {
       console.log("get_contractors");
       return new Promise((resolve, reject) => {
@@ -117,6 +156,51 @@ export default createStore({
           });
       });
     },
+    get_suppliers({ commit }) {
+      console.log("get_suppliers");
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const params = {
+          'limit': 1000,
+          'is_supplier': true
+        }
+        axios.get(url, { params })
+          .then(resp => {
+            const suppliersData = resp.data;
+            // Создаем списки словарей для каждого клиента
+            const suppliersList = suppliersData.map(supplier => ({
+              id: supplier.id,
+              name: supplier.name
+            }));
+            commit('get_suppliers', suppliersList);
+            console.log("suppliers: ", suppliersList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    get_types_of_applications({ commit }) {
+      console.log("get_types_of_applications");
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/branding_types/get_all';
+        axios.get(url)
+          .then(resp => {
+            const typesOfApplicationsData = resp.data;
+            const typesOfApplicationsList = typesOfApplicationsData.map(type => ({
+              id: type.id,
+              title: type.title,
+            }));
+            commit('get_types_of_applications', typesOfApplicationsList);
+            console.log("typesOfApplications: ", typesOfApplicationsList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      })
+    }
   },
   logout({ commit }) {
     return new Promise((resolve, reject) => {
@@ -158,6 +242,10 @@ export default createStore({
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     clients: state => state.clients,
+    shipment_locations: state => state.shipment_locations,
+    contractors: state => state.contractors,
+    suppliers: state => state.suppliers,
+    typesOfApplications: state => state.typesOfApplications
   },
   modules: {
   }

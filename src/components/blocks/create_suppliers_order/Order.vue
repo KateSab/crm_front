@@ -1,5 +1,4 @@
 
-import { ElLink } from 'element-plus';
 <template>
     <el-form
         ref="ruleFormRef"
@@ -53,7 +52,7 @@ import { ElLink } from 'element-plus';
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus';
+import type { FormInstance, FormRules, ElLink } from 'element-plus';
 
 interface RuleForm {
     supplier: string

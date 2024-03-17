@@ -49,8 +49,8 @@ export default {
 }
 
 .status-order {
-  margin-left: 4rem; /* Помещаем текст справа от TopOrder */
-  padding: 10px 10px 10px 10px;
+  /* margin-left: 4rem;  */
+  padding: 0.7rem;
   border-radius: 5px;
   background-color: #3d9cfb54;
   color: #0466c8;
@@ -68,18 +68,16 @@ export default {
   padding-bottom: 5px;
 }
 
-/* .grid-content {
+.grid-content {
   border-radius: 4px;
   min-height: 36px;
-} */
+}
 
 .order {
     width: 800px;
     font-size: small;
     font-weight: 100;
-    margin-left: 200px;
-    margin-bottom: 20px;
-    padding-top: 30px;
+    padding: 6vh 13vw 7vh 13vw;
 }
 
 .markered {

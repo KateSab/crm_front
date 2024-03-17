@@ -36,10 +36,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: top;
+  /* justify-content: top; */
   height: 100vh; /* 100% высоты видимой части страницы */
-  /* margin-left: 6vw;
-  position: absolute; */
 }
 
 @media screen and (max-width: 1240px) {

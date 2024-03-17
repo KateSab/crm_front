@@ -1,7 +1,7 @@
 <template>
     <div class="orders">
       <el-divider></el-divider>
-        <TopOrder/>
+      <TopOrder/>
       <Table />
     </div>
 </template>
@@ -21,9 +21,10 @@ export default {
 
 <style>
 .orders {
-  display: flex;
+  display: flex; 
   flex-direction: column;
   align-items: center;
+  /* margin: 0 10vw 0 10vw; */
 }
 
 /* .table-container {

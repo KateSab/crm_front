@@ -30,6 +30,15 @@ const params= {
   status_id: 1,
 }
 
+const error_notification = () => {
+  ElNotification({
+    title: 'Ошибка',
+    message: 'Не удалось получить данные с сервера',
+    type: 'error',
+    position: 'bottom-right',
+  })
+}
+
 export default {
   name: 'BuyersView',
   components: {
@@ -54,6 +63,7 @@ export default {
       })
       .catch((error) => {
         console.error('Error:', error);
+        error_notification();
       })
   }
 }
