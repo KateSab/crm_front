@@ -1,6 +1,5 @@
 <template>
       <MainPage />
-      <!-- <Login /> -->
 </template>
 
 

@@ -46,6 +46,7 @@ export default createStore({
     logout(state) {
       state.status = ''
       state.token = ''
+      state.email = ''
     },
   },
   actions: {
@@ -200,42 +201,43 @@ export default createStore({
             reject(error);
           });
       })
-    }
-  },
-  logout({ commit }) {
-    return new Promise((resolve, reject) => {
-      commit('logout')
-      localStorage.removeItem('token')
-      resolve()
-    })
-  },
-  get_user({ commit }, token) {
-    return new Promise((resolve, reject) => {
-      if (localStorage.token) {
-        fetch('http://89.104.68.248:8000/api/users/me', {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.token
-          }
-        })
-          .then(resp => {
-            if (!resp.ok) {
-              throw new Error('Network response was not ok');
+    },
+    logout({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit('logout')
+        localStorage.removeItem('token')
+        localStorage.removeItem('email')
+        resolve()
+      })
+    },
+    get_user({ commit }, token) {
+      return new Promise((resolve, reject) => {
+        if (localStorage.token) {
+          fetch('http://89.104.68.248:8000/api/users/me', {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.token
             }
-            return resp.text(); // Получаем текстовое представление данных ответа
           })
-          .then(text => {
-            const data = JSON.parse(text); // Преобразуем текст в объект JSON
-            const email = data.email; // Получаем email из данных ответа
-            localStorage.setItem('email', email);
-            commit('user_data', email);
-            console.log("email: ", email);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-    })
+            .then(resp => {
+              if (!resp.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return resp.text(); // Получаем текстовое представление данных ответа
+            })
+            .then(text => {
+              const data = JSON.parse(text); // Преобразуем текст в объект JSON
+              const email = data.email; // Получаем email из данных ответа
+              localStorage.setItem('email', email);
+              commit('user_data', email);
+              console.log("email: ", email);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      })
+    },
   },
 
   getters: {

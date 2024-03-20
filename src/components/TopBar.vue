@@ -9,18 +9,25 @@
 <script setup>
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
+const email = ref('');
 const store = useStore();
 const router = useRouter();
+
+email.value = store.state.email;
 
 const logout = () => {
   store.dispatch('logout')
     .then(() =>  {
+      email.value = '';
       router.push('/login');
     });
 };
 
-const email = store.state.email
+store.watch(() => store.state.email, (newValue) => {
+  email.value = newValue;
+});
 </script>
 
 <style>
