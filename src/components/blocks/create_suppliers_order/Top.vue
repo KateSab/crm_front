@@ -5,8 +5,10 @@
         Назад
       </el-button>
       <div class="path">
-        <el-text class="mx-1">Заказы поставщикам 
-          <el-icon><ArrowRight /></el-icon>
+          <el-link @click="goBack" :underline="false">Заказы поставщикам 
+        </el-link>
+        <el-icon class="arrow-icon"><ArrowRight /></el-icon>
+        <el-text>
           Создание
         </el-text>
         

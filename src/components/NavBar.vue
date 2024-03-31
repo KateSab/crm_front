@@ -10,6 +10,7 @@
     <router-link to="/bills" class="nav-link" :class="{ 'active': currentTab === '/bills' }">Счета на оплату</router-link>
     <router-link to="/stock" class="nav-link" :class="{ 'active': currentTab === '/stock' }">Склад</router-link>
     <router-link to="/partners" class="nav-link" :class="{ 'active': currentTab === '/partners' }">Контрагенты</router-link>
+    <router-link to="/catalogs" class="nav-link" :class="{ 'active': currentTab === '/catalogs' }">Справочники</router-link>
   </nav>
 </template>
 

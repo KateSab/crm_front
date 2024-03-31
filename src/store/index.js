@@ -12,6 +12,8 @@ export default createStore({
     contractors: [],
     suppliers: [],
     typesOfApplications: [],
+    partners: [],
+    delivery_types: [{ name: 'До склада', id: 0 }, { name: 'До ПВЗ', id: 1 }, { name: 'До ТК', id: 2 }],
   },
   mutations: {
     auth_request(state) {
@@ -42,6 +44,9 @@ export default createStore({
     },
     get_types_of_applications(state, typesOfApplications) {
       state.typesOfApplications = typesOfApplications;
+    },
+    get_partners(state, partners) {
+      state.partners = partners;
     },
     logout(state) {
       state.status = ''
@@ -201,6 +206,36 @@ export default createStore({
             reject(error);
           });
       })
+    },
+    get_partners({ commit }) {
+      console.log("get_partners");
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const params = {
+          'limit': 1000,
+        }
+        axios.get(url, { params })
+          .then(resp => {
+            const partnersData = resp.data;
+            // Создаем списки словарей для каждого контрагента
+            const partnersList = partnersData.map(partner => ({
+              id: partner.id,
+              name: partner.name,
+              is_contractor: partner.is_contractor,
+              is_carrier: partner.is_carrier,
+              is_client: partner.is_client,
+              is_supplier: partner.is_supplier
+            }));
+            // Вызываем мутацию для обновления состояния хранилища
+            commit('get_partners', partnersList);
+
+            console.log("partners: ", partnersList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     },
     logout({ commit }) {
       return new Promise((resolve, reject) => {

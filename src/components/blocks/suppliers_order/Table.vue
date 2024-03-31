@@ -4,7 +4,7 @@
             <el-table-column prop="name" label="Наименование" width="200" />
             <el-table-column prop="count" label="Количество" width="120" />
             <el-table-column prop="print_type" label="Тип печати" width="170" />
-            <el-table-column prop="link" label="Ссылка" width="350"> <el-link href="{{ link }}">тут типо ссылка</el-link></el-table-column>
+            <el-table-column prop="link" label="Ссылка" width="350" />
             <el-table-column fixed="right" prop="comment" label="Комментарий" width="320"/>    
         </el-table>
       </el-container>

@@ -12,6 +12,10 @@ import StockView from '../views/StockView.vue'
 import PartnersView from '../views/PartnersView.vue'
 import CreateBuyersOrder from '../views/CreateBuyersOrder.vue'
 import CreateSuppliersOrder from '../views/CreateSuppliersOrder.vue'
+import CreatePartner from '../views/CreatePartner.vue';
+import Catalogs from '../views/Catalogs.vue';
+import Addresses from '../views/Addresses.vue';
+import Contacts from '../views/Contacts.vue';
 
 const routes = [
   {
@@ -100,6 +104,38 @@ const routes = [
     path: '/partners',
     name: 'partners',
     component: PartnersView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/partners/create',
+    name: 'createPartner',
+    component: CreatePartner,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/catalogs',
+    name: 'catalogs',
+    component: Catalogs,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/catalogs/addresses',
+    name: 'addresses',
+    component: Addresses,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/catalogs/contacts',
+    name: 'contacts',
+    component: Contacts,
     meta: {
       requiresAuth: true
     }

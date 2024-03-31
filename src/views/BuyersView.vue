@@ -18,17 +18,12 @@
 </template>
 
 
-<script>
-
+<script setup>
+import { ref, onMounted } from 'vue';
+import { fetchBuyersOrders } from '@/api/Orders';
 import Order from '../components/blocks/buyers_order/Order.vue';
 import Top from '../components/blocks/buyers_order/Top.vue';
-import axios from 'axios'
-
-const params= {
-  offset: 0,
-  limit: 50,
-  status_id: 1,
-}
+import { ElNotification } from 'element-plus';
 
 const error_notification = () => {
   ElNotification({
@@ -39,36 +34,17 @@ const error_notification = () => {
   })
 }
 
-export default {
-  name: 'BuyersView',
-  components: {
-    Top,
-    Order,
-  },
-  data() {
-    return {
-      orders: [],
-      loaded: false,
-    }
-  },
-  mounted() {
-    axios
-      .get(
-        'http://89.104.68.248:8000/api/customerorder/get_filter', 
-        {params},
-      )
-      .then((response) => {
-        this.orders = response.data;
-        this.loaded = true; // Устанавливаем флаг загрузки данных
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        error_notification();
-      })
+const orders = ref([]);
+const loaded = ref(false);
+
+onMounted(async () => {
+  try {
+    orders.value = await fetchBuyersOrders();
+    loaded.value = true;
+  } catch (error) {
+    error_notification();
   }
-}
-
-
+});
 </script>
 
 <style>

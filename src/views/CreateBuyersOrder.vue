@@ -184,11 +184,11 @@
     </div>
     <!-- <el-button @click="submitForm" type="primary" style="width: 70%; margin-top: 1rem;">Сформировать заказ</el-button>
     <el-button @click="submitTableForm" type="primary" style="width: 70%; margin-top: 1rem;">Отправить данные таблички</el-button> -->
-    <el-button plain type="primary" @click="submitCreateOrder = true">
+    <el-button plain type="primary" @click="submitForm()">
       Сформировать заказ
     </el-button>
 
-    <el-dialog v-model="submitCreateOrder" title="Подтвердить создание заказа?" width="500" align-center>
+    <!-- <el-dialog v-model="submitCreateOrder" title="Подтвердить создание заказа?" width="500" align-center>
       <span>
         Убедитесь, что все поля заполнены верно
       </span>
@@ -200,7 +200,7 @@
           </el-button>
         </div>
       </template>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </div>
 <div v-else >
@@ -232,10 +232,7 @@ import { FormInstance, FormRules } from 'element-plus';
 import store from '../store/index';
 import router from '../router';
 import { ElNotification } from 'element-plus';
-// import {computed} from "vue";
-// import {get_requests} from '../my_modules/requests';
-
-const submitCreateOrder = ref(false)
+import { formatDate } from '@/api/Helpers';
 
 const success_notification = (order_id) => {
   ElNotification({
@@ -541,14 +538,7 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
 })
 
-//форматирование даты
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Месяцы начинаются с 0
-  const year = date.getFullYear();
-  return `${year}-${month}-${day}`;
-}
+
 
 //отправка данных на бек(без таблицы)
 function submitForm() {
