@@ -39,8 +39,13 @@
                     </template>
                 </el-col>
                 <el-col :span="12">
-                    ...
+                    <div v-for="address in partner.addresses" :key="address">
+                        <div>{{ address.address }}</div>
+                        <div>{{ address.name }}</div>
+                        <div>{{ address.location_type }}</div>
+                    </div>
                 </el-col>
+
             </el-row>
         </div>
 
@@ -52,8 +57,6 @@
 import { onMounted, ref } from 'vue';
 import store from '@/store/index';
 import Top from '@/components/blocks/partners_list/Top.vue';
-import { Select } from '@element-plus/icons-vue';
-import { Close } from '@element-plus/icons-vue';
 
 const partners = ref([]);
 

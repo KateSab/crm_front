@@ -13,6 +13,7 @@ export default createStore({
     suppliers: [],
     typesOfApplications: [],
     partners: [],
+    partners_addresses: [],
     delivery_types: [{ name: 'До склада', id: 0 }, { name: 'До ПВЗ', id: 1 }, { name: 'До ТК', id: 2 }],
   },
   mutations: {
@@ -38,6 +39,9 @@ export default createStore({
     },
     get_contractors(state, contractors) {
       state.contractors = contractors;
+    },
+    get_addresses_for_partners(state, addresses) {
+      state.partners_addresses = addresses;
     },
     get_suppliers(state, suppliers) {
       state.suppliers = suppliers;
@@ -151,7 +155,7 @@ export default createStore({
             // Создаем списки словарей для каждого клиента
             const contractorsList = contractorsData.map(contractor => ({
               id: contractor.id,
-              name: contractor.name
+              name: contractor.name,
             }));
             commit('get_contractors', contractorsList);
             console.log("contractors: ", contractorsList);
@@ -207,7 +211,7 @@ export default createStore({
           });
       })
     },
-    get_partners({ commit }) {
+    get_partners({ commit, dispatch }) {
       console.log("get_partners");
       return new Promise((resolve, reject) => {
         const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
@@ -224,12 +228,56 @@ export default createStore({
               is_contractor: partner.is_contractor,
               is_carrier: partner.is_carrier,
               is_client: partner.is_client,
-              is_supplier: partner.is_supplier
+              is_supplier: partner.is_supplier,
+              addresses: [],
             }));
+
+            // Цикл для получения адресов для каждого контрактора
+            for (const partner of partnersList) {
+
+              dispatch('get_addresses_for_partners', { commit, partner_id: partner.id })
+
+                .then(addressesData => {
+                  // Получаем адреса для текущего контрактора и добавляем их в массив addresses
+                  partner.addresses = addressesData.data.map(address => ({
+                    address: address.address,
+                    name: address.name,
+                    location_type: address.location_type
+                  }));
+                })
+                .catch(error => {
+                  console.error(`No address found for partner with ID ${partner.id}:`);
+                });
+            }
             // Вызываем мутацию для обновления состояния хранилища
             commit('get_partners', partnersList);
-
             console.log("partners: ", partnersList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    get_addresses_for_partners({ commit }, { partner_id }) {
+      console.log("get_address for partner: ", partner_id);
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/locations/get_filter';
+        const params = {
+          'limit': 1000,
+          'contractor_id': partner_id,
+        }
+        axios.get(url, { params })
+          .then(resp => {
+            const addressesData = resp.data;
+            // Создаем списки словарей для каждого клиента
+            const addressesList = addressesData.map(address => ({
+              address: address.address,
+              name: address.name,
+              location_type: address.location_type
+            }));
+            commit('get_addresses_for_partners', addressesList);
+            // console.log("address: ", addressesList);
             resolve(resp);
           })
           .catch(error => {
