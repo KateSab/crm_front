@@ -7,7 +7,6 @@
         <el-form
             ref="ruleFormRef"
             :model="formPartner"
-            :rules="rulesPartner"
             label-position="left"
             size="medium"
             label-width="auto"
@@ -26,54 +25,129 @@
             </el-form-item>
         </el-form>
         <el-text >Адреса</el-text>
+        <!-- Форма для адресов -->
+    <div v-for="(address, index) in formAddress" :key="index">
+      <el-form
+        ref="ruleFormRef"
+        :model="address"
+        label-position="left"
+        size="medium"
+        label-width="auto"
+        status-icon
+        style="width: 80%;"
+      >
+        <el-form-item label="Адрес" prop="address">
+          <el-autocomplete
+            v-model="address.address"
+            :fetch-suggestions="fetchAddressSuggestions"
+            :trigger-on-focus="false"
+            clearable
+            @select="selectAddress"
+            style="width: 100%;"
+          >
+          </el-autocomplete>
+        </el-form-item>
+        <el-form-item label="Наименование" prop="name">
+          <el-input v-model="address.name" />
+        </el-form-item>
+        <!-- Форма для контактов -->
+        <el-form-item label="Контакты">
+        <div v-for="(contact, idx) in address.contacts" :key="idx">
+          <el-form
+            :model="contact"
+            label-position="left"
+            size="medium"
+            status-icon
+          >
+            <el-form-item label="Имя">
+              <el-input v-model="contact.name" />
+            </el-form-item>
+            <el-form-item label="Телефон">
+              <el-input v-model="contact.phone" />
+            </el-form-item>
+          </el-form>
+
+        </div>
+        </el-form-item>
+        <el-button
+          color="#FFFF6F"
+          style="color: #4d4d4d; margin-top: 1rem;"
+          @click="addContact(address)"
+        >
+          Добавить контакт
+        </el-button>
+      </el-form>
+    </div>
+        
+
+        <!-- Дополнительные формы для адресов -->
+        <!--
+        <div v-for="(address, index) in formAddress.slice(1)" :key="index">
         <el-form
-            ref="ruleFormRef"
-            :model="formAddress"
-            :rules="rulesAddress"
+            :model="address"
             label-position="left"
             size="medium"
             label-width="auto"
             status-icon
             style="width: 80%;"
-            v-for="(address, index) in addressList" :key="index" 
         >
             <el-form-item label="Адрес" prop="address">
-
-                <el-autocomplete
-                    v-model="addressQuery"
-                    :fetch-suggestions="fetchAddressSuggestions"
-                    :trigger-on-focus="false"
-                    clearable
-                    @select="selectAddress"
-                    style="width: 100%;"
-                >
-                </el-autocomplete>
-                
+            <el-autocomplete
+                v-model="address.address"
+                :fetch-suggestions="fetchAddressSuggestions"
+                :trigger-on-focus="false"
+                clearable
+                @select="selectAddress"
+                style="width: 100%;"
+            >
+            </el-autocomplete>
             </el-form-item>
             <el-form-item label="Наименование" prop="name">
-                <el-input v-model="address.name" />
+            <el-input v-model="address.name" />
             </el-form-item>
             <el-form-item label="Контакты">
+                
                 <el-form
                     :model="formContacts"
-                    :rules="rulesContacts"
                     label-position="left"
                     size="medium"
                     status-icon
-                    v-for="(contact, index) in contactsList" :key="index"
                     >
                     <el-form-item label="Имя" prop="name">
-                        <el-input v-model="contact.name" />
+                        <el-input v-model="formContacts[0].name" />
                     </el-form-item>
                     <el-form-item label="Телефон" prop="phone" style="margin-top: 1rem;">
-                        <el-input v-model="contact.phone" />
+                        <el-input v-model="formContacts[0].phone" />
                     </el-form-item>
-                    <el-button color="#FFFF6F" style="color: #4d4d4d; margin-top: 1rem;" @click="addContact">Добавить контакт</el-button>
                 </el-form>
+               
+                <div v-for="(contact, index) in formContacts.slice(1)" :key="index">
+                    <el-form 
+                        :model="contact"
+                        label-position="left"
+                        size="medium"
+                        status-icon
+                    >
+                        <el-form-item label="Имя" prop="name">
+                            <el-input v-model="contact.name" />
+                        </el-form-item>
+                        <el-form-item label="Телефон" prop="phone" style="margin-top: 1rem;">
+                            <el-input v-model="contact.phone" />
+                        </el-form-item>
+                    </el-form>
+                </div>
             </el-form-item>
-            <el-button color="#FFFF6F" style="color: #4d4d4d" @click="addAddress">Добавить адрес</el-button>
+            <el-button
+                color="#FFFF6F"
+                style="color: #4d4d4d; margin-top: 1rem;"
+                @click="addContact"
+                >
+                Добавить контакт
+            </el-button>
         </el-form>
-
+        </div>
+    -->
+        <el-button color="#FFFF6F" style="color: #4d4d4d; margin-bottom: 1rem;" @click="addAddress">Добавить адрес</el-button>
         <el-button type="primary" @click="createPartner()">Создать контрагента</el-button>
     </container>
 </template>
@@ -81,8 +155,26 @@
 <script lang="ts" setup>
 import Top from '../components/blocks/create_partners/Top.vue'
 import { ref } from 'vue'
+import { ElNotification } from 'element-plus';
 
-let partner_id = null
+//нотификации
+const success_notification = () => {
+  ElNotification({
+    title: 'Успешно',
+    message: 'Новый контрагент создан',
+    type: 'success',
+    position: 'bottom-right',
+  })
+}
+
+const error_notification = (error) => {
+  ElNotification({
+    title: 'Ошибка',
+    message: 'Не удалось создать контрагента' + error,
+    type: 'error',
+    position: 'bottom-right',
+  })
+}
 
 //референсы для форм
 const ruleFormRef = ref(null)
@@ -95,59 +187,90 @@ const formPartner = ref({
     //is_other: false,
 })
 
-////формы для адресов
-interface FormAddressInterface {
-    name: string;
-    address: string;
-    contractor_id: string; // Замените тип на подходящий
-    location_type: number; // Замените тип на подходящий
+// Интерфейс для контакта
+interface ContactInterface {
+  name: string;
+  phone: string;
 }
-const initialFormAddress: FormAddressInterface = {
-    name: '',
-    address: '',
-    contractor_id: partner_id, // Предположим, что это корректно
-    location_type: 1, // Предположим, что это корректно
-};
-const formAddress = ref<FormAddressInterface[]>([initialFormAddress]);
-const addressList = ref<FormAddressInterface[]>([initialFormAddress]); 
 
-////формы для контактов
-interface formContactsInterface {
-    name: string;
-    phone: string;
+// Интерфейс для адреса
+interface AddressInterface {
+  name: string;
+  address: string;
+  contacts: ContactInterface[]; // Список контактов для адреса
 }
-const initialFormContacts: formContactsInterface = {
-    name: '',
-    phone: '',
-};
-const formContacts = ref<formContactsInterface[]>([initialFormContacts]);
-const contactsList = ref<formContactsInterface[]>([initialFormContacts]);
+
+// Создание начального контакта
+const initialContact = (): ContactInterface => ({
+  name: '',
+  phone: '',
+});
+
+// Создание начального адреса
+const initialAddress = (): AddressInterface => ({
+  name: '',
+  address: '',
+  contacts: [initialContact()], // Создаем начальный контакт для каждого нового адреса
+});
+
+// Референс на массив адресов
+const formAddress = ref<AddressInterface[]>([initialAddress()]);
+
 
 // валидация ввода в формы
-const rulesPartner = ref({
-    name: [
-        { required: true, message: 'Введите наименование', trigger: 'blur' },
-    ],
-})
+// const rulesPartner = ref({
+//     name: [
+//         { required: true, message: 'Введите наименование', trigger: 'blur' },
+//     ],
+// })
 
-const rulesAddress = ref({
-    name: [
-        { required: true, message: 'Введите наименование', trigger: 'blur' },
-    ],
-})
+// const rulesAddress = ref({
+//     name: [
+//         { required: true, message: 'Введите наименование', trigger: 'blur' },
+//     ],
+// })
 
-const rulesContacts = ref({
-    name: [
-        { required: true, message: 'Введите имя', trigger: 'blur' },
-    ],
-    phone: [
-        { required: true, message: 'Введите телефон', trigger: 'blur' },
-    ],
-})
+// const rulesContacts = ref({
+//     name: [
+//         { required: true, message: 'Введите имя', trigger: 'blur' },
+//     ],
+//     phone: [
+//         { required: true, message: 'Введите телефон', trigger: 'blur' },
+//     ],
+// })
 
 //отправляем данные о контрагенте на бек
 function createPartner() {
-//     console.log("createPartner" + JSON.stringify(ruleForm));
+// Формирование JSON объекта для контрагента
+        const partnerJson = formPartner.value;
+
+        // Формирование JSON объектов для адресов
+        const addressesJson = formAddress.value.map(address => {
+        return {
+            name: address.name,
+            address: address.address,
+            contacts: address.contacts.map(contact => {
+            return {
+                name: contact.name,
+                phone: contact.phone
+            };
+            })
+        };
+        });
+
+        // Создание объекта, содержащего информацию о контрагенте и его адресах
+        const combinedData = {
+        partner: partnerJson,
+        addresses: addressesJson
+        };
+
+        // Преобразование объекта в JSON-строку
+        const combinedJson = JSON.stringify(combinedData, null, 2); // Форматирование с отступами для лучшей читаемости
+
+        // Вывод результата в консоль
+        console.log("Создание контрагента и адресов: ", combinedJson);
+        success_notification();
+    // console.log("createPartner" + JSON.stringify(formPartner.value));
 //     fetch('http://89.104.68.248:8000/api/contractor/add', {
 //     method: 'POST',
 //     headers: {
@@ -177,7 +300,7 @@ interface Address {
 }
 
 ////переменные для автозаполнения
-const addressQuery = ref('');
+// const addressQuery = ref('');
 const addressSuggestions = ref<Address[]>([]);
 
 ////функции для автозаполнения
@@ -215,28 +338,49 @@ const loadAddresses = async (queryString: string) => {
     }
 }
 
-//выбор адреса
-const selectAddress = (item: Address) => {
-  console.log(item)
-}
+// Сохранение текущего адреса для выбора
+let selectedAddress: AddressInterface | null = null;
 
-//добавление адреса
-const addAddress = () => {
-    addressList.value.push({
-        name: '',
-        address: '',
-        contractor_id: partner_id,
-        location_type: 1
-    });
+// Выбор адреса
+const selectAddress = (item: Address) => {
+  console.log(item);
+  // Создаем новый объект адреса на основе выбранного элемента
+  selectedAddress = {
+    name: '', // Заполняем необходимые свойства пустыми значениями или значениями по умолчанию
+    address: item.value, // Используем значение из выбранного элемента для свойства address
+    contacts: [], // Мы не знаем контактов для выбранного адреса, поэтому оставляем это пустым
+  };
+  console.log(selectedAddress);
 };
 
-//добавление контакта
-const addContact = () => {
-    contactsList.value.push({
-        name: '',
-        phone: '',
-    })
-}
+
+// Добавление адреса
+const addAddress = () => {
+  const newAddress = initialAddress(); // Создаем новый объект адреса
+  formAddress.value.push(newAddress); // Добавляем его в список адресов
+};
+
+// const addAddress = () => {
+//     addressList.value.push({
+//         name: '',
+//         address: '',
+//         contractor_id: partner_id,
+//         location_type: 1
+//     });
+// };
+
+// Добавление нового контакта к адресу
+const addContact = (address: AddressInterface) => {
+  const newContact = initialContact(); // Создаем новый объект контакта
+  address.contacts.push(newContact); // Добавляем его в список контактов адреса
+};
+ 
+// const addContact = () => {
+//     contactsList.value.push({
+//         name: '',
+//         phone: '',
+//     })
+// }
 </script>
 
 <style>
