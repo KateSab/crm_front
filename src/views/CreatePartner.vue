@@ -35,7 +35,7 @@
             label-width="auto"
             status-icon
             style="width: 80%;"
-            v-for="(Address, index) in addressList" :key="index" 
+            v-for="(address, index) in addressList" :key="index" 
         >
             <el-form-item label="Адрес" prop="address">
 
@@ -51,7 +51,7 @@
                 
             </el-form-item>
             <el-form-item label="Наименование" prop="name">
-                <el-input v-model="formAddress.name" />
+                <el-input v-model="address.name" />
             </el-form-item>
             <el-form-item label="Контакты">
                 <el-form
@@ -60,13 +60,13 @@
                     label-position="left"
                     size="medium"
                     status-icon
-                    v-for="(Contact, index) in contactsList" :key="index"
+                    v-for="(contact, index) in contactsList" :key="index"
                     >
                     <el-form-item label="Имя" prop="name">
-                        <el-input v-model="formContacts.name" />
+                        <el-input v-model="contact.name" />
                     </el-form-item>
                     <el-form-item label="Телефон" prop="phone" style="margin-top: 1rem;">
-                        <el-input v-model="formContacts.phone" />
+                        <el-input v-model="contact.phone" />
                     </el-form-item>
                     <el-button color="#FFFF6F" style="color: #4d4d4d; margin-top: 1rem;" @click="addContact">Добавить контакт</el-button>
                 </el-form>
@@ -81,7 +81,6 @@
 <script lang="ts" setup>
 import Top from '../components/blocks/create_partners/Top.vue'
 import { ref } from 'vue'
-import { onMounted } from 'vue'
 
 let partner_id = null
 
@@ -97,30 +96,32 @@ const formPartner = ref({
 })
 
 ////формы для адресов
-interface formAddress {
+interface FormAddressInterface {
     name: string;
     address: string;
     contractor_id: string; // Замените тип на подходящий
     location_type: number; // Замените тип на подходящий
 }
-const formAddress = ref([{
+const initialFormAddress: FormAddressInterface = {
     name: '',
     address: '',
-    contractor_id: partner_id,
-    location_type: 1,
-}])
-const addressList = ref<formAddress[]>([]);
+    contractor_id: partner_id, // Предположим, что это корректно
+    location_type: 1, // Предположим, что это корректно
+};
+const formAddress = ref<FormAddressInterface[]>([initialFormAddress]);
+const addressList = ref<FormAddressInterface[]>([initialFormAddress]); 
 
 ////формы для контактов
-interface formContacts {
+interface formContactsInterface {
     name: string;
     phone: string;
 }
-const formContacts = ref({
+const initialFormContacts: formContactsInterface = {
     name: '',
     phone: '',
-})
-const contactsList = ref<formContacts[]>([]);
+};
+const formContacts = ref<formContactsInterface[]>([initialFormContacts]);
+const contactsList = ref<formContactsInterface[]>([initialFormContacts]);
 
 // валидация ввода в формы
 const rulesPartner = ref({

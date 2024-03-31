@@ -12,16 +12,16 @@
         margin-top: 2rem;"
     >
         <el-form-item label="Поставщик" prop="supplier">
-            <el-select v-model="ruleForm.supplier" placeholder="Поставщиик">
+            <el-select v-model="ruleForm.contractor_id" placeholder="Поставщиик">
                 <el-option v-for="supplier in suppliers" :key="supplier.id" :label="supplier.name" :value="supplier.id" />
             </el-select>
         </el-form-item>
         <el-form-item label="Номр заказа у поставщика" prop="order">
-            <el-input v-model="ruleForm.order" />
+            <el-input v-model="ruleForm.supplier_order_number" />
         </el-form-item>
         <el-form-item label="Дата прибытия(план)" required prop="date">
             <el-date-picker
-                    v-model="ruleForm.date"
+                    v-model="ruleForm.shipment_date_planned"
                     type="date"
                     label="Pick a date"
                     placeholder="Pick a date"
@@ -29,14 +29,14 @@
                 />
         </el-form-item>
         <el-form-item label="Тип доставки" prop="type_of_delivery">
-            <el-select v-model="ruleForm.type_of_delivery" placeholder="Тип доставки">
+            <el-select v-model="ruleForm.delivery_type" placeholder="Тип доставки">
                 <el-option v-for="delivery in delivery_types" :label="delivery.name" :value="delivery.id" :key="delivery.id" />
             </el-select>
         </el-form-item>
         <el-form-item label="Счёт на оплату" prop="bill">
-            <el-input v-model="ruleForm.bill" />
+            <el-input v-model="ruleForm.invoice_id" />
         </el-form-item>
-            <el-form-item v-if="ruleForm.type_of_delivery === 2" label="Заказ в ТК" prop="order_in_TK">
+            <el-form-item v-if="ruleForm.delivery_type === 2" label="Заказ в ТК" prop="order_in_TK">
                 <el-select v-model="ruleForm.order_in_TK" placeholder="Заказ в ТК">
                     <el-option label="1" value="order1" />
                     <el-option label="2" value="order2" />
@@ -62,34 +62,25 @@ interface Supplier {
     name: string;
 }
 
-// interface RuleForm {
-//     supplier: string
-//     order: string
-//     date: string
-//     type_of_delivery: string
-//     bill: string
-//     order_in_TK: string
-// }
-
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
-    supplier: '',
-    order: '',
-    date: '',
-    type_of_delivery: null,
-    bill: '',
+    contractor_id: '',
+    supplier_order_number: '',
+    shipment_date_planned: '',
+    delivery_type: null,
+    invoice_id: '',
     order_in_TK: null,
 })
 
 const rules = reactive<FormRules>({
-    supplier: [
+    contractor_id: [
         { required: true, message: 'Выберите поставщика', trigger: 'blur' },
     ],
-    order: [
+    supplier_order_number: [
         { required: true, message: 'Введите номер заказа', trigger: 'blur' },
         { min: 11, max: 11, message: 'Номер должен состоять из 11 символов', trigger: 'blur' },
     ],
-    date: [
+    shipment_date_planned: [
         {
             type: 'date',
             required: true,
@@ -97,10 +88,10 @@ const rules = reactive<FormRules>({
             trigger: 'change',
         },
     ],
-    type_of_delivery: [
+    delivery_type: [
         { required: true, message: 'Выберите тип доставки', trigger: 'blur' },
     ],
-    bill: [
+    invoice_id: [
         { required: true, message: 'Введите счёт на оплату', trigger: 'blur' },
     ],
     order_in_TK: [
@@ -152,8 +143,8 @@ const error_notification = (error) => {
 
 //отправка данных на бек
 function submitForm() {
-  ruleForm.date = formatDate(ruleForm.date);
-  fetch('http://89.104.68.248:8000/api/someorder/add', {
+  ruleForm.shipment_date_planned = formatDate(ruleForm.shipment_date_planned);
+  fetch('http://89.104.68.248:8000/api/supplier_order/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
