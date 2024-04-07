@@ -65,9 +65,12 @@
             <el-form-item label="Телефон">
               <el-input v-model="contact.phone" />
             </el-form-item>
+                  <!-- Кнопка для удаления контакта -->
+            <el-button @click="deleteContact(index, idx)">Удалить контакт</el-button>
           </el-form>
 
         </div>
+        <el-button @click="deleteAddress(index)">Удалить адрес</el-button>
         </el-form-item>
         <el-button
           color="#FFFF6F"
@@ -78,75 +81,6 @@
         </el-button>
       </el-form>
     </div>
-        
-
-        <!-- Дополнительные формы для адресов -->
-        <!--
-        <div v-for="(address, index) in formAddress.slice(1)" :key="index">
-        <el-form
-            :model="address"
-            label-position="left"
-            size="medium"
-            label-width="auto"
-            status-icon
-            style="width: 80%;"
-        >
-            <el-form-item label="Адрес" prop="address">
-            <el-autocomplete
-                v-model="address.address"
-                :fetch-suggestions="fetchAddressSuggestions"
-                :trigger-on-focus="false"
-                clearable
-                @select="selectAddress"
-                style="width: 100%;"
-            >
-            </el-autocomplete>
-            </el-form-item>
-            <el-form-item label="Наименование" prop="name">
-            <el-input v-model="address.name" />
-            </el-form-item>
-            <el-form-item label="Контакты">
-                
-                <el-form
-                    :model="formContacts"
-                    label-position="left"
-                    size="medium"
-                    status-icon
-                    >
-                    <el-form-item label="Имя" prop="name">
-                        <el-input v-model="formContacts[0].name" />
-                    </el-form-item>
-                    <el-form-item label="Телефон" prop="phone" style="margin-top: 1rem;">
-                        <el-input v-model="formContacts[0].phone" />
-                    </el-form-item>
-                </el-form>
-               
-                <div v-for="(contact, index) in formContacts.slice(1)" :key="index">
-                    <el-form 
-                        :model="contact"
-                        label-position="left"
-                        size="medium"
-                        status-icon
-                    >
-                        <el-form-item label="Имя" prop="name">
-                            <el-input v-model="contact.name" />
-                        </el-form-item>
-                        <el-form-item label="Телефон" prop="phone" style="margin-top: 1rem;">
-                            <el-input v-model="contact.phone" />
-                        </el-form-item>
-                    </el-form>
-                </div>
-            </el-form-item>
-            <el-button
-                color="#FFFF6F"
-                style="color: #4d4d4d; margin-top: 1rem;"
-                @click="addContact"
-                >
-                Добавить контакт
-            </el-button>
-        </el-form>
-        </div>
-    -->
         <el-button color="#FFFF6F" style="color: #4d4d4d; margin-bottom: 1rem;" @click="addAddress">Добавить адрес</el-button>
         <el-button type="primary" @click="createPartner()">Создать контрагента</el-button>
     </container>
@@ -359,28 +293,21 @@ const addAddress = () => {
   const newAddress = initialAddress(); // Создаем новый объект адреса
   formAddress.value.push(newAddress); // Добавляем его в список адресов
 };
-
-// const addAddress = () => {
-//     addressList.value.push({
-//         name: '',
-//         address: '',
-//         contractor_id: partner_id,
-//         location_type: 1
-//     });
-// };
+// Удаление контакта по индексу
+const deleteContact = (addressIndex: number, contactIndex: number) => {
+  const address = formAddress.value[addressIndex]; // Получаем адрес по индексу
+  address.contacts.splice(contactIndex, 1); // Удаляем контакт из списка контактов адреса по его индексу
+};
 
 // Добавление нового контакта к адресу
 const addContact = (address: AddressInterface) => {
   const newContact = initialContact(); // Создаем новый объект контакта
   address.contacts.push(newContact); // Добавляем его в список контактов адреса
 };
- 
-// const addContact = () => {
-//     contactsList.value.push({
-//         name: '',
-//         phone: '',
-//     })
-// }
+// Удаление адреса по индексу
+const deleteAddress = (index: number) => {
+  formAddress.value.splice(index, 1); // Удаляем адрес из массива по его индексу
+};
 </script>
 
 <style>

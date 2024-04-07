@@ -11,9 +11,10 @@ export default createStore({
     shipment_locations: [],
     contractors: [],
     suppliers: [],
-    typesOfApplications: [],
+    supplier_orders: [],
+    types_of_applications: [],
     partners: [],
-    partners_addresses: [],
+    addresses: [],
     delivery_types: [{ name: 'До склада', id: 0 }, { name: 'До ПВЗ', id: 1 }, { name: 'До ТК', id: 2 }],
   },
   mutations: {
@@ -40,14 +41,17 @@ export default createStore({
     get_contractors(state, contractors) {
       state.contractors = contractors;
     },
-    get_addresses_for_partners(state, addresses) {
-      state.partners_addresses = addresses;
+    get_addresses(state, addresses) {
+      state.addresses = addresses;
     },
     get_suppliers(state, suppliers) {
       state.suppliers = suppliers;
     },
-    get_types_of_applications(state, typesOfApplications) {
-      state.typesOfApplications = typesOfApplications;
+    get_supplier_orders(state, supplier_orders) {
+      state.supplier_orders = supplier_orders;
+    },
+    get_types_of_applications(state, types_of_applications) {
+      state.types_of_applications = types_of_applications;
     },
     get_partners(state, partners) {
       state.partners = partners;
@@ -191,6 +195,39 @@ export default createStore({
           });
       });
     },
+    get_supplier_orders({ commit }) {
+      console.log("get_supplier_orders");
+      return new Promise((resolve, reject) => {
+        const url = 'http://89.104.68.248:8000/api/supplier_order/get_filter';
+        const params = {
+          'limit': 1000,
+        }
+        axios.get(url, { params })
+          .then(resp => {
+            const supplierOrdersData = resp.data;
+            // Создаем списки словарей для каждого клиента
+            const supplierOrdersList = supplierOrdersData.map(supplier_order => ({
+
+              contractor_id: supplier_order.contractor_id,
+              supplier_order_number: supplier_order.supplier_order_number,
+              create_date: supplier_order.create_date,
+              delivery_type: supplier_order.delivery_type,
+              carrier_order_id: supplier_order.carrier_order_id,
+              id: supplier_order.id,
+              shipment_date_planned: supplier_order.shipment_date_planned,
+              shipment_date_fact: supplier_order.shipment_date_fact,
+              invoice_id: supplier_order.invoice_id,
+              owner_id: supplier_order.owner_id
+            }));
+            commit('get_supplier_orders', supplierOrdersList);
+            console.log("supplier orders: ", supplierOrdersList);
+            resolve(resp);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
     get_types_of_applications({ commit }) {
       console.log("get_types_of_applications");
       return new Promise((resolve, reject) => {
@@ -229,26 +266,12 @@ export default createStore({
               is_carrier: partner.is_carrier,
               is_client: partner.is_client,
               is_supplier: partner.is_supplier,
-              addresses: [],
+              addresses: partner.locations.map(location => ({ // Извлекаем адреса из locations
+                address: location.address,
+                name: location.name,
+                location_type: location.location_type
+              })),
             }));
-
-            // Цикл для получения адресов для каждого контрактора
-            for (const partner of partnersList) {
-
-              dispatch('get_addresses_for_partners', { commit, partner_id: partner.id })
-
-                .then(addressesData => {
-                  // Получаем адреса для текущего контрактора и добавляем их в массив addresses
-                  partner.addresses = addressesData.data.map(address => ({
-                    address: address.address,
-                    name: address.name,
-                    location_type: address.location_type
-                  }));
-                })
-                .catch(error => {
-                  console.error(`No address found for partner with ID ${partner.id}:`);
-                });
-            }
             // Вызываем мутацию для обновления состояния хранилища
             commit('get_partners', partnersList);
             console.log("partners: ", partnersList);
@@ -259,25 +282,25 @@ export default createStore({
           });
       });
     },
-    get_addresses_for_partners({ commit }, { partner_id }) {
-      console.log("get_address for partner: ", partner_id);
+    get_addresses({ commit }) {
       return new Promise((resolve, reject) => {
         const url = 'http://89.104.68.248:8000/api/locations/get_filter';
         const params = {
           'limit': 1000,
-          'contractor_id': partner_id,
         }
         axios.get(url, { params })
           .then(resp => {
             const addressesData = resp.data;
             // Создаем списки словарей для каждого клиента
             const addressesList = addressesData.map(address => ({
+              id: address.id,
               address: address.address,
+              partner_id: address.contractor_id,
               name: address.name,
               location_type: address.location_type
             }));
-            commit('get_addresses_for_partners', addressesList);
-            // console.log("address: ", addressesList);
+            commit('get_addresses', addressesList);
+            console.log("address: ", addressesList);
             resolve(resp);
           })
           .catch(error => {
@@ -330,7 +353,7 @@ export default createStore({
     shipment_locations: state => state.shipment_locations,
     contractors: state => state.contractors,
     suppliers: state => state.suppliers,
-    typesOfApplications: state => state.typesOfApplications
+    types_of_applications: state => state.types_of_applications
   },
   modules: {
   }

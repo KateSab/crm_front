@@ -309,7 +309,7 @@ onMounted(async () => {
         await store.dispatch('get_types_of_applications')
         .then(() => {
           console.log("Got types of applications successfully");
-          types_of_applications.value = store.state.typesOfApplications;
+          types_of_applications.value = store.state.types_of_applications;
           types_of_applications_titles = types_of_applications.value.map(type_of_application => ({name: type_of_application.title, id: type_of_application.id}));
           console.log("types of applications titles: ",types_of_applications_titles);
         })

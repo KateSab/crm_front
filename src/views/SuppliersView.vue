@@ -6,25 +6,30 @@
     <Top />
   </div>
   <div class="page-container">
-    <div v-for="index in 6" :key="index">
-      <Order />
+    <div v-for="order in suppliers_orders" :key="order.id">
+      <Order :orderData="order"/>
     </div>
   </div>
 </template>
 
 
-<script>
-
+<script setup>
+import { onMounted, ref } from 'vue';
+import store from '@/store';
 import Order from '../components/blocks/suppliers_order/Order.vue';
 import Top from '../components/blocks/suppliers_order/Top.vue';
 
-export default {
-  name: 'SuppliersView',
-  components: {
-    Top,
-    Order,
-  }
-}
+const suppliers_orders = ref([]);
+
+onMounted(async () => {
+  try {
+    await store.dispatch('get_supplier_orders');
+    suppliers_orders.value = store.state.supplier_orders;
+    console.log("Got suppliers orders successfully");
+    } catch (error) {
+        console.error("Failed to get suppliers orders:", error);
+    }
+  })
 </script>
 
 <style>

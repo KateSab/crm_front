@@ -1,8 +1,8 @@
 <template>
     <div class="orders">
       <el-divider></el-divider>
-      <TopOrder/>
-      <Table />
+      <TopOrder :orderData="orderData"/>
+      <Table :orderData="orderData"/>
     </div>
 </template>
 
@@ -11,6 +11,12 @@ import TopOrder from './TopOrder.vue';
 import Table from './Table.vue'
 
 export default {
+  props: {
+    orderData: {
+      type: Object,
+      required: true
+    }
+  },
   name: 'SuppliersOrderPresentation',
   components: {
     TopOrder,

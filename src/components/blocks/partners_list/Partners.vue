@@ -39,11 +39,11 @@
                     </template>
                 </el-col>
                 <el-col :span="12">
-                    <div v-for="address in partner.addresses" :key="address">
-                        <div>{{ address.address }}</div>
-                        <div>{{ address.name }}</div>
-                        <div>{{ address.location_type }}</div>
-                    </div>
+                    
+                        <div v-for="address in partner.addresses" :key="address.id">
+                            {{ address.address }}
+                        </div>
+                    
                 </el-col>
 
             </el-row>
