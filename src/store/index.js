@@ -251,7 +251,7 @@ export default createStore({
     get_partners({ commit, dispatch }) {
       console.log("get_partners");
       return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
         const params = {
           'limit': 1000,
         }

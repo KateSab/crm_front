@@ -7,15 +7,16 @@ import ContractorsView from '../views/ContractorsView.vue'
 import SuppliersView from '../views/SuppliersView.vue'
 import BuyersView from '../views/BuyersView.vue'
 import MovingView from '../views/MovingView.vue'
+import createMovingTask from '../views/createMovingTask.vue'
 import BillsView from '../views/BillsView.vue'
 import StockView from '../views/StockView.vue'
 import PartnersView from '../views/PartnersView.vue'
 import CreateBuyersOrder from '../views/CreateBuyersOrder.vue'
 import CreateSuppliersOrder from '../views/CreateSuppliersOrder.vue'
-import CreatePartner from '../views/CreatePartner.vue';
-import Catalogs from '../views/Catalogs.vue';
-import Addresses from '../views/Addresses.vue';
-import Contacts from '../views/Contacts.vue';
+import CreatePartner from '../views/CreatePartner.vue'
+import Catalogs from '../views/Catalogs.vue'
+import Addresses from '../views/Addresses.vue'
+import Contacts from '../views/Contacts.vue'
 
 const routes = [
   {
@@ -80,6 +81,14 @@ const routes = [
     path: '/moving',
     name: 'moving',
     component: MovingView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/moving/create',
+    name: 'createMovingTask',
+    component: createMovingTask,
     meta: {
       requiresAuth: true
     }

@@ -8,12 +8,6 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios';
 
-// Vue.prototype.$http = axios;
-// const token = localStorage.getItem('token');
-// if (token) {
-//     Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
-// }
-
 const app = createApp(App); // Создаем объект приложения Vue
 
 // Используем иконки Element Plus
