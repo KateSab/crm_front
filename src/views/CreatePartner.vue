@@ -91,8 +91,8 @@
 </template>
 
 <script lang="ts" setup>
-import Top from '../components/blocks/create_partners/Top.vue'
-import router from '@/router';
+import Top from './partners/create/PartnersCreateTop.vue'
+import router from '@/router/index.js';
 import { ref } from 'vue'
 import { ElNotification } from 'element-plus';
 
@@ -121,7 +121,7 @@ const error_notification = (error) => {
 // Интерфейс для контакта
 interface ContactInterface {
   name: string;
-  number: string;
+  phone: string;
 }
 
 // Интерфейс для адреса
@@ -135,7 +135,7 @@ interface AddressInterface {
 // Создание начального контакта
 const initialContact = (): ContactInterface => ({
   name: '',
-  number: '',
+  phone: '',
 });
 
 // Создание начального адреса
@@ -149,7 +149,7 @@ const initialAddress = (): AddressInterface => ({
 // Референс на массив адресов
 const formAddress = ref<AddressInterface[]>([initialAddress()]);
 
-const ruleFormRef = ref(null)
+// const ruleFormRef = ref(null)
 const formPartner = ref({
     name: '',
     is_supplier: false,
@@ -160,52 +160,10 @@ const formPartner = ref({
     locations: formAddress.value
 })
 
-// валидация ввода в формы
-// const rulesPartner = ref({
-//     name: [
-//         { required: true, message: 'Введите наименование', trigger: 'blur' },
-//     ],
-// })
-
-// const rulesAddress = ref({
-//     name: [
-//         { required: true, message: 'Введите наименование', trigger: 'blur' },
-//     ],
-// })
-
-// const rulesContacts = ref({
-//     name: [
-//         { required: true, message: 'Введите имя', trigger: 'blur' },
-//     ],
-//     phone: [
-//         { required: true, message: 'Введите телефон', trigger: 'blur' },
-//     ],
-// })
-
 //отправляем данные о контрагенте на бек
 function createPartner() {
 // Формирование JSON объекта для контрагента
         const partnerJson = formPartner.value;
-
-        // Формирование JSON объектов для адресов
-        // const addressesJson = formAddress.value.map(address => {
-        //   return {
-        //       name: address.name,
-        //       address: address.address,
-        //       contacts: address.contacts.map(contact => {
-        //       return {
-        //           name: contact.name,
-        //           phone: contact.phone
-        //       };
-        //       })
-        //   };
-        // });
-
-        // Создание объекта, содержащего информацию о контрагенте и его адресах
-        // const combinedData = {
-        // partner: partnerJson,
-        // locations: addressesJson
-        // };
 
         // Преобразование объекта в JSON-строку
         const partnerCombinedJson = JSON.stringify(partnerJson, null, 2); // Форматирование с отступами для лучшей читаемости
@@ -310,7 +268,6 @@ const deleteContact = (addressIndex: number, contactIndex: number) => {
   const address = formAddress.value[addressIndex]; // Получаем адрес по индексу
   address.contacts.splice(contactIndex, 1); // Удаляем контакт из списка контактов адреса по его индексу
 };
-
 // Добавление нового контакта к адресу
 const addContact = (address: AddressInterface) => {
   const newContact = initialContact(); // Создаем новый объект контакта

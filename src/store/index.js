@@ -94,7 +94,7 @@ export default createStore({
     get_clients({ commit }) {
       console.log("get_clients");
       return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
         const params = {
           'limit': 1000,
           'is_client': true
@@ -148,7 +148,7 @@ export default createStore({
     get_contractors({ commit }) {
       console.log("get_contractors");
       return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
         const params = {
           'limit': 1000,
           'is_contractor': true
@@ -173,7 +173,7 @@ export default createStore({
     get_suppliers({ commit }) {
       console.log("get_suppliers");
       return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/contractor/get_filter';
+        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
         const params = {
           'limit': 1000,
           'is_supplier': true

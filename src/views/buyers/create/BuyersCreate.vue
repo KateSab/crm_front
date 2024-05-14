@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Top />
+    <BuyersCreateTop />
   </div>
   <div v-if="clients.length > 0 && contractors.length > 0">
   <div class="create-buyers-order">
@@ -210,7 +210,7 @@
 </template>
 
 <script lang="ts">
-import Top from './buyers/create/BuyersCreateTop.vue';
+import BuyersCreateTop from '@/views/buyers/create/BuyersCreateTop.vue';
 // import Table from '../components/blocks/create_buyers_order/Table.vue';
 // import OrderData from '../components/blocks/create_buyers_order/OrderData.vue';
 // import OrderInfo from '../components/blocks/create_buyers_order/OrderInfo.vue';
@@ -218,7 +218,7 @@ import Top from './buyers/create/BuyersCreateTop.vue';
 export default {
   name: 'CreateBuyersOrder',
   components: {
-    Top,
+    BuyersCreateTop,
     // Table,
     // OrderData, 
     // OrderInfo
@@ -229,8 +229,8 @@ export default {
 <script lang="ts" setup>
 import { reactive, ref, onMounted, toRaw } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
-import store from '../store/index';
-import router from '../router';
+import store from '@/store/index';
+import router from '@/router';
 import { ElNotification } from 'element-plus';
 import { formatDate } from '@/api/Helpers';
 

@@ -2,21 +2,21 @@ import { createRouter, createWebHistory } from 'vue-router'
 import index from '../store'
 import MainPage from '../views/MainPage.vue'
 import Login from '../views/Login.vue'
-import CarriersView from '../views/CarriersView.vue'
-import ContractorsView from '../views/ContractorsView.vue'
-import SuppliersView from '../views/SuppliersView.vue'
-import BuyersView from '../views/BuyersView.vue'
-import MovingView from '../views/MovingView.vue'
-import createMovingTask from '../views/createMovingTask.vue'
-import BillsView from '../views/BillsView.vue'
-import StockView from '../views/StockView.vue'
-import PartnersView from '../views/PartnersView.vue'
-import CreateBuyersOrder from '../views/CreateBuyersOrder.vue'
-import CreateSuppliersOrder from '../views/CreateSuppliersOrder.vue'
-import CreatePartner from '../views/CreatePartner.vue'
-import Catalogs from '../views/Catalogs.vue'
-import Addresses from '../views/Addresses.vue'
-import Contacts from '../views/Contacts.vue'
+import Buyers from '../views/buyers/Buyers.vue'
+import BuyersCreate from '../views/buyers/create/BuyersCreate.vue'
+import Suppliers from '../views/suppliers/Suppliers.vue'
+import SuppliersCreate from '../views/suppliers/create/SuppliersCreate.vue'
+import Contractors from '../views/contractors/Contractors.vue'
+import Carriers from '../views/carriers/Carriers.vue'
+import Moving from '../views/moving_tasks/Moving.vue'
+import MovingTaskCreate from '../views/moving_tasks/create/MovingTaskCreate.vue'
+import Bills from '../views/bills/Bills.vue'
+import StockView from '../views/stock/StockView.vue'
+import Partners from '../views/partners/Partners.vue'
+import PartnersCreatePartner from '../views/partners/create/PartnersCreatePartner.vue'
+import Catalogs from '../views/catalogs/Catalogs.vue'
+import CatalogsAddresses from '../views/catalogs/CatalogsAddresses.vue'
+import CatalogsContacts from '../views/catalogs/CatalogsContacts.vue'
 
 const routes = [
   {
@@ -30,17 +30,17 @@ const routes = [
     component: MainPage
   },
   {
-    path: '/carriers',
-    name: 'carriers',
-    component: CarriersView,
+    path: '/buyers',
+    name: 'buyers',
+    component: Buyers,
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: '/contractors',
-    name: 'contractors',
-    component: ContractorsView,
+    path: '/buyers/create',
+    name: 'buyersCreate',
+    component: BuyersCreate,
     meta: {
       requiresAuth: true
     }
@@ -48,31 +48,31 @@ const routes = [
   {
     path: '/suppliers',
     name: 'suppliers',
-    component: SuppliersView,
+    component: Suppliers,
     meta: {
       requiresAuth: true
     }
   },
   {
     path: '/suppliers/create',
-    name: 'createSuppliersOrder',
-    component: CreateSuppliersOrder,
+    name: 'suppliersCreate',
+    component: SuppliersCreate,
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: '/buyers',
-    name: 'buyers',
-    component: BuyersView,
+    path: '/contractors',
+    name: 'contractors',
+    component: Contractors,
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: '/buyers/create',
-    name: 'createBuyersOrder',
-    component: CreateBuyersOrder,
+    path: '/carriers',
+    name: 'carriers',
+    component: Carriers,
     meta: {
       requiresAuth: true
     }
@@ -80,15 +80,15 @@ const routes = [
   {
     path: '/moving',
     name: 'moving',
-    component: MovingView,
+    component: Moving,
     meta: {
       requiresAuth: true
     }
   },
   {
     path: '/moving/create',
-    name: 'createMovingTask',
-    component: createMovingTask,
+    name: 'movingTaskCreate',
+    component: MovingTaskCreate,
     meta: {
       requiresAuth: true
     }
@@ -96,7 +96,7 @@ const routes = [
   {
     path: '/bills',
     name: 'bills',
-    component: BillsView,
+    component: Bills,
     meta: {
       requiresAuth: true
     }
@@ -112,15 +112,15 @@ const routes = [
   {
     path: '/partners',
     name: 'partners',
-    component: PartnersView,
+    component: Partners,
     meta: {
       requiresAuth: true
     }
   },
   {
     path: '/partners/create',
-    name: 'createPartner',
-    component: CreatePartner,
+    name: 'partnersCreatePartner',
+    component: PartnersCreatePartner,
     meta: {
       requiresAuth: true
     }
@@ -135,16 +135,16 @@ const routes = [
   },
   {
     path: '/catalogs/addresses',
-    name: 'addresses',
-    component: Addresses,
+    name: 'catalogsAddresses',
+    component: CatalogsAddresses,
     meta: {
       requiresAuth: true
     }
   },
   {
     path: '/catalogs/contacts',
-    name: 'contacts',
-    component: Contacts,
+    name: 'catalogsContacts',
+    component: CatalogsContacts,
     meta: {
       requiresAuth: true
     }
@@ -159,16 +159,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   console.log(index.getters.isLoggedIn)
   console.log(index.state.token)
-
-  // const requires_auth = to.matched.some(record => record.meta.requiresAuth);
-  // const is_logged = index.getters.isLoggedIn;
-
-  // if(requires_auth && is_logged) {
-  //   next();
-  // } else {
-  //   next('/login');
-  // }
-
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (index.getters.isLoggedIn) {
       next()
