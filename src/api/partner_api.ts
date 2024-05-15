@@ -1,4 +1,4 @@
-import { success_notification, error_notification } from '@/services/partners_service';
+import { success_notification, error_notification } from '@/services/utils/partners_utils';
 import router from '@/router';
 
 export function createPartner(partner: any) {

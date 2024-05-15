@@ -137,7 +137,7 @@ import store from '@/store/index';
 import { onMounted, ref} from 'vue';
 import { types } from '@/interfaces/IMovingTask'
 import { formTask } from '@/interfaces/IMovingTask'
-import { addresses, searchAddresses, handleFetchSuggestions, handleSelectAddress } from '@/services/moving_task_service'
+import { addresses, searchAddresses, handleFetchSuggestions, handleSelectAddress } from '@/services/utils/moving_task_utils'
 
 const contacts = ref<any[]>([]);
 
@@ -161,4 +161,4 @@ onMounted(async () => {
     align-items: center;
     justify-content: center;
 }
-</style>
+</style>@/services/utils/moving_task_service@/services/utils/moving_task_utils

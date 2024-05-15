@@ -9,13 +9,10 @@
         <el-row justify="space-around">
             <el-col :span="8">
                 <el-form
-                    ref="ruleFormRef"
                     :model="ruleForm"
-                    :rules="rules"
                     label-position="left"
                     size="small"
                     label-width="auto"
-                    status-icon
                 >
                     <el-form-item label="Номер сделки продажи" prop="sell_order_id">
                         <el-input v-model="ruleForm.sell_order_id" />
@@ -45,13 +42,10 @@
             </el-col>
             <el-col :span="8">
                 <el-form
-                    ref="ruleFormRef"
                     :model="ruleForm"
-                    :rules="rules"
                     label-position="left"
                     size="small"
                     label-width="auto"
-                    status-icon
                 >
                     <el-form-item label="Базовая наценка" prop="base_margin">
                         <el-input v-model="ruleForm.base_margin" />
@@ -60,13 +54,10 @@
             </el-col>
             <el-col :span="8">
                 <el-form
-                    ref="ruleFormRef"
                     :model="ruleForm"
-                    :rules="rules"
                     label-position="left"
                     size="small"
                     label-width="auto"
-                    status-icon
                 >
                     <el-form-item label="Расходы на перемещение" prop="delivery_cost_planned">
                         <el-input
@@ -116,18 +107,18 @@
           </el-table-column>
           <el-table-column fixed="right" label="" width="120">
             <template #default="{ row, $index }">
-              <el-button link type="primary" size="small" @click="deleteRow($index)">
+              <el-button link type="primary" size="small" @click="handleDeleteRow($index, productsList)">
                 <el-icon size="medium"><Delete /></el-icon>
               </el-button>
-              <el-button v-if="!row.editable" link type="primary" size="small" @click="editRow(row)">
+              <el-button v-if="!row.editable" link type="primary" size="small" @click="handleEditRow(row)">
                 <el-icon size="medium"><Edit /></el-icon>
               </el-button>
-              <el-button v-if="row.editable" link type="primary" size="small" @click="saveRow(row), calculateInfo(row)">Сохранить</el-button>
+              <el-button v-if="row.editable" link type="primary" size="small" @click="handleSaveRow(row, productsList), calculateInfo(row, ruleForm, productsList)">Сохранить</el-button>
             </template>
           </el-table-column>
         </el-table>
         <el-footer>
-          <el-button style="width: 10rem; margin-top: 1rem;" type="primary" @click="onAddItem">Добавить товар</el-button>
+          <el-button style="width: 10rem; margin-top: 1rem;" type="primary" @click="handleOnAddItem(productsList, ruleForm)">Добавить товар</el-button>
         </el-footer>
       </el-container>
     </div>
@@ -182,25 +173,9 @@
         </el-col>
     </el-row>
     </div>
-    <!-- <el-button @click="submitForm" type="primary" style="width: 70%; margin-top: 1rem;">Сформировать заказ</el-button>
-    <el-button @click="submitTableForm" type="primary" style="width: 70%; margin-top: 1rem;">Отправить данные таблички</el-button> -->
     <el-button plain type="primary" @click="submitForm()">
       Сформировать заказ
     </el-button>
-
-    <!-- <el-dialog v-model="submitCreateOrder" title="Подтвердить создание заказа?" width="500" align-center>
-      <span>
-        Убедитесь, что все поля заполнены верно
-      </span>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="submitCreateOrder = false">Отмена</el-button>
-          <el-button type="primary" @click="submitForm(), submitCreateOrder = false">
-            Подтвердить
-          </el-button>
-        </div>
-      </template>
-    </el-dialog> -->
   </div>
 </div>
 <div v-else >
@@ -211,46 +186,27 @@
 
 <script lang="ts">
 import BuyersCreateTop from '@/views/buyers/create/BuyersCreateTop.vue';
-// import Table from '../components/blocks/create_buyers_order/Table.vue';
-// import OrderData from '../components/blocks/create_buyers_order/OrderData.vue';
-// import OrderInfo from '../components/blocks/create_buyers_order/OrderInfo.vue';
 
 export default {
   name: 'CreateBuyersOrder',
   components: {
     BuyersCreateTop,
-    // Table,
-    // OrderData, 
-    // OrderInfo
   },
 }
 </script>
 
 <script lang="ts" setup>
 import { reactive, ref, onMounted, toRaw } from 'vue';
-import { FormInstance, FormRules } from 'element-plus';
 import store from '@/store/index';
 import router from '@/router';
-import { ElNotification } from 'element-plus';
 import { formatDate } from '@/api/Helpers';
+import { loadData } from '@/services/utils/buyers_order_utils';
+import {error_notification, success_notification} from '@/services/utils/buyers_order_utils';
+import { fillTableColumns} from '@/services/utils/buyers_order_utils';
+import { calculateCostPrice, calculateRRCGlobal, calculateMarginality, calculateMarginalityInPercents, calculateInfo } from '@/services/utils/buyers_order_utils';
+import { IRuleForm, IProduct } from '@/interfaces/IBuyersOrder';
+import { deleteRow, onAddItem, editRow, saveRow } from '@/services/utils/buyers_order_utils';
 
-const success_notification = (order_id) => {
-  ElNotification({
-    title: 'Успешно',
-    message: 'Заказ  №' + order_id + ' сформирован',
-    type: 'success',
-    position: 'bottom-right',
-  })
-}
-
-const error_notification = (error) => {
-  ElNotification({
-    title: 'Ошибка',
-    message: 'Не удалось сформировать заказ' + error,
-    type: 'error',
-    position: 'bottom-right',
-  })
-}
 
 // переменные для хранения данных с бекенда
 const clients = ref([]);
@@ -264,99 +220,30 @@ let types_of_applications_titles = [];
 let tableColumns = ref([]);
 let order_id = null;
 
-// получаем актуальные данные с бекенда и записываем их в переменные
+
+// Загрузка данных при монтировании компонента
 onMounted(async () => {
-        await store.dispatch('get_clients')
-        .then(() => {
-          console.log("Got clients successfully");
-          clients.value = store.state.clients;
-        })
-        .catch(error => {
-          console.error("Failed to get clients:", error);
-        });
+  await loadData(clients, 'get_clients');
+  await loadData(shipment_locations, 'get_shipment_locations');
+  await loadData(contractors, 'get_contractors', (data) => {
+    contractors_names = data.map(contractor => ({ name: contractor.name, id: contractor.id }));
+    console.log("contractors names: ", contractors_names);
+  });
+  await loadData(suppliers, 'get_suppliers', (data) => {
+    suppliers_names = data.map(supplier => ({ name: supplier.name, id: supplier.id }));
+    console.log("suppliers names: ", suppliers_names);
+  });
+  await loadData(types_of_applications, 'get_types_of_applications', (data) => {
+    types_of_applications_titles = data.map(type_of_application => ({ name: type_of_application.title, id: type_of_application.id }));
+    console.log("types of applications titles: ", types_of_applications_titles);
+  });
 
-        await store.dispatch('get_shipment_locations')
-        .then(() => {
-          console.log("Got shipment locations successfully");
-          shipment_locations.value = store.state.shipment_locations;
-        })
-        .catch(error => {
-          console.error("Failed to get shipment loctions:", error);
-        });
-
-        await store.dispatch('get_contractors')
-        .then(() => {
-          console.log("Got contractors successfully");
-          contractors.value = store.state.contractors;
-          contractors_names = contractors.value.map(contractor => ({ name: contractor.name, id: contractor.id }));
-          console.log("contractors names: ",contractors_names);
-        })
-        .catch(error => {
-          console.error("Failed to get contractors:", error);
-        });
-
-        await store.dispatch('get_suppliers')
-        .then(() => {
-          console.log("Got suppliers successfully");
-          suppliers.value = store.state.suppliers;
-          suppliers_names = suppliers.value.map(supplier => ({name: supplier.name, id: supplier.id}));
-          console.log("suppliers names: ",suppliers_names);
-        })
-        .catch(error => {
-          console.error("Failed to get suppliers:", error);
-        });
-
-        await store.dispatch('get_types_of_applications')
-        .then(() => {
-          console.log("Got types of applications successfully");
-          types_of_applications.value = store.state.types_of_applications;
-          types_of_applications_titles = types_of_applications.value.map(type_of_application => ({name: type_of_application.title, id: type_of_application.id}));
-          console.log("types of applications titles: ",types_of_applications_titles);
-        })
-        .catch(error => {
-          console.error("Failed to get types of applications titles:", error);
-        });
-
-        // заполняем таблицу
-        tableColumns = ref([
-          { prop: 'name', label: 'Наименование', width: '125', editable: true },
-          { prop: 'design_link', label: 'Описание', width: '120', editable: true },
-          { prop: 'count', label: 'Тираж', width: '60', editable: true },
-          { prop: 'planned_supplier_id', label: 'Поставщик', width: '100', editable: true, type: 'select', options: suppliers_names },
-          { prop: 'planned_type_of_branding_id', label: 'Вид нанесения', width: '150', editable: true, type: 'select', options: types_of_applications_titles },
-          { prop: 'planned_contractor_id', label: 'Подрядчик', width: '120', editable: true, type: 'select', options: contractors_names },
-          { prop: 'product_cost_price_planned', label: 'СС товара руб.', width: '80', editable: true },
-          { prop: 'branding_cost_price_planned', label: 'СС нанесения руб.', width: '60', editable: true },
-          { prop: 'cost_price_global', label: 'СС итого руб.', width: '80', editable: false }, // без возможности редактирования
-          { prop: 'price', label: 'РРЦ / шт. руб.', width: '80', editable: true },
-          { prop: 'rrc_global', label: 'РРЦ итого руб.', width: '100', editable: true },
-          { prop: 'marginality', label: 'Маржа руб.', width: '100', editable: false }, // без возможности редактирования
-          { prop: 'marginality_in_percents', label: 'Маржинальность %', width: '80', editable: false }, // без возможности редактирования
-        ]);
-        
+  // Заполнение таблицы
+  fillTableColumns(tableColumns, suppliers_names, types_of_applications_titles, contractors_names);
 });
 
-interface RuleForm {
-  status_id: number
 
-  sell_order_id: number
-  client_id: number
-  shipment_location_id: number
-  shipment_date_planned: string
-  base_margin: number
-  delivery_cost_planned: number
-  shipment_cost_planned: number
-  other_expenses_planned: number
-
-  instructions: string,
-  self_cost_total: number,
-  rrc_total: number,
-  marginality_total: number,
-  marginality_total_in_percents: number,
-}
-
-const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive<RuleForm>({
+const ruleForm = reactive<IRuleForm>({
   status_id: 1,
   //шапка формы
   sell_order_id: null,
@@ -376,61 +263,10 @@ const ruleForm = reactive<RuleForm>({
   marginality_total_in_percents: null,
 })
 
-interface Product {
-  name: string;
-  design_link: string;
-  count: number;
-  shipment_location_id: number;
-  planned_supplier_id: number;
-  planned_type_of_branding_id: number;
-  planned_contractor_id: number;
-  product_cost_price_planned: number;
-  branding_cost_price_planned: number;
-  cost_price_global: number;
-  price: number;
-  rrc_global: number;
-  marginality: number,  
-  marginality_in_percents: number,
-  editable: boolean;
-}
-
 // Референс списка продуктов
-const productsList = ref<Product[]>([]);
+const productsList = ref<IProduct[]>([]);
 
-//функции для работы с входными данными
 
-//функция для подсчета общей суммы себестоимости продукта
-const calculateCostPrice = (row) => {
-  const costPriceOfGood = parseFloat(row.product_cost_price_planned);
-  const costOfApplicationPrice = parseFloat(row.branding_cost_price_planned);
-  const count = parseFloat(row.count);
-  const costPrice = parseFloat(((costPriceOfGood + costOfApplicationPrice) * count).toFixed(2));
-  return costPrice;
-};
-
-//функция для подсчета общей стоимости РРЦ
-const calculateRRCGlobal = (row) => {
-  const rrcPerOne = parseFloat(row.price);
-  const count = parseFloat(row.count);
-  const rrcGlobal = parseFloat((rrcPerOne * count).toFixed(2));
-  return rrcGlobal;
-};
-
-//функция для подсчета маржи в рублях
-const calculateMarginality = (row) => {
-  const costPriceGlobal = parseFloat(row.cost_price_global);
-  const rrcGlobal = parseFloat(row.rrc_global);
-  const marginality = parseFloat((rrcGlobal - costPriceGlobal).toFixed(2));
-  return marginality;
-};
-
-//функция для подсчета маржи в процентах
-const calculateMarginalityInPercents = (row) => {
-  const costPriceGlobal = parseFloat(row.cost_price_global);
-  const rrcGlobal = parseFloat(row.rrc_global);
-  const marginalityInPercents = parseFloat((((rrcGlobal - costPriceGlobal) / rrcGlobal) * 100).toFixed(2));
-  return marginalityInPercents;
-};
 
 //функции для обработки и валидации входных данных
 //ввод данных
@@ -448,97 +284,21 @@ const handleInput = (row, prop) => {
     row.marginality_in_percents = calculateMarginalityInPercents(row);
   }
 };
+const handleDeleteRow = (index, productsList) => {
+  deleteRow(index, productsList);
+};
 
-// функция для подсчета итоговых значений по заказу
-const calculateInfo = (row) => {
-  ruleForm.self_cost_total += row.cost_price_global;
-  ruleForm.rrc_total += row.rrc_global;
-  ruleForm.marginality_total += row.marginality;
-  console.log("count of raws: ", productsList.value.length);
-  ruleForm.marginality_total_in_percents = parseFloat((((ruleForm.rrc_total - ruleForm.self_cost_total) / ruleForm.rrc_total) * 100).toFixed(2));
+const handleOnAddItem = (productsList, ruleForm) => {
+  onAddItem(productsList, ruleForm);
 }
 
-//удаление строки
-const deleteRow = (index) => {
-  productsList.value.splice(index, 1);
+const handleEditRow = (row) => {
+  editRow(row);
 };
 
-//добавление строки
-const onAddItem = () => {
-  productsList.value.push({
-    name: '',
-    design_link: '',
-    count: null,
-    shipment_location_id: ruleForm.shipment_location_id,
-    planned_supplier_id: null, // изменено на supplier_id
-    planned_type_of_branding_id: null, // изменено на type_of_application_id
-    planned_contractor_id: null, // изменено на contractor_id
-    product_cost_price_planned: null,
-    branding_cost_price_planned: null,
-    cost_price_global: null,  //поле с формулой расчета без возможности редактирования
-    price: null,
-    rrc_global: null,  //поле с формулой расчета, но с возможностью редактирования
-    marginality: null,  //поле с формулой расчета без возможности редактирования
-    marginality_in_percents: null,  //поле с формулой расчета без возможности редактирования
-    editable: true,
-  });
+const handleSaveRow = (row, productsList) => {
+  saveRow(row, productsList);
 };
-
-//редактирование строки
-const editRow = (row) => {
-  row.editable = true;
-};
-
-//сохранение строки при редактировании
-const saveRow = (row) => {
-  row.editable = false;
-  // addProduct();
-  console.log("данные добавленного продукта: ", productsList.value);
-};
-
-//валидация ввода в шапку заказа
-const rules = reactive<FormRules<RuleForm>>({
-  sell_order_id: [
-  { required: true, message: 'Введите номер сделки', trigger: 'blur' },
-  { min: 8, max: 8, message: 'Номер должен состоять из 8 цифр', trigger: 'blur' },
-  ],
-  client_id: [
-  {
-        required: true,
-  message: 'Выберите клиента',
-  trigger: 'change',
-  },
-  ],
-  shipment_location_id: [
-  {
-        required: true,
-  message: 'Выберите место отгрузки',
-  trigger: 'change',
-  },
-  ],
-  shipment_date_planned: [
-  {
-        type: 'date',
-  required: true,
-  message: 'Выберите дату отгрузки',
-  trigger: 'change',
-  },
-  ],
-  base_margin: [
-  { required: true, message: 'Введите базовую наценку', trigger: 'blur' },
-  ],
-  delivery_cost_planned: [
-  { required: true, message: 'Заполните поле', trigger: 'blur' },
-  ],
-  shipment_cost_planned: [
-  { required: true, message: 'Заполните поле', trigger: 'blur' },
-  ],
-  other_expenses_planned: [
-  { required: true, message: 'Заполните поле', trigger: 'blur' },
-  ],
-})
-
-
 
 //отправка данных на бек(без таблицы)
 function submitForm() {
