@@ -205,39 +205,16 @@ export default createStore({
           });
       })
     },
-    get_partners({ commit, dispatch }) {
+    get_partners({ commit }) {
       console.log("get_partners");
-      return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
-        const params = {
-          'limit': 1000,
-        }
-        axios.get(url, { params })
-          .then(resp => {
-            const partnersData = resp.data;
-            // Создаем списки словарей для каждого контрагента
-            const partnersList = partnersData.map(partner => ({
-              id: partner.id,
-              name: partner.name,
-              is_contractor: partner.is_contractor,
-              is_carrier: partner.is_carrier,
-              is_client: partner.is_client,
-              is_supplier: partner.is_supplier,
-              addresses: partner.locations.map(location => ({ // Извлекаем адреса из locations
-                address: location.address,
-                name: location.name,
-                location_type: location.location_type
-              })),
-            }));
-            // Вызываем мутацию для обновления состояния хранилища
-            commit('get_partners', partnersList);
-            console.log("partners: ", partnersList);
-            resolve(resp);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      try {
+        const partnersList = getPartnersApi(1000);
+        commit('setPartners', partnersList); // Вызываем мутацию для обновления состояния хранилища
+        console.log("partners: ", partnersList);
+      } catch (error) {
+        console.error("Failed to get partners:", error);
+        throw error;
+      }
     },
     get_addresses({ commit }) {
       return new Promise((resolve, reject) => {
