@@ -19,21 +19,6 @@ export const error_notification = (error: string) => {
     })
 }
 
-// Загрузка данных из хранилища
-export const loadData = async (variable, stateKey: string, mapFunction = null) => {
-    try {
-        await store.dispatch(stateKey);
-        console.log(`Got ${stateKey} successfully`);
-        variable.value = store.state[stateKey];
-
-        if (mapFunction) {
-            mapFunction(variable.value);
-        }
-    } catch (error) {
-        console.error(`Failed to get ${stateKey}:`, error);
-    }
-};
-
 // Функция для формирования столбцов таблицы
 export const fillTableColumns = (tableColumns, suppliers_names, types_of_applications_titles, contractors_names) => {
     tableColumns.value = [

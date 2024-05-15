@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
+import { getPartnersApi } from '@/api/api_partners_get';
 
 export default createStore({
   state: {
@@ -93,30 +94,14 @@ export default createStore({
     },
     get_clients({ commit }) {
       console.log("get_clients");
-      return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
-        const params = {
-          'limit': 1000,
-          'is_client': true
-        }
-        axios.get(url, { params })
-          .then(resp => {
-            const clientsData = resp.data;
-            // Создаем списки словарей для каждого клиента
-            const clientsList = clientsData.map(client => ({
-              id: client.id,
-              name: client.name
-            }));
-            // Вызываем мутацию для обновления состояния хранилища
-            commit('get_clients', clientsList);
-
-            console.log("clients: ", clientsList);
-            resolve(resp);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      try {
+        const clientsList = getPartnersApi(1000, 'is_client');
+        commit('setClients', clientsList); // Вызываем мутацию для обновления состояния хранилища
+        console.log("clients: ", clientsList);
+      } catch (error) {
+        console.error("Failed to get clients:", error);
+        throw error;
+      }
     },
     get_shipment_locations({ commit }) {
       console.log("get shipment locations");
@@ -147,53 +132,25 @@ export default createStore({
     },
     get_contractors({ commit }) {
       console.log("get_contractors");
-      return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
-        const params = {
-          'limit': 1000,
-          'is_contractor': true
-        }
-        axios.get(url, { params })
-          .then(resp => {
-            const contractorsData = resp.data;
-            // Создаем списки словарей для каждого клиента
-            const contractorsList = contractorsData.map(contractor => ({
-              id: contractor.id,
-              name: contractor.name,
-            }));
-            commit('get_contractors', contractorsList);
-            console.log("contractors: ", contractorsList);
-            resolve(resp);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      try {
+        const contractorsList = getPartnersApi(1000, 'is_contractor');
+        commit('setContractors', contractorsList); // Вызываем мутацию для обновления состояния хранилища
+        console.log("clients: ", contractorsList);
+      } catch (error) {
+        console.error("Failed to get contractors:", error);
+        throw error;
+      }
     },
     get_suppliers({ commit }) {
       console.log("get_suppliers");
-      return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/partner/get_filter';
-        const params = {
-          'limit': 1000,
-          'is_supplier': true
-        }
-        axios.get(url, { params })
-          .then(resp => {
-            const suppliersData = resp.data;
-            // Создаем списки словарей для каждого клиента
-            const suppliersList = suppliersData.map(supplier => ({
-              id: supplier.id,
-              name: supplier.name
-            }));
-            commit('get_suppliers', suppliersList);
-            console.log("suppliers: ", suppliersList);
-            resolve(resp);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      try {
+        const suppliersList = getPartnersApi(1000, 'is_supplier');
+        commit('setSuppliers', suppliersList); // Вызываем мутацию для обновления состояния хранилища
+        console.log("suppliers: ", suppliersList);
+      } catch (error) {
+        console.error("Failed to get suppliers:", error);
+        throw error;
+      }
     },
     get_supplier_orders({ commit }) {
       console.log("get_supplier_orders");

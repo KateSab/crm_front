@@ -200,19 +200,18 @@ import { reactive, ref, onMounted, toRaw } from 'vue';
 import store from '@/store/index';
 import router from '@/router';
 import { formatDate } from '@/api/Helpers';
-import { loadData } from '@/services/utils/buyers_order_utils';
 import {error_notification, success_notification} from '@/services/utils/buyers_order_utils';
 import { fillTableColumns} from '@/services/utils/buyers_order_utils';
 import { calculateCostPrice, calculateRRCGlobal, calculateMarginality, calculateMarginalityInPercents, calculateInfo } from '@/services/utils/buyers_order_utils';
 import { IRuleForm, IProduct } from '@/interfaces/IBuyersOrder';
 import { deleteRow, onAddItem, editRow, saveRow } from '@/services/utils/buyers_order_utils';
+import { getClients, getShipmentLocations, getContractors, getSuppliers, getTypesOfApplications } from '@/api/temp_get_partners_api';
 
 
 // переменные для хранения данных с бекенда
 const clients = ref([]);
 const shipment_locations = ref([]);
 const contractors = ref([]);
-const suppliers = ref([]);
 const types_of_applications = ref([]);
 let contractors_names = [];
 let suppliers_names = [];
@@ -223,24 +222,29 @@ let order_id = null;
 
 // Загрузка данных при монтировании компонента
 onMounted(async () => {
-  await loadData(clients, 'get_clients');
-  await loadData(shipment_locations, 'get_shipment_locations');
-  await loadData(contractors, 'get_contractors', (data) => {
-    contractors_names = data.map(contractor => ({ name: contractor.name, id: contractor.id }));
-    console.log("contractors names: ", contractors_names);
-  });
-  await loadData(suppliers, 'get_suppliers', (data) => {
-    suppliers_names = data.map(supplier => ({ name: supplier.name, id: supplier.id }));
-    console.log("suppliers names: ", suppliers_names);
-  });
-  await loadData(types_of_applications, 'get_types_of_applications', (data) => {
-    types_of_applications_titles = data.map(type_of_application => ({ name: type_of_application.title, id: type_of_application.id }));
-    console.log("types of applications titles: ", types_of_applications_titles);
-  });
+  try {
+    clients.value = await getClients();
+    console.log("Got clients successfully");
 
-  // Заполнение таблицы
-  fillTableColumns(tableColumns, suppliers_names, types_of_applications_titles, contractors_names);
+    shipment_locations.value = await getShipmentLocations();
+    console.log("Got shipment locations successfully");
+
+    contractors.value = await getContractors();
+    contractors_names = contractors.value.map(contractor => ({ name: contractor.name, id: contractor.id }));
+
+    suppliers_names = await getSuppliers();
+
+    types_of_applications_titles = await getTypesOfApplications();
+    console.log("Got types of applications successfully");
+
+    // Заполнение таблицы
+    fillTableColumns(tableColumns, suppliers_names, types_of_applications_titles, contractors_names);
+  } catch (error) {
+    console.error("Error loading data:", error);
+    // Можно добавить обработку ошибок здесь, если нужно
+  }
 });
+
 
 
 const ruleForm = reactive<IRuleForm>({
@@ -414,4 +418,4 @@ function submitTableForm() {
 }
 
 
-</style>
+</style>@/api/temp_get_partners_api
