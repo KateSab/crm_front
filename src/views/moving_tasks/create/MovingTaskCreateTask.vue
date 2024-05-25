@@ -161,4 +161,4 @@ onMounted(async () => {
     align-items: center;
     justify-content: center;
 }
-</style>@/services/utils/moving_task_service@/services/utils/moving_task_utils
+</style>

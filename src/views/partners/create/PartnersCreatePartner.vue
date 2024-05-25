@@ -86,7 +86,7 @@
 
 <script lang="ts" setup>
 import PartnersCreateTop from '@/views/partners/create/PartnersCreateTop.vue'
-import {createPartner} from '@/api/partner_add_api';
+import { createPartner } from '@/api/api_partner_create';
 import { Address } from '@/services/utils/partners_address_autocomplete_utils'
 import {addressSuggestions, loadAddresses, selectAddress} from '@/services/utils/partners_address_autocomplete_utils';
 import { formAddress, formPartner, addAddress, deleteAddress, addContact, deleteContact } from '@/services/utils/partners_utils';
@@ -148,4 +148,4 @@ const handleDeleteContact = (addressIndex: number, contactIndex: number): void =
   width: 30px;
   animation: loading-rotate 2s linear infinite;
 }
-</style>@/services/utils/partners_address_autocomplete_service@/services/utils/partners_address_autocomplete_service@/services/utils/partners_service@/services/utils/partners_address_autocomplete_utils@/services/utils/partners_address_autocomplete_utils@/services/utils/partners_utils@/api/partner_add_api
+</style>@/services/utils/partners_address_autocomplete_service@/services/utils/partners_address_autocomplete_service@/services/utils/partners_service@/services/utils/partners_address_autocomplete_utils@/services/utils/partners_address_autocomplete_utils@/services/utils/partners_utils@/api/partner_add_api@/api/api_partner_create

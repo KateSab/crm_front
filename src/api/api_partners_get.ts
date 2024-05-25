@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-export async function getPartnersApi(limit: number = 1000, keyName: string = undefined) {
+/**
+ * Retrieves partners data from the API based on the specified limit and optional keyName filter.
+ * @param {number} [limit=1000] The maximum number of partners to retrieve. Default is 1000.
+ * @param {string} [keyName=undefined] The name of the key to filter partners. Default is undefined (no filtering).
+ * @returns {Promise<Array<Object>>} A promise that resolves with an array of partner objects.
+ * @throws {Error} If there is an error while fetching partners data from the API.
+ */
+export async function getPartnersApi(limit: number = 1000, keyName: string = undefined): Promise<Array<object>> {
     const url = 'http://89.104.68.248:8000/api/partner/get_filter';
     const params = {
         'limit': limit
@@ -29,7 +36,7 @@ export async function getPartnersApi(limit: number = 1000, keyName: string = und
                 name: partner.name,
                 is_contractor: partner.is_contractor,
                 is_carrier: partner.is_carrier,
-                is_client: partner.is_client,
+                is_other: partner.is_other,
                 is_supplier: partner.is_supplier,
                 addresses: partner.locations.map((location) => ({
                     address: location.address,
@@ -44,36 +51,3 @@ export async function getPartnersApi(limit: number = 1000, keyName: string = und
         throw error;
     }
 }
-
-
-// Функция для запроса данных клиентов с сервера с возможностью указания параметров фильтрации
-// export async function getClientsApi(options: { limit?: number; filters?: Record<string, boolean> } = {}) {
-//   const url = 'http://89.104.68.248:8000/api/partner/get_filter';
-//   const params: Record<string, any> = {
-//     'limit': options.limit || 1000
-//   };
-
-//   // Добавляем фильтры, если они указаны
-//   if (options.filters) {
-//     Object.keys(options.filters).forEach((key) => {
-//       if (options.filters?.[key]) {
-//         params[key] = true;
-//       }
-//     });
-//   }
-
-//   try {
-//     const response = await axios.get(url, { params });
-//     const clientsData = response.data;
-
-//     // Преобразуем данные клиентов в формат, подходящий для хранилища
-//     const clientsList = clientsData.map((client: any) => ({ // Можно указать конкретный тип данных клиента
-//       id: client.id,
-//       name: client.name
-//     }));
-
-//     return clientsList;
-//   } catch (error) {
-//     throw error;
-//   }
-// }

@@ -1,22 +1,24 @@
 
 <template>
     <el-form
-        ref="ruleFormRef"
-        :model="ruleForm"
-        :rules="rules"
-        label-position="left"
-        size="small"
-        label-width="auto"
-        status-icon
-        style="width: 40vw;
-        margin-top: 2rem;"
+      :model="ruleForm"
+      label-position="left"
+      size="small"
+      label-width="auto"
+      status-icon
+      style="width: 40vw; margin-top: 2rem;"
     >
-        <el-form-item label="Поставщик" prop="supplier">
-            <el-select v-model="ruleForm.contractor_id" placeholder="Поставщиик">
-                <el-option v-for="supplier in suppliers" :key="supplier.id" :label="supplier.name" :value="supplier.id" />
-            </el-select>
-        </el-form-item>
-        <el-form-item label="Номр заказа у поставщика" prop="order">
+      <el-form-item label="Поставщик" prop="contractor_id">
+        <el-select v-model="ruleForm.contractor_id" placeholder="Поставщик">
+          <el-option
+            v-for="supplier in suppliers"
+            :key="supplier.id"
+            :label="supplier.name"
+            :value="supplier.id"
+          />
+        </el-select>
+      </el-form-item>
+        <el-form-item label="Номр заказа у поставщика" prop="supplier_order_number">
             <el-input v-model="ruleForm.supplier_order_number" />
         </el-form-item>
         <el-form-item label="Дата прибытия(план)" required prop="date">
@@ -28,12 +30,12 @@
                     style="width: 100%"
                 />
         </el-form-item>
-        <el-form-item label="Тип доставки" prop="type_of_delivery">
+        <el-form-item label="Тип доставки" prop="delivery_type">
             <el-select v-model="ruleForm.delivery_type" placeholder="Тип доставки">
                 <el-option v-for="delivery in delivery_types" :label="delivery.name" :value="delivery.id" :key="delivery.id" />
             </el-select>
         </el-form-item>
-        <el-form-item label="Счёт на оплату" prop="bill">
+        <el-form-item label="Счёт на оплату" prop="invoice_id">
             <el-input v-model="ruleForm.invoice_id" />
         </el-form-item>
             <el-form-item v-if="ruleForm.delivery_type === 2" label="Заказ в ТК" prop="order_in_TK">
@@ -44,129 +46,37 @@
                 </el-select>
             </el-form-item>
     </el-form>
-    <el-button type="primary" style="width: 20%; margin-top: 1rem;" @click="submitForm()">Создать заказ</el-button>
+    <el-button type="primary" style="width: 20%; margin-top: 1rem;" @click="handleSubmitForm()">Создать заказ</el-button>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted, onUpdated } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus';
-import { ElNotification } from 'element-plus';
+import { reactive, ref, onMounted } from 'vue'
 import store from '../../../store/index';
-import router from '@/router';
-import { formatDate } from '@/api/Helpers';
+import { getSuppliers } from '@/api/api_helpers_partners';
+import { ISupplierOrder } from '@/interfaces/ISupplierOrder';
+import { submitForm } from '@/api/api_suppliers_order_create';
 
-const delivery_types = store.state.delivery_types
-
-interface Supplier {
-    id: string;
-    name: string;
-}
-
-const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
+const ruleForm = reactive<ISupplierOrder>({
     contractor_id: '',
     supplier_order_number: '',
     shipment_date_planned: '',
     delivery_type: null,
     invoice_id: '',
-    order_in_TK: null,
-})
-
-const rules = reactive<FormRules>({
-    contractor_id: [
-        { required: true, message: 'Выберите поставщика', trigger: 'blur' },
-    ],
-    supplier_order_number: [
-        { required: true, message: 'Введите номер заказа', trigger: 'blur' },
-        { min: 11, max: 11, message: 'Номер должен состоять из 11 символов', trigger: 'blur' },
-    ],
-    shipment_date_planned: [
-        {
-            type: 'date',
-            required: true,
-            message: 'Выберите дату прибытия',
-            trigger: 'change',
-        },
-    ],
-    delivery_type: [
-        { required: true, message: 'Выберите тип доставки', trigger: 'blur' },
-    ],
-    invoice_id: [
-        { required: true, message: 'Введите счёт на оплату', trigger: 'blur' },
-    ],
-    order_in_TK: [
-        { required: true, message: 'Выберите заказ в ТК', trigger: 'blur' },
-    ],
-})
-
-const suppliers = ref<Supplier[]>([]);
-
-// Функция для загрузки списка поставщиков из хранилища
-const loadSuppliers = () => {
-    suppliers.value = store.state.suppliers;
-};
-
-onMounted(async () => {
-    await store.dispatch('get_suppliers')
-            .then(() => {
-            console.log("Got suppliers successfully");
-            loadSuppliers();
-            // suppliers_names = suppliers.value.map(supplier => ({name: supplier.name, id: supplier.id}));
-            // console.log("suppliers names: ",suppliers_names);
-            })
-            .catch(error => {
-            console.error("Failed to get suppliers:", error);
-            });
+    order_in_TK: 0,
 });
 
-// Обновляем список поставщиков после каждого обновления состояния
-onUpdated(loadSuppliers);
+const delivery_types = store.state.delivery_types;
+const suppliers = ref([]);
 
-//всплывающие уведомления
-const success_notification = (order_id) => {
-  ElNotification({
-    title: 'Успешно',
-    message: 'Заказ  №' + order_id + ' сформирован',
-    type: 'success',
-    position: 'bottom-right',
-  })
-}
+onMounted(async () => {
+    try {
+        suppliers.value = await getSuppliers();
+    } catch (error) {
+        console.error("Error loading data:", error);
+    };
+});
 
-const error_notification = (error) => {
-  ElNotification({
-    title: 'Ошибка',
-    message: 'Не удалось сформировать заказ' + error,
-    type: 'error',
-    position: 'bottom-right',
-  })
-}
-
-//отправка данных на бек
-function submitForm() {
-  ruleForm.shipment_date_planned = formatDate(ruleForm.shipment_date_planned);
-  fetch('http://89.104.68.248:8000/api/supplier_order/add', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(ruleForm)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    const order_id = data.id;
-    console.log('Received order id:', order_id);
-    console.log('Заказ сформирован. ID: ', order_id);
-    success_notification(order_id);
-    router.push({ path: '/suppliers' });
-  })
-  .catch(error => {
-    console.error('There was an error creating the order:', error);
-    error_notification(error);
-  });
+const handleSubmitForm = () => {
+  submitForm(ruleForm);
 }
 </script>

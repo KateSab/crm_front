@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   props: {
     orderData: {
@@ -32,24 +33,27 @@ export default {
     }
   },
   methods: {
+    // Метод для форматирования даты в формат DD.MM.YYYY
     formatDate(dateString) {
-        if (dateString === null) {
-          return '';
-        } else {
-            const date = new Date(dateString);
-            const day = date.getDate().toString().padStart(2, '0');
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}.${month}.${year}`;
-        }
+      if (dateString === null) {
+        return '';
+      } else {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+      }
     }
   },
   computed: {
-  deliveryTypeName() {
-    const deliveryType = this.orderData.delivery_type;
-    const deliveryTypeInfo = this.$store.state.delivery_types.find(type => type.id === deliveryType);
-    return deliveryTypeInfo ? deliveryTypeInfo.name : 'Unknown'; // Возвращаем имя доставки или 'Unknown', если соответствие не найдено
+    ...mapState(['delivery_types']),
+    // Вычисляемое свойство для получения названия типа доставки
+    deliveryTypeName() {
+      const deliveryType = this.orderData.delivery_type;
+      const deliveryTypeInfo = this.delivery_types.find(type => type.id === deliveryType);
+      return deliveryTypeInfo ? deliveryTypeInfo.name : 'Unknown';
+    }
   }
-}
 }
 </script>

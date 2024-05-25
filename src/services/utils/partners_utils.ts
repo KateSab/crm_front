@@ -1,24 +1,5 @@
-import { ElNotification } from 'element-plus';
 import { ContactInterface, AddressInterface } from '@/interfaces/IPartners';
 import { ref } from 'vue';
-
-//нотификации
-export const success_notification = () => {
-    ElNotification({
-        title: 'Успешно',
-        message: 'Новый контрагент создан',
-        type: 'success',
-        position: 'bottom-right',
-    })
-}
-export const error_notification = (error) => {
-    ElNotification({
-        title: 'Ошибка',
-        message: 'Не удалось создать контрагента' + error,
-        type: 'error',
-        position: 'bottom-right',
-    })
-}
 
 // Создание начального контакта
 export const initialContact = (): ContactInterface => ({

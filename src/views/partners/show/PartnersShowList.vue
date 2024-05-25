@@ -23,7 +23,7 @@
                     {{ partner.name }}
                 </el-col>
                 <el-col :span="6">
-                    <template v-if="partner.is_client === true">
+                    <template v-if="partner.is_other === true">
                             клиент
                     </template> 
                     <template v-if="partner.is_supplier === true">
@@ -50,13 +50,13 @@
 import { onMounted, ref } from 'vue';
 import store from '@/store/index';
 import PartnersShowTop from '@/views/partners/show/PartnersShowTop.vue';
+import { getPrtners } from '@/api/api_helpers_partners'
 
 const partners = ref([]);
 
 onMounted(async () => {
     try {
-        await store.dispatch('get_partners');
-        partners.value = store.state.partners;
+        partners.value = await getPrtners();
         console.log("Got partners successfully");
     } catch (error) {
         console.error("Failed to get partners:", error);

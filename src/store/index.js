@@ -95,11 +95,11 @@ export default createStore({
     get_clients({ commit }) {
       console.log("get_clients");
       try {
-        const clientsList = getPartnersApi(1000, 'is_client');
-        commit('setClients', clientsList); // Вызываем мутацию для обновления состояния хранилища
+        const clientsList = getPartnersApi(1000, 'is_other');
+        commit('get_clients', clientsList); // Вызываем мутацию для обновления состояния хранилища
         console.log("clients: ", clientsList);
       } catch (error) {
-        console.error("Failed to get clients:", error);
+        console.error("Failed to get clients store:", error);
         throw error;
       }
     },
@@ -134,10 +134,10 @@ export default createStore({
       console.log("get_contractors");
       try {
         const contractorsList = getPartnersApi(1000, 'is_contractor');
-        commit('setContractors', contractorsList); // Вызываем мутацию для обновления состояния хранилища
-        console.log("clients: ", contractorsList);
+        commit('get_contractors', contractorsList); // Вызываем мутацию для обновления состояния хранилища
+        console.log("contractors: ", contractorsList);
       } catch (error) {
-        console.error("Failed to get contractors:", error);
+        console.error("Failed to get contractors store:", error);
         throw error;
       }
     },
@@ -145,10 +145,10 @@ export default createStore({
       console.log("get_suppliers");
       try {
         const suppliersList = getPartnersApi(1000, 'is_supplier');
-        commit('setSuppliers', suppliersList); // Вызываем мутацию для обновления состояния хранилища
+        commit('get_suppliers', suppliersList); // Вызываем мутацию для обновления состояния хранилища
         console.log("suppliers: ", suppliersList);
       } catch (error) {
-        console.error("Failed to get suppliers:", error);
+        console.error("Failed to get suppliers store:", error);
         throw error;
       }
     },
@@ -209,10 +209,10 @@ export default createStore({
       console.log("get_partners");
       try {
         const partnersList = getPartnersApi(1000);
-        commit('setPartners', partnersList); // Вызываем мутацию для обновления состояния хранилища
+        commit('get_partners', partnersList); // Вызываем мутацию для обновления состояния хранилища
         console.log("partners: ", partnersList);
       } catch (error) {
-        console.error("Failed to get partners:", error);
+        console.error("Failed to get partners store:", error);
         throw error;
       }
     },

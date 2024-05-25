@@ -1,4 +1,4 @@
-import { success_notification, error_notification } from '@/services/utils/partners_utils';
+import { success_notification, error_notification } from '@/services/utils/notification_utils';
 import router from '@/router';
 
 export function createPartner(partner: any) {
@@ -16,12 +16,12 @@ export function createPartner(partner: any) {
             return response.json();
         })
         .then(data => {
-            console.log('Создан partner с id:', data.id);
-            success_notification();
+            const message_success: string = `Создан partner с id:№${data.id}`;
+            success_notification(message_success);
             router.push({ path: '/partners' });
         })
         .catch(error => {
-            console.error('There was an error creating the order:', error);
-            error_notification(error);
+            const message_error: string = `Не удалось создать контрагента №${error}`
+            error_notification(message_error);
         });
 }

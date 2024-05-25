@@ -18,11 +18,11 @@ const searchAddresses = async (queryString: string, cb: any) => {
     }
 };
 
-const handleFetchSuggestions = async (queryString, cb) => {
+const handleFetchSuggestions = async (queryString: string, cb: any) => {
     await searchAddresses(queryString, cb);
 };
 
-const handleSelectAddress = (data, targetField) => {
+const handleSelectAddress = (data: string, targetField: string) => {
     console.log('Selected field:', data);
     targetField = data;
 };

@@ -1,21 +1,19 @@
 export interface IRuleForm {
-    status_id: number
-
-    sell_order_id: number
-    client_id: number
-    shipment_location_id: number
-    shipment_date_planned: string
-    base_margin: number
-    delivery_cost_planned: number
-    shipment_cost_planned: number
-    other_expenses_planned: number
-
-    instructions: string,
-    self_cost_total: number,
-    rrc_total: number,
-    marginality_total: number,
-    marginality_total_in_percents: number,
-};
+    status_id: number;
+    sell_order_id: number | null;
+    client_id: number | null;
+    shipment_location_id: number | null;
+    shipment_date_planned: string;
+    base_margin: number;
+    delivery_cost_planned: number | null;
+    shipment_cost_planned: number | null;
+    other_expenses_planned: number | null;
+    instructions: string;
+    self_cost_total: number | null;
+    rrc_total: number | null;
+    marginality_total: number | null;
+    marginality_total_in_percents: number | null;
+}
 
 export interface IProduct {
     name: string;

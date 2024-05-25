@@ -7,6 +7,14 @@ export interface Address {  //работа с автозаполнением а�
 
 export const addressSuggestions = ref<Address[]>([]); //переменная для автозаполнения
 
+/**
+ * Loads address suggestions from the server based on the provided query string.
+ * Updates the addressSuggestions ref with the received suggestions.
+ * 
+ * @param {string} queryString - The query string to search for address suggestions.
+ * @returns {Promise<void>} A promise that resolves when the address suggestions have been loaded.
+ * @throws {Error} If there is an error while fetching address suggestions from the server.
+ */
 export const loadAddresses = async (queryString: string) => {  //загрузка адресов с сервера 
 
     var url = "http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";

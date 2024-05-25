@@ -10,10 +10,10 @@ import SuppliersCreateTop from '@/views/suppliers/create/SuppliersCreateTop.vue'
 import SuppliersCreateOrder from '@/views/suppliers/create/SuppliersCreateOrder.vue';
 
 export default {
-  name: 'CreateSuppliersOrder',
+  name: 'SuppliersCreate',
   components: {
     SuppliersCreateTop,
-    SuppliersCreateOrder,
+   SuppliersCreateOrder,
   }
 }
 </script>

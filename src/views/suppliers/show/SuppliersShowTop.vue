@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { Plus, Search } from '@element-plus/icons-vue'
 import SuppliersCreate from '@/views/suppliers/create/SuppliersCreate.vue'
 
 export default {

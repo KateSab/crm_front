@@ -1,5 +1,16 @@
 import store from '@/store'; // Подключаем стор
 
+// Функция для загрузки данных всех контрагентов
+export async function getPrtners() {
+  try {
+    await store.dispatch('get_partners');
+    return store.state.partners;
+  } catch (error) {
+    console.error("Failed to get partners:", error);
+    throw error;
+  }
+}
+
 // Функция для загрузки данных клиентов
 export async function getClients() {
   try {
@@ -26,8 +37,7 @@ export async function getShipmentLocations() {
 export async function getContractors() {
   try {
     await store.dispatch('get_contractors');
-    const contractors = store.state.contractors;
-    return contractors;
+    return store.state.contractors;
   } catch (error) {
     console.error("Failed to get contractors:", error);
     throw error;
@@ -38,7 +48,7 @@ export async function getContractors() {
 export async function getSuppliers() {
   try {
     await store.dispatch('get_suppliers');
-    const suppliersNames = store.state.suppliers.map(supplier => ({ name: supplier.name, id: supplier.id }));
+    const suppliersNames = store.state.suppliers;
     console.log("Suppliers names:", suppliersNames);
     return suppliersNames;
   } catch (error) {
@@ -59,3 +69,5 @@ export async function getTypesOfApplications() {
     throw error;
   }
 }
+
+//  

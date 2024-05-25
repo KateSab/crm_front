@@ -1,26 +1,5 @@
-import store from '@/store/index';
-import { ElNotification } from 'element-plus';
-
-export const success_notification = (order_id: number) => {
-    ElNotification({
-        title: 'Успешно',
-        message: 'Заказ  №' + order_id + ' сформирован',
-        type: 'success',
-        position: 'bottom-right',
-    })
-}
-
-export const error_notification = (error: string) => {
-    ElNotification({
-        title: 'Ошибка',
-        message: 'Не удалось сформировать заказ' + error,
-        type: 'error',
-        position: 'bottom-right',
-    })
-}
-
 // Функция для формирования столбцов таблицы
-export const fillTableColumns = (tableColumns, suppliers_names, types_of_applications_titles, contractors_names) => {
+export const fillTableColumns = (tableColumns, suppliers_names: string[], types_of_applications_titles: string[], contractors_names: string[]) => {
     tableColumns.value = [
         { prop: 'name', label: 'Наименование', width: '125', editable: true },
         { prop: 'design_link', label: 'Описание', width: '120', editable: true },
@@ -39,12 +18,16 @@ export const fillTableColumns = (tableColumns, suppliers_names, types_of_applica
 };
 
 //удаление строки
-export const deleteRow = (index, productsList) => {
+export const deleteRow = (index: number, productsList) => {
     productsList.value.splice(index, 1);
 };
 
 //добавление строки
 export const onAddItem = (productsList, ruleForm) => {
+    if (!productsList.value) {
+        productsList.value = [];
+    }
+
     productsList.value.push({
         name: '',
         design_link: '',

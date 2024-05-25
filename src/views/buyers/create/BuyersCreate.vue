@@ -113,12 +113,12 @@
               <el-button v-if="!row.editable" link type="primary" size="small" @click="handleEditRow(row)">
                 <el-icon size="medium"><Edit /></el-icon>
               </el-button>
-              <el-button v-if="row.editable" link type="primary" size="small" @click="handleSaveRow(row, productsList), calculateInfo(row, ruleForm, productsList)">Сохранить</el-button>
+              <el-button v-if="row.editable" link type="primary" size="small" @click="() => { handleSaveRow(row); handleCalculateInfo(row); }">Сохранить</el-button>
             </template>
           </el-table-column>
         </el-table>
         <el-footer>
-          <el-button style="width: 10rem; margin-top: 1rem;" type="primary" @click="handleOnAddItem(productsList, ruleForm)">Добавить товар</el-button>
+          <el-button style="width: 10rem; margin-top: 1rem;" type="primary" @click="handleOnAddItem()">Добавить товар</el-button>
         </el-footer>
       </el-container>
     </div>
@@ -173,7 +173,7 @@
         </el-col>
     </el-row>
     </div>
-    <el-button plain type="primary" @click="submitForm()">
+    <el-button plain type="primary" @click="handleSubmitForm()">
       Сформировать заказ
     </el-button>
   </div>
@@ -196,28 +196,23 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted, toRaw } from 'vue';
-import store from '@/store/index';
-import router from '@/router';
-import { formatDate } from '@/api/Helpers';
-import {error_notification, success_notification} from '@/services/utils/buyers_order_utils';
+import { reactive, ref, onMounted} from 'vue';
+import { submitForm } from '@/api/api_buyers_order_create';
 import { fillTableColumns} from '@/services/utils/buyers_order_utils';
 import { calculateCostPrice, calculateRRCGlobal, calculateMarginality, calculateMarginalityInPercents, calculateInfo } from '@/services/utils/buyers_order_utils';
 import { IRuleForm, IProduct } from '@/interfaces/IBuyersOrder';
 import { deleteRow, onAddItem, editRow, saveRow } from '@/services/utils/buyers_order_utils';
-import { getClients, getShipmentLocations, getContractors, getSuppliers, getTypesOfApplications } from '@/api/temp_get_partners_api';
+import { getClients, getShipmentLocations, getContractors, getSuppliers, getTypesOfApplications } from '@/api/api_helpers_partners';
 
 
 // переменные для хранения данных с бекенда
 const clients = ref([]);
 const shipment_locations = ref([]);
 const contractors = ref([]);
-const types_of_applications = ref([]);
 let contractors_names = [];
 let suppliers_names = [];
 let types_of_applications_titles = [];
 let tableColumns = ref([]);
-let order_id = null;
 
 
 // Загрузка данных при монтировании компонента
@@ -244,8 +239,6 @@ onMounted(async () => {
     // Можно добавить обработку ошибок здесь, если нужно
   }
 });
-
-
 
 const ruleForm = reactive<IRuleForm>({
   status_id: 1,
@@ -274,7 +267,7 @@ const productsList = ref<IProduct[]>([]);
 
 //функции для обработки и валидации входных данных
 //ввод данных
-const handleInput = (row, prop) => {
+const handleInput = (row, prop: string) => {
   if (prop === 'product_cost_price_planned' || prop === 'branding_cost_price_planned') {
     row.cost_price_global = calculateCostPrice(row);
   }
@@ -292,7 +285,7 @@ const handleDeleteRow = (index, productsList) => {
   deleteRow(index, productsList);
 };
 
-const handleOnAddItem = (productsList, ruleForm) => {
+const handleOnAddItem = () => {
   onAddItem(productsList, ruleForm);
 }
 
@@ -300,70 +293,17 @@ const handleEditRow = (row) => {
   editRow(row);
 };
 
-const handleSaveRow = (row, productsList) => {
+const handleSaveRow = (row) => {
   saveRow(row, productsList);
 };
 
-//отправка данных на бек(без таблицы)
-function submitForm() {
-  ruleForm.shipment_date_planned = formatDate(ruleForm.shipment_date_planned);
-  fetch('http://89.104.68.248:8000/api/customerorder/add', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(ruleForm)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Order created:', data);
-    order_id = data.id;
-    console.log('Received order id:', order_id);
-    submitTableForm();
-    console.log('Заказ сформирован. ID: ', order_id);
-    success_notification(order_id);
-    router.push({ path: '/buyers' });
-  })
-  .catch(error => {
-    console.error('There was an error creating the order:', error);
-    error_notification(error);
-  });
+const handleCalculateInfo = (row) => {
+  calculateInfo(row, ruleForm, productsList);
 }
 
-function submitTableForm() {
-  const requestBody = {
-    buyer_order_id: order_id,
-    products: toRaw(productsList.value)
-  };
-
-  fetch('http://89.104.68.248:8000/api/products/add', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(requestBody)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Products added successfully:', data);
-    success_notification(order_id);
-  })
-  .catch(error => {
-    console.error('Error adding products:', error);
-    error_notification(error);
-  });
+const handleSubmitForm = () => {
+  submitForm(ruleForm, productsList);
 }
-
 </script>
 
 <style>
@@ -418,4 +358,4 @@ function submitTableForm() {
 }
 
 
-</style>@/api/temp_get_partners_api
+</style>
