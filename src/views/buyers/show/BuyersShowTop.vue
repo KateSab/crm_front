@@ -7,18 +7,18 @@
           placeholder="Введите параметры поиска"
         />
         <el-button type="primary">
-          найти 
+          найти
           <el-icon class="el-icon--right"><Search /></el-icon>
         </el-button>
-          
+
         <router-link to="/buyers/create">
           <el-button color="#FFFF6F" style="margin-left: 50px; color: #4d4d4d">
             <el-icon class="el-icon--left"><Plus /></el-icon>
             создать заказ
-              
+
           </el-button>
         </router-link>
-         
+
       </div>
     </div>
     <router-view></router-view>
@@ -26,6 +26,7 @@
 
 <script>
 import BuyersCreate from '@/views/buyers/create/BuyersCreate.vue'
+import {Plus} from "@element-plus/icons-vue";
 
 export default {
   name: 'BuyersShowTop',
@@ -35,6 +36,7 @@ export default {
     };
   },
   components: {
+    Plus,
     BuyersCreate,
   }
 };
@@ -53,10 +55,5 @@ export default {
   display: flex;
   width: 100%;
   justify-content: space-between;
-}
-
-.el-input {
-    padding-right: 10px;
-    width: 50%;
 }
 </style>

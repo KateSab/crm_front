@@ -29,7 +29,7 @@
                             clearable
                             class="inline-input w-50"
                             placeholder="Введите адрес"
-                            @select="address => handleSelectAddress(address, formTask.from.address)"
+                            @select="address => handleSelectAddress(address)"
                             value-key="label"
                             />
                         </el-row>
@@ -70,7 +70,7 @@
                         clearable
                         class="inline-input w-50"
                         placeholder="Введите адрес"
-                        @select="address => handleSelectAddress(address, formTask.to.address)"
+                        @select="address => handleSelectAddress(address)"
                         value-key="label"
                         />
                         Контакт
@@ -145,7 +145,7 @@ onMounted(async () => {
     try {
         await store.dispatch('get_addresses');
         addresses.value = store.state.addresses;
-        console.log("Got addresses and contscts for create moving task successfully");
+        console.log("Got addresses and contacts for create moving task successfully");
       } catch (error) {
         console.error("Failed to get addresses for create moving task:", error);
       }

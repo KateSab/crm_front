@@ -22,9 +22,8 @@ const handleFetchSuggestions = async (queryString: string, cb: any) => {
     await searchAddresses(queryString, cb);
 };
 
-const handleSelectAddress = (data: string, targetField: string) => {
+const handleSelectAddress = (data: string) => {
     console.log('Selected field:', data);
-    targetField = data;
 };
 
 export { addresses, searchAddresses, handleFetchSuggestions, handleSelectAddress };

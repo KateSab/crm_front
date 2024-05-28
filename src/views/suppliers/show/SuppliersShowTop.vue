@@ -7,7 +7,7 @@
             placeholder="Введите параметры поиска"
             />
             <el-button type="primary">
-              найти 
+              найти
               <el-icon class="el-icon--right"><Search /></el-icon>
             </el-button>
             <router-link to="/suppliers/create">
@@ -23,6 +23,7 @@
 
 <script>
 import SuppliersCreate from '@/views/suppliers/create/SuppliersCreate.vue'
+import {Plus} from "@element-plus/icons-vue";
 
 export default {
   name: 'SuppliersShowTop',
@@ -32,6 +33,7 @@ export default {
     };
   },
   components: {
+    Plus,
     SuppliersCreate,
   }
 };

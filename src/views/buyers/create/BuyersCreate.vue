@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BuyersCreateTop />
+    <CreateTop title="Заказы покупателей"/>
   </div>
   <div v-if="clients.length > 0 && contractors.length > 0">
   <div class="create-buyers-order">
@@ -22,13 +22,13 @@
                             <el-option v-for="client in clients" :label="client.name" :value="client.id" :key="client.id" />
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="Склад отгрузки" prop="shipment_lacation_id">
+                    <el-form-item label="Склад отгрузки" prop="shipment_location_id">
                         <el-select v-model="ruleForm.shipment_location_id">
                             <el-option v-for="shipment_location in shipment_locations" :label="shipment_location.name" :value="shipment_location.id" :key="shipment_location.id" />
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Дата отгрузки (план)" required>
-                        <el-form-item prop="sgipment_date_planned">
+                        <el-form-item prop="shipment_date_planned">
                             <el-date-picker
                                 v-model="ruleForm.shipment_date_planned"
                                 type="date"
@@ -66,13 +66,13 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item label="Расходы на доставку" prop="shipment_cost_planned">
-                        <el-input 
+                        <el-input
                         v-model="ruleForm.shipment_cost_planned">
                         <template #append>руб.</template>
                         </el-input>
                     </el-form-item>
                     <el-form-item label="Прочие расходы" prop="other_expenses_planned">
-                        <el-input 
+                        <el-input
                         v-model="ruleForm.other_expenses_planned">
                         <template #append>руб.</template>
                         </el-input>
@@ -146,25 +146,25 @@
                 class="base-color"
             >
                 <el-form-item label="СС Итого" prop="self_cost_total">
-                    <el-input 
+                    <el-input
                     v-model="ruleForm.self_cost_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="РРЦ Итого" prop="rrc_total">
-                    <el-input 
+                    <el-input
                     v-model="ruleForm.rrc_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Итого маржа" prop="marginality_total">
-                    <el-input 
+                    <el-input
                     v-model="ruleForm.marginality_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Общая маржинальность" prop="marginality_total_in_percents">
-                    <el-input 
+                    <el-input
                     v-model="ruleForm.marginality_total_in_percents" disabled>
                     <template #append>%</template>
                     </el-input>
@@ -181,16 +181,16 @@
 <div v-else >
     <p >Загружаем данные...</p>
 </div>
-  
+
 </template>
 
 <script lang="ts">
-import BuyersCreateTop from '@/views/buyers/create/BuyersCreateTop.vue';
+import CreateTop from '@/components/CreateTop.vue';
 
 export default {
   name: 'CreateBuyersOrder',
   components: {
-    BuyersCreateTop,
+    CreateTop,
   },
 }
 </script>
@@ -203,6 +203,7 @@ import { calculateCostPrice, calculateRRCGlobal, calculateMarginality, calculate
 import { IRuleForm, IProduct } from '@/interfaces/IBuyersOrder';
 import { deleteRow, onAddItem, editRow, saveRow } from '@/services/utils/buyers_order_utils';
 import { getClients, getShipmentLocations, getContractors, getSuppliers, getTypesOfApplications } from '@/api/api_helpers_partners';
+import {Delete, Edit} from "@element-plus/icons-vue";
 
 
 // переменные для хранения данных с бекенда
@@ -263,8 +264,6 @@ const ruleForm = reactive<IRuleForm>({
 // Референс списка продуктов
 const productsList = ref<IProduct[]>([]);
 
-
-
 //функции для обработки и валидации входных данных
 //ввод данных
 const handleInput = (row, prop: string) => {
@@ -307,7 +306,6 @@ const handleSubmitForm = () => {
 </script>
 
 <style>
-
 .create-buyers-order {
   display: flex;
   flex-direction: column;
@@ -317,45 +315,14 @@ const handleSubmitForm = () => {
 
 .order-info {
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
 }
 
-.el-form {
-    width: 23rem;
-    margin: 2rem;
-    padding: 1rem;
-    border-radius: 5px;
-    background-color: #4d4d4d23;
-  }
-
-.el-table {
-  font-size: small;
-  font-weight: 200;
-}
-
-.el-table th div.cell {
+.el-table th div {
   color: #3d9cfb;
-}
-
-.el-table_1_column_10, .el-table_1_column_12, .el-table_1_column_13,.el-table_1_column_14 {
-  background-color: rgba(166, 166, 166, 0.418);
-}
-
-.el-table .el-table__row:hover .el-table_1_column_10,
-.el-table .el-table__row:hover .el-table_1_column_12,
-.el-table .el-table__row:hover .el-table_1_column_13,
-.el-table .el-table__row:hover .el-table_1_column_14 {
-  background-color: rgba(128, 128, 128, 0.418);
 }
 
 .base-color {
   background-color: #3d9cfb;
 }
-
-.example-showcase .el-loading-mask {
-  z-index: 9;
-}
-
-
 </style>

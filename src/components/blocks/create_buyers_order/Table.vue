@@ -42,16 +42,16 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import { Delete } from '@element-plus/icons-vue'
-import { Edit } from '@element-plus/icons-vue'
+import { ref } from 'vue';
 
 export default {
   name: 'Table',
 }
-</script>  
+</script>
 
 <script setup>
+
+import {Delete, Edit} from "@element-plus/icons-vue";
 
 const tableData = ref([
   {
@@ -133,10 +133,10 @@ const handleInput = (row, prop) => {
   if (prop === 'rrc_per_one' || prop === 'edition') {
     row.rrc_global = calculateRRCGlobal(row);
   }
-  if (prop == 'cost_price_of_good' || prop == 'rrc_per_one' || prop == 'edition') {
+  if (prop === 'cost_price_of_good' || prop === 'rrc_per_one' || prop === 'edition') {
     row.marginality = calculateMarginality(row);
   }
-  if (prop == 'cost_price_of_good' || prop == 'rrc_per_one') {
+  if (prop === 'cost_price_of_good' || prop === 'rrc_per_one') {
     row.marginality_in_percents = calculateMarginalityInPercents(row);
   }
 };

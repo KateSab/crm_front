@@ -64,13 +64,13 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Расходы на доставку" prop="costs_of_deliver">
-                    <el-input 
+                    <el-input
                     v-model="ruleForm.costs_of_deliver">
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Прочие расходы" prop="another_costs">
-                    <el-input 
+                    <el-input
                     v-model="ruleForm.another_costs">
                     <template #append>руб.</template>
                     </el-input>
@@ -81,7 +81,7 @@
     </template>
 
 <script lang="ts" setup>
-import { defineComponent, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus';
 
 interface RuleForm {

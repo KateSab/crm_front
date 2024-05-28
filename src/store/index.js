@@ -243,15 +243,15 @@ export default createStore({
       });
     },
     logout({ commit }) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         commit('logout')
         localStorage.removeItem('token')
         localStorage.removeItem('email')
         resolve()
       })
     },
-    get_user({ commit }, token) {
-      return new Promise((resolve, reject) => {
+    get_user({ commit }) {
+      return new Promise(() => {
         if (localStorage.token) {
           fetch('http://89.104.68.248:8000/api/users/me', {
             method: 'GET',

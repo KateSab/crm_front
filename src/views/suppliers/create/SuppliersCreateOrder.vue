@@ -73,7 +73,7 @@ onMounted(async () => {
         suppliers.value = await getSuppliers();
     } catch (error) {
         console.error("Error loading data:", error);
-    };
+    }
 });
 
 const handleSubmitForm = () => {

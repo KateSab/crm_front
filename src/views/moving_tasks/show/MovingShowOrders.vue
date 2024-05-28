@@ -1,8 +1,8 @@
 <template>
   <div v-for="index in 5" :key="index">
-    <container class="moving-tasks">
+    <div class="moving-tasks">
       <MovingShowOrder />
-    </container>
+    </div>
   </div>
 </template>
 

@@ -10,6 +10,7 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import {UserFilled} from '@element-plus/icons-vue'
 
 const email = ref('');
 const store = useStore();

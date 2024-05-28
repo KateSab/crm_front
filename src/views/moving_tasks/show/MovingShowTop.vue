@@ -6,7 +6,7 @@
             placeholder="Введите параметры поиска"
             />
             <el-button type="primary">
-              найти 
+              найти
               <el-icon class="el-icon--right"><Search /></el-icon>
             </el-button>
             <router-link to="/moving/create">
@@ -22,8 +22,11 @@
 
 <script>
 
+import {Plus} from "@element-plus/icons-vue";
+
 export default {
   name: 'MovingShowTop',
+  components: {Plus},
   data() {
     return {
       input2: ''

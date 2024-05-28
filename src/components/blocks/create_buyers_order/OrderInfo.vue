@@ -23,25 +23,25 @@
                 class="base-color"
             >
                 <el-form-item label="СС Итого" prop="costs_of_moving">
-                    <el-input 
+                    <el-input
                     v-model="form.self_cost_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="РРЦ Итого" prop="costs_of_deliver">
-                    <el-input 
+                    <el-input
                     v-model="form.rrc_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Итого маржа" prop="another_costs">
-                    <el-input 
+                    <el-input
                     v-model="form.marginality_total" disabled>
                     <template #append>руб.</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Общая маржинальность" prop="another_costs">
-                    <el-input 
+                    <el-input
                     v-model="form.marginality_total_in_percents" disabled>
                     <template #append>%</template>
                     </el-input>
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 
 const form = reactive({
   instruction: '',

@@ -1,33 +1,39 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import index from '../store'
-import MainPage from '../views/MainPage.vue'
-import Login from '../views/Login.vue'
-import Buyers from '../views/buyers/Buyers.vue'
-import BuyersCreate from '../views/buyers/create/BuyersCreate.vue'
-import Suppliers from '../views/suppliers/Suppliers.vue'
-import SuppliersCreate from '../views/suppliers/create/SuppliersCreate.vue'
-import Contractors from '../views/contractors/Contractors.vue'
-import Carriers from '../views/carriers/Carriers.vue'
-import Moving from '../views/moving_tasks/Moving.vue'
-import MovingTaskCreate from '../views/moving_tasks/create/MovingTaskCreate.vue'
-import Bills from '../views/bills/Bills.vue'
-import StockView from '../views/stock/StockView.vue'
-import Partners from '../views/partners/Partners.vue'
-import PartnersCreatePartner from '../views/partners/create/PartnersCreatePartner.vue'
-import Catalogs from '../views/catalogs/Catalogs.vue'
-import CatalogsAddresses from '../views/catalogs/CatalogsAddresses.vue'
-import CatalogsContacts from '../views/catalogs/CatalogsContacts.vue'
+import MainPage from '@/views/MainPage.vue'
+import Login from '@/views/Login.vue'
+import Buyers from '@/views/buyers/Buyers.vue'
+import BuyersCreate from '@/views/buyers/create/BuyersCreate.vue'
+import Suppliers from '@/views/suppliers/Suppliers.vue'
+import SuppliersCreate from '@/views/suppliers/create/SuppliersCreate.vue'
+import Contractors from '@/views/contractors/Contractors.vue'
+import Carriers from '@/views/carriers/Carriers.vue'
+import Moving from '@/views/moving_tasks/Moving.vue'
+import MovingTaskCreate from '@/views/moving_tasks/create/MovingTaskCreate.vue'
+import Bills from '@/views/bills/Bills.vue'
+import StockView from '@/views/stock/StockView.vue'
+import Partners from '@/views/partners/Partners.vue'
+import PartnersCreatePartner from '@/views/partners/create/PartnersCreatePartner.vue'
+import Catalogs from '@/views/catalogs/Catalogs.vue'
+import CatalogsAddresses from '@/views/catalogs/CatalogsAddresses.vue'
+import CatalogsContacts from '@/views/catalogs/CatalogsContacts.vue'
 
 const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: '/',
     name: 'MainPage',
-    component: MainPage
+    component: MainPage,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/buyers',
@@ -161,12 +167,11 @@ router.beforeEach((to, from, next) => {
   console.log(index.state.token)
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (index.getters.isLoggedIn) {
-      next()
-      return
+      next();
     }
-    next('/login')
+    next('/login');
   } else {
-    next()
+    next();
   }
 })
 

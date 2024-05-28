@@ -18,7 +18,13 @@ export function createPartner(partner: any) {
         .then(data => {
             const message_success: string = `Создан partner с id:№${data.id}`;
             success_notification(message_success);
-            router.push({ path: '/partners' });
+            router.push({ path: '/partners' })
+              .then(() => {
+                console.log('Navigation to /partners succeeded');
+              })
+              .catch((error) => {
+                console.error('Navigation to /partners failed', error);
+              });
         })
         .catch(error => {
             const message_error: string = `Не удалось создать контрагента №${error}`

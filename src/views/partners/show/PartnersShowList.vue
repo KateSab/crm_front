@@ -1,4 +1,4 @@
-<template>  
+<template>
     <div>
         <PartnersShowTop />
     </div>
@@ -25,7 +25,7 @@
                 <el-col :span="6">
                     <template v-if="partner.is_other === true">
                             клиент
-                    </template> 
+                    </template>
                     <template v-if="partner.is_supplier === true">
                         поставщик
                     </template>
@@ -39,7 +39,7 @@
                 <el-col :span="12">
                 <div v-for="address in partner.addresses" :key="address.id">
                     {{ address.address }}
-                </div>    
+                </div>
                 </el-col>
             </el-row>
         </div>
@@ -47,10 +47,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import store from '@/store/index';
+import {onMounted, ref} from 'vue';
 import PartnersShowTop from '@/views/partners/show/PartnersShowTop.vue';
-import { getPrtners } from '@/api/api_helpers_partners'
+import {getPrtners} from '@/api/api_helpers_partners'
 
 const partners = ref([]);
 
@@ -64,9 +63,9 @@ onMounted(async () => {
 });
 
 </script>
-  
+
 <style>
-.el-col {
+el-col {
   /* background-color: rgba(211, 211, 211, 0.406); */
   border-radius: 4px;
   padding: 2vh 0 2vh 0;
@@ -83,6 +82,6 @@ onMounted(async () => {
     font-size: medium;
     margin-top: 2vh;
     color: #3d9cfb;
-    background-color: rgba(211, 211, 211, 0);
+    background-color: #d3d3d3;
 }
 </style>

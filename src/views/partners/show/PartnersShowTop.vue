@@ -7,7 +7,7 @@
             placeholder="Введите параметры поиска"
             />
             <el-button type="primary">
-              найти 
+              найти
               <el-icon class="el-icon--right"><Search /></el-icon>
             </el-button>
             <router-link to="/partners/create">
@@ -18,11 +18,12 @@
           </router-link>
         </div>
     </div>
-    <router-wiew></router-wiew>
+    <router-view></router-view>
 </template>
 
 <script>
 import PartnersCreatePartner from '@/views/partners/create/PartnersCreatePartner.vue'
+import {Plus} from "@element-plus/icons-vue";
 
 export default {
   name: 'PartnersShowTop',
@@ -32,6 +33,7 @@ export default {
     };
   },
   components: {
+    Plus,
     PartnersCreatePartner,
   }
 };

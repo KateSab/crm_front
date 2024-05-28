@@ -1,5 +1,5 @@
 <template>
-  <div class="header-page">   
+  <div class="header-page">
       <h2>Заказы покупателей</h2>
       </div>
       <div>
@@ -23,16 +23,7 @@ import { ref, onMounted } from 'vue';
 import { fetchBuyersOrders } from '@/api/Orders';
 import BuyersShowOrder from '@/views/buyers/show/BuyersShowOrder.vue';
 import BuyersShowTop from '@/views/buyers/show/BuyersShowTop.vue';
-import { ElNotification } from 'element-plus';
-
-const error_notification = () => {
-  ElNotification({
-    title: 'Ошибка',
-    message: 'Не удалось получить данные с сервера',
-    type: 'error',
-    position: 'bottom-right',
-  })
-}
+import {error_notification} from "@/services/utils/notification_utils.ts";
 
 const orders = ref([]);
 const loaded = ref(false);
@@ -42,7 +33,8 @@ onMounted(async () => {
     orders.value = await fetchBuyersOrders();
     loaded.value = true;
   } catch (error) {
-    error_notification();
+    const message_error = 'Не удалось получить данные с сервера';
+    error_notification(message_error);
   }
 });
 </script>
@@ -52,7 +44,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: top;
+  justify-content: start;
   height: 100vh; /* 100% высоты видимой части страницы */
   margin-left: 6vw;
   position: absolute;

@@ -1,19 +1,19 @@
 <template>
-    <SuppliersCreateTop />
+    <CreateTop title="Заказы поставщикам"/>
     <div class="create-suppliers-order">
       <SuppliersCreateOrder />
     </div>
 </template>
 
 <script>
-import SuppliersCreateTop from '@/views/suppliers/create/SuppliersCreateTop.vue';
+import CreateTop from '@/components/CreateTop.vue';
 import SuppliersCreateOrder from '@/views/suppliers/create/SuppliersCreateOrder.vue';
 
 export default {
   name: 'SuppliersCreate',
   components: {
-    SuppliersCreateTop,
-   SuppliersCreateOrder,
+    CreateTop,
+    SuppliersCreateOrder,
   }
 }
 </script>

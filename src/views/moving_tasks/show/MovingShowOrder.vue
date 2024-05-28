@@ -31,9 +31,15 @@ export default {
 </script>
 
 <style >
+el-row {
+  font-weight: bold;
+}
+
 .order-moving {
   width: 100%;
   font-size: small;
   font-weight: 80;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>

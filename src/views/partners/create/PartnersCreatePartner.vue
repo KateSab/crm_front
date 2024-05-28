@@ -1,13 +1,13 @@
 <template>
   <div>
-    <PartnersCreateTop />
+    <CreateTop title="Контрагенты"/>
   </div>
-  <container class="create-partner">
+  <div class="create-partner">
     <el-form
       ref="ruleFormRef"
       :model="formPartner"
       label-position="left"
-      size="medium"
+      size="default"
       label-width="auto"
       status-icon
       style="width: 80%;"
@@ -30,7 +30,7 @@
         ref="ruleFormRef"
         :model="address"
         label-position="left"
-        size="medium"
+        size="default"
         label-width="auto"
         status-icon
         style="width: 80%;"
@@ -55,7 +55,7 @@
             <el-form
               :model="contact"
               label-position="left"
-              size="medium"
+              size="default"
               status-icon
             >
               <el-form-item label="Имя">
@@ -81,16 +81,27 @@
     </div>
     <el-button color="#FFFF6F" style="color: #4d4d4d; margin-bottom: 1rem;" @click="handleAddAddress()">Добавить адрес</el-button>
     <el-button type="primary" @click="preparePartner()">Создать контрагента</el-button>
-  </container>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import PartnersCreateTop from '@/views/partners/create/PartnersCreateTop.vue'
-import { createPartner } from '@/api/api_partner_create';
-import { Address } from '@/services/utils/partners_address_autocomplete_utils'
-import {addressSuggestions, loadAddresses, selectAddress} from '@/services/utils/partners_address_autocomplete_utils';
-import { formAddress, formPartner, addAddress, deleteAddress, addContact, deleteContact } from '@/services/utils/partners_utils';
-import { AddressInterface } from '@/interfaces/IPartners';
+import CreateTop from '@/components/CreateTop.vue';
+import {createPartner} from '@/api/api_partner_create';
+import {
+  Address,
+  addressSuggestions,
+  loadAddresses,
+  selectAddress
+} from '@/services/utils/partners_address_autocomplete_utils'
+import {
+  addAddress,
+  addContact,
+  deleteAddress,
+  deleteContact,
+  formAddress,
+  formPartner
+} from '@/services/utils/partners_utils';
+import {AddressInterface} from '@/interfaces/IPartners';
 
 function preparePartner() {
   const partnerJson = formPartner.value;  // Формирование JSON объекта для контрагента
@@ -102,8 +113,7 @@ function preparePartner() {
 //функции для автозаполнения
 const fetchAddressSuggestions = async (queryString: string, cb: any) => {
     await loadAddresses(queryString)
-    const results = addressSuggestions.value
-  cb(results)
+  cb(addressSuggestions.value)
 }
 
 const handleAddressSelect = (item: Address): void => {
@@ -141,11 +151,4 @@ const handleDeleteContact = (addressIndex: number, contactIndex: number): void =
 .create-partner > div {
     width: 100%; /* Разрешаем дочернему элементу занимать доступное пространство */
 }
-
-.circular {
-  display: inline;
-  height: 30px;
-  width: 30px;
-  animation: loading-rotate 2s linear infinite;
-}
-</style>@/services/utils/partners_address_autocomplete_service@/services/utils/partners_address_autocomplete_service@/services/utils/partners_service@/services/utils/partners_address_autocomplete_utils@/services/utils/partners_address_autocomplete_utils@/services/utils/partners_utils@/api/partner_add_api@/api/api_partner_create
+</style>

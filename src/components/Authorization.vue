@@ -1,6 +1,6 @@
 <template>
     <el-footer class="row">
-      <el-input type="email" v-model="email" placeholder="Email" style="width: 30%; margin-bottom: 1rem;"/>
+      <el-input type="text" v-model="email" placeholder="Email" style="width: 30%; margin-bottom: 1rem;"/>
       <el-input
         v-model="password"
         type="password"
@@ -11,17 +11,16 @@
       <el-button color="rgb(255, 226, 111)" style="width: 15%; margin-top: 2rem;" @click="login()">Войти</el-button>
     </el-footer>
   </template>
-  
+
   <script>
   // import axios from 'axios';
-  
+
   export default {
   data() {
     return {
       email: '',
       password: '',
-      email: '',
-    }; 
+    };
   },
   methods: {
     login: function () {
@@ -35,25 +34,20 @@
         .catch(err => console.log(err))
         console.log("auth success")
     },
-    // get_user: function () {
-    //     console.log("get email")
-    //     this.$store.dispatch('get_user', this.$store.state.token)
-    //     console.log(this.$store.state.user)
-    //   },
-      
+
   }
 };
 </script>
-  
+
   <style>
     .row {
       display: flex;
       flex-direction: column;
-      justify-content: center; 
-      align-items: center; 
+      justify-content: center;
+      align-items: center;
     }
   </style>
-  
+
 
 
 

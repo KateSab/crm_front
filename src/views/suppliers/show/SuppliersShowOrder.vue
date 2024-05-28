@@ -30,11 +30,6 @@ export default {
   display: flex; 
   flex-direction: column;
   align-items: center;
-  /* margin: 0 10vw 0 10vw; */
 }
 
-/* .table-container {
-  width: 100%; /* Ширина таблицы 
-  margin: 10px;
-} */
 </style>

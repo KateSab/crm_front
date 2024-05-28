@@ -21,7 +21,14 @@ export function submitForm(ruleForm) {
             console.log('Received order id:', data.id);
             const message_success: string = `Заказ  №№${data.id} сформирован`
             success_notification(message_success);
-            router.push({ path: '/suppliers' });
+            router.push({ path: '/suppliers' })
+              .then(() => {
+                console.log('Navigation to /suppliers succeeded');
+              })
+              .catch((error) => {
+                console.error('Navigation to /suppliers failed', error);
+              });
+
         })
         .catch(error => {
             const message_error: string = `Не удалось сформировать заказ №${error}`;

@@ -1,5 +1,5 @@
 <template>
-    <MovingTaskCreateTop />
+    <create-top title="Задачи на перемещение"/>
         <div class="create-moving-task">
             Создание новой задачи на перемещение
             <MovingTaskCreateTask />
@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import MovingTaskCreateTop from '@/views/moving_tasks/create/MovingTaskCreateTop.vue';
+import CreateTop from '@/components/CreateTop.vue';
 import MovingTaskCreateTask from '@/views/moving_tasks/create/MovingTaskCreateTask.vue';
 
 export default {
   name: 'MovingTaskCreate',
   components: {
-    MovingTaskCreateTop,
-      MovingTaskCreateTask,
+    CreateTop,
+    MovingTaskCreateTask,
   }
 }
 </script>

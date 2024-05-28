@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 export default {
   props: {
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style>
-.el-table-column {
+el-table-column {
     font-size: medium;
     font-weight: 200;
 }

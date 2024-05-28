@@ -1,5 +1,5 @@
-import { ref } from 'vue';
-import { AddressInterface } from '@/interfaces/IPartners';
+import {ref} from 'vue';
+import {AddressInterface} from '@/interfaces/IPartners';
 
 export interface Address {  //работа с автозаполнением адресов
     value: string
@@ -17,10 +17,10 @@ export const addressSuggestions = ref<Address[]>([]); //переменная д�
  */
 export const loadAddresses = async (queryString: string) => {  //загрузка адресов с сервера 
 
-    var url = "http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
-    var token = "ada8aadfdbb93503bcdb4ea54c989e735ec1d850";
+    const url = "http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
+    const token = "ada8aadfdbb93503bcdb4ea54c989e735ec1d850";
 
-    var options: RequestInit = {
+    const options: RequestInit = {
         method: "POST",
         mode: "cors",
         headers: {
