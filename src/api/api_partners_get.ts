@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {PartnerInterface} from "@/interfaces/IPartners";
 
 /**
  * Retrieves partners data from the API based on the specified limit and optional keyName filter.
@@ -21,17 +22,17 @@ export async function getPartnersApi(limit: number = 1000, keyName: string = und
         const response = await axios.get(url, { params });
         const responseData = response.data;
 
-        let partnersList;
+        let partnersList: PartnerInterface[];
 
         if (keyName !== undefined) {
             // Обработка данных, если keyName был передан
-            partnersList = responseData.map((partner) => ({
+            partnersList = responseData.map((partner: PartnerInterface) => ({
                 id: partner.id,
                 name: partner.name
             }));
         } else {
             // Обработка данных, если keyName не был передан
-            partnersList = responseData.map((partner) => ({
+            partnersList = responseData.map((partner: PartnerInterface) => ({
                 id: partner.id,
                 name: partner.name,
                 is_contractor: partner.is_contractor,
@@ -46,8 +47,8 @@ export async function getPartnersApi(limit: number = 1000, keyName: string = und
             }));
         }
 
-        return partnersList;
+        return Promise.resolve(partnersList);
     } catch (error) {
-        throw error;
+        return Promise.reject(error);
     }
 }

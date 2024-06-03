@@ -6,7 +6,7 @@
       size="small"
       label-width="auto"
       status-icon
-      style="width: 40vw; margin-top: 2rem;"
+      class="suppliers-form"
     >
       <el-form-item label="Поставщик" prop="contractor_id">
         <el-select v-model="ruleForm.contractor_id" placeholder="Поставщик">
@@ -50,11 +50,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import store from '../../../store/index';
-import { getSuppliers } from '@/api/api_helpers_partners';
-import { ISupplierOrder } from '@/interfaces/ISupplierOrder';
-import { submitForm } from '@/api/api_suppliers_order_create';
+import {getPartnersApi} from '@/api/api_partners_get';
+import {ISupplierOrder} from '@/interfaces/ISupplierOrder';
+import {submitForm} from '@/api/api_suppliers_order_create';
 
 const ruleForm = reactive<ISupplierOrder>({
     contractor_id: '',
@@ -70,7 +70,7 @@ const suppliers = ref([]);
 
 onMounted(async () => {
     try {
-        suppliers.value = await getSuppliers();
+        suppliers.value = await getPartnersApi(1000, 'is_supplier');
     } catch (error) {
         console.error("Error loading data:", error);
     }
@@ -80,3 +80,13 @@ const handleSubmitForm = () => {
   submitForm(ruleForm);
 }
 </script>
+
+<style scoped>
+.suppliers-form {
+    background-color: #f9f9f9; /* Цвет фона для плашки */
+    width: 40%;
+    border-radius: 10px; /* Закругленные края */
+    padding: 20px; /* Внутренние отступы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для плашки */
+}
+</style>

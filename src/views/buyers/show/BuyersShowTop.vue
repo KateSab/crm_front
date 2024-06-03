@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import BuyersCreate from '@/views/buyers/create/BuyersCreate.vue'
+import CustomerorderCreate from '@/views/buyers/create/CustomerorderCreate.vue'
 import {Plus} from "@element-plus/icons-vue";
 
 export default {
@@ -37,7 +37,7 @@ export default {
   },
   components: {
     Plus,
-    BuyersCreate,
+    CustomerorderCreate,
   }
 };
 

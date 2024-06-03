@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
@@ -6,6 +6,7 @@ import index from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import '@/main.scss'
 import axios from 'axios';
 
 const app = createApp(App); // Создаем объект приложения Vue

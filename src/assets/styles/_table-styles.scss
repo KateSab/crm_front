@@ -1,0 +1,14 @@
+// _table-styles.scss
+@import 'variables';
+
+.vue-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    --el-table-header-bg-color:var(--el-color-primary-light-9);
+    --el-table-current-row-bg-color: white;
+    text-align: center;
+    font-size: small;
+  }
+}

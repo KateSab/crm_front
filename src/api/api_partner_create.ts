@@ -1,7 +1,7 @@
-import { success_notification, error_notification } from '@/services/utils/notification_utils';
+import {error_notification, success_notification} from '@/services/utils/notification_utils';
 import router from '@/router';
 
-export function createPartner(partner: any) {
+export function createPartnerApi(partner: any) {
     fetch('http://89.104.68.248:8000/api/partner/add', {
         method: 'POST',
         headers: {

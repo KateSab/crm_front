@@ -49,13 +49,13 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import PartnersShowTop from '@/views/partners/show/PartnersShowTop.vue';
-import {getPrtners} from '@/api/api_helpers_partners'
+import {getPartnersApi} from '@/api/api_partners_get';
 
 const partners = ref([]);
 
 onMounted(async () => {
     try {
-        partners.value = await getPrtners();
+        partners.value = await getPartnersApi(1000);
         console.log("Got partners successfully");
     } catch (error) {
         console.error("Failed to get partners:", error);

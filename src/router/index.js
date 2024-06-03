@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import index from '../store'
 import MainPage from '@/views/MainPage.vue'
 import Login from '@/views/Login.vue'
 import Buyers from '@/views/buyers/Buyers.vue'
-import BuyersCreate from '@/views/buyers/create/BuyersCreate.vue'
+import CustomerorderCreate from '@/views/buyers/create/CustomerorderCreate.vue'
 import Suppliers from '@/views/suppliers/Suppliers.vue'
 import SuppliersCreate from '@/views/suppliers/create/SuppliersCreate.vue'
 import Contractors from '@/views/contractors/Contractors.vue'
@@ -45,8 +45,8 @@ const routes = [
   },
   {
     path: '/buyers/create',
-    name: 'buyersCreate',
-    component: BuyersCreate,
+    name: 'CustomerorderCreate',
+    component: CustomerorderCreate,
     meta: {
       requiresAuth: true
     }

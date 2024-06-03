@@ -1,6 +1,5 @@
-import { createStore } from 'vuex';
+import {createStore} from 'vuex';
 import axios from 'axios';
-import { getPartnersApi } from '@/api/api_partners_get';
 
 export default createStore({
   state: {
@@ -8,13 +7,8 @@ export default createStore({
     token: localStorage.getItem('token') || '',
     user: {},
     email: localStorage.getItem('email') || '',
-    clients: [],
-    shipment_locations: [],
-    contractors: [],
-    suppliers: [],
     supplier_orders: [],
     types_of_applications: [],
-    partners: [],
     addresses: [],
     delivery_types: [{ name: 'До склада', id: 0 }, { name: 'До ПВЗ', id: 1 }, { name: 'До ТК', id: 2 }],
   },
@@ -33,29 +27,14 @@ export default createStore({
     user_data(state, email) {
       state.email = email
     },
-    get_clients(state, clients) {
-      state.clients = clients;
-    },
-    get_shipment_locations(state, shipment_locations) {
-      state.shipment_locations = shipment_locations;
-    },
-    get_contractors(state, contractors) {
-      state.contractors = contractors;
-    },
     get_addresses(state, addresses) {
       state.addresses = addresses;
-    },
-    get_suppliers(state, suppliers) {
-      state.suppliers = suppliers;
     },
     get_supplier_orders(state, supplier_orders) {
       state.supplier_orders = supplier_orders;
     },
     get_types_of_applications(state, types_of_applications) {
       state.types_of_applications = types_of_applications;
-    },
-    get_partners(state, partners) {
-      state.partners = partners;
     },
     logout(state) {
       state.status = ''
@@ -91,66 +70,6 @@ export default createStore({
             reject(err)
           })
       })
-    },
-    get_clients({ commit }) {
-      console.log("get_clients");
-      try {
-        const clientsList = getPartnersApi(1000, 'is_other');
-        commit('get_clients', clientsList); // Вызываем мутацию для обновления состояния хранилища
-        console.log("clients: ", clientsList);
-      } catch (error) {
-        console.error("Failed to get clients store:", error);
-        throw error;
-      }
-    },
-    get_shipment_locations({ commit }) {
-      console.log("get shipment locations");
-      return new Promise((resolve, reject) => {
-        const url = 'http://89.104.68.248:8000/api/locations/get_filter';
-        const params = {
-          'limit': 1000,
-          'contractor_id': -1
-        }
-        axios.get(url, { params })
-          .then(resp => {
-            const shipmentLocationsData = resp.data;
-            // Создаем списки словарей для каждого клиента
-            const shipmentLocationsList = shipmentLocationsData.map(shipment_location => ({
-              id: shipment_location.id,
-              name: shipment_location.name
-            }));
-            // Вызываем мутацию для обновления состояния хранилища
-            commit('get_shipment_locations', shipmentLocationsList);
-
-            console.log("shipment locations: ", shipmentLocationsList);
-            resolve(resp);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
-    get_contractors({ commit }) {
-      console.log("get_contractors");
-      try {
-        const contractorsList = getPartnersApi(1000, 'is_contractor');
-        commit('get_contractors', contractorsList); // Вызываем мутацию для обновления состояния хранилища
-        console.log("contractors: ", contractorsList);
-      } catch (error) {
-        console.error("Failed to get contractors store:", error);
-        throw error;
-      }
-    },
-    get_suppliers({ commit }) {
-      console.log("get_suppliers");
-      try {
-        const suppliersList = getPartnersApi(1000, 'is_supplier');
-        commit('get_suppliers', suppliersList); // Вызываем мутацию для обновления состояния хранилища
-        console.log("suppliers: ", suppliersList);
-      } catch (error) {
-        console.error("Failed to get suppliers store:", error);
-        throw error;
-      }
     },
     get_supplier_orders({ commit }) {
       console.log("get_supplier_orders");
@@ -204,17 +123,6 @@ export default createStore({
             reject(error);
           });
       })
-    },
-    get_partners({ commit }) {
-      console.log("get_partners");
-      try {
-        const partnersList = getPartnersApi(1000);
-        commit('get_partners', partnersList); // Вызываем мутацию для обновления состояния хранилища
-        console.log("partners: ", partnersList);
-      } catch (error) {
-        console.error("Failed to get partners store:", error);
-        throw error;
-      }
     },
     get_addresses({ commit }) {
       return new Promise((resolve, reject) => {
@@ -283,10 +191,6 @@ export default createStore({
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-    clients: state => state.clients,
-    shipment_locations: state => state.shipment_locations,
-    contractors: state => state.contractors,
-    suppliers: state => state.suppliers,
     types_of_applications: state => state.types_of_applications
   },
   modules: {

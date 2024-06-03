@@ -86,7 +86,6 @@
 
 <script lang="ts" setup>
 import CreateTop from '@/components/CreateTop.vue';
-import {createPartner} from '@/api/api_partner_create';
 import {
   Address,
   addressSuggestions,
@@ -102,12 +101,13 @@ import {
   formPartner
 } from '@/services/utils/partners_utils';
 import {AddressInterface} from '@/interfaces/IPartners';
+import {createPartnerApi} from '@/api/api_partner_create';
 
 function preparePartner() {
   const partnerJson = formPartner.value;  // Формирование JSON объекта для контрагента
   const partnerCombinedJson = JSON.stringify(partnerJson, null, 2);  // Преобразование объекта в JSON-строку
   console.log("Создание контрагента и адресов: ", formPartner.value.name);  // Вывод результата в консоль
-  createPartner(partnerCombinedJson);
+  createPartnerApi(partnerCombinedJson);
 }
 
 //функции для автозаполнения

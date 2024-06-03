@@ -1,18 +1,18 @@
 <template>
   <div class="top">
-    <el-button @click="goBack" type="primary" plain class="top-items">
-      <el-icon class="el-icon--right"><ArrowLeft /></el-icon>
-      Назад
-    </el-button>
-    <div class="path">
-      <el-link @click="goBack" :underline="false" class="top-items">
+    <el-row class="centered-row">
+      <el-button @click="goBack" type="primary" plain style="margin-right: 2rem">
+        <el-icon class="el-icon--right"><ArrowLeft /></el-icon>
+        Назад
+      </el-button>
+      <el-link @click="goBack" :underline="false" class="link-item">
         {{ title }}
       </el-link>
-      <el-icon class="top-items"><ArrowRight /></el-icon>
-      <el-text class="top-items">
+      <el-icon class="icon-item"><ArrowRight /></el-icon>
+      <el-text class="text-item">
         Создание
       </el-text>
-    </div>
+    </el-row>
   </div>
   <el-divider></el-divider>
 </template>
@@ -42,13 +42,15 @@ export default {
   margin: 2rem 4rem 0 4rem;
 }
 
-.path {
-  margin-left: 2.5rem;
-  margin-top: 0.4rem;
+.centered-row {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
 }
 
-.top-items {
-  vertical-align: middle; /* Выравнивание иконки посередине вертикально */
-  margin-left: 0.5rem;
+/* Добавляет отступы между элементами */
+el-button, .link-item, .icon-item, .text-item {
+  margin: 0 5px; /* Пример отступа, настройте по вашим нуждам */
 }
 </style>
