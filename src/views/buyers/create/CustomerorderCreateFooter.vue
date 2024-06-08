@@ -8,22 +8,21 @@
           label-width="auto"
       >
         <el-form-item label="УК">
-          <el-input v-model="localForm.UK" disabled>
+          <el-input v-model="formData.UK" disabled>
             <template #append>₽</template>
           </el-input>
         </el-form-item>
         <el-form-item label="Оплата за склад">
           <el-input
-              v-model="localForm.store_cost"
+              v-model="formData.store_cost"
               @input="updateForm('store_cost', $event)"
-
           >
             <template #append>₽</template>
           </el-input>
         </el-form-item>
         <el-form-item label="Доставка от поставщика (план)">
           <el-input
-              v-model="localForm.plan_delivery_cost"
+              v-model="formData.plan_delivery_cost"
               @input="updateForm('plan_delivery_cost', $event)"
 
           >
@@ -32,7 +31,7 @@
         </el-form-item>
         <el-form-item label="Перемещения при производстве (план)">
           <el-input
-              v-model="localForm.plan_moves_cost"
+              v-model="formData.plan_moves_cost"
               @input="updateForm('plan_moves_cost', $event)"
 
           >
@@ -41,7 +40,7 @@
         </el-form-item>
         <el-form-item label="Дизайн (план)">
           <el-input
-              v-model="localForm.plan_design_cost"
+              v-model="formData.plan_design_cost"
               @input="updateForm('plan_design_cost', $event)"
 
           >
@@ -50,7 +49,7 @@
         </el-form-item>
         <el-form-item label="Сборщики (студенты) (план)">
           <el-input
-              v-model="localForm.plan_workers_cost"
+              v-model="formData.plan_workers_cost"
               @input="updateForm('plan_workers_cost', $event)"
 
           >
@@ -59,7 +58,7 @@
         </el-form-item>
         <el-form-item label="Доставка до клиента (план)">
           <el-input
-              v-model="localForm.plan_shipment_cost"
+              v-model="formData.plan_shipment_cost"
               @input="updateForm('plan_shipment_cost', $event)"
 
           >
@@ -68,7 +67,7 @@
         </el-form-item>
         <el-form-item label="Прочие расходы (план)">
           <el-input
-              v-model="localForm.plan_other_expenses"
+              v-model="formData.plan_other_expenses"
               @input="updateForm('plan_other_expenses', $event)"
 
           >
@@ -77,14 +76,22 @@
         </el-form-item>
         <el-form-item label="Сделка с маркетинга">
           <div class="inline-elements">
-            <el-checkbox v-model="localForm.is_from_marketing" size="default"></el-checkbox>
-            <el-input v-model="localForm.is_from_marketing_cost" disabled>
+            <el-checkbox 
+              v-model="formData.is_from_marketing" 
+              size="default"
+              @change="changeIsMarketing(formData.is_from_marketing, $event)"
+            >
+            </el-checkbox>
+            <el-input 
+              v-model="formData.is_from_marketing_cost" 
+              :disabled="!formData.is_from_marketing"
+              >
               <template #append>₽</template>
             </el-input>
           </div>
         </el-form-item>
         <el-form-item label="Итого доп.затрат">
-          <el-input v-model="localForm.sum_cost" disabled>
+          <el-input v-model="formData.sum_cost" disabled>
             <template #append>₽</template>
           </el-input>
         </el-form-item>
@@ -98,28 +105,28 @@
       >
         <el-form-item label="Себестоимость всего заказа">
           <el-input
-              v-model="localForm.self_order_cost"
+              v-model="formResultData.self_order_cost"
               disabled>
             <template #append>₽</template>
           </el-input>
         </el-form-item>
         <el-form-item label="Цена всего заказа для клиента">
           <el-input
-              v-model="localForm.sum_client_cost"
+              v-model="formResultData.sum_client_cost"
               disabled>
             <template #append>₽</template>
           </el-input>
         </el-form-item>
         <el-form-item label="Маржа по заказу">
           <el-input
-              v-model="localForm.margin_cost"
+              v-model="formResultData.margin_cost"
               disabled>
             <template #append>₽</template>
           </el-input>
         </el-form-item>
         <el-form-item label="Маржинальность по заказу">
           <el-input
-              v-model="localForm.margin_percent"
+              v-model="formResultData.margin_percent"
               disabled>
             <template #append>%</template>
           </el-input>
@@ -132,27 +139,25 @@
 
 <script>
 import {ElInput} from "element-plus";
-import {formatValue} from "@/services/utils/format_input";
+import {formatFloat} from "@/services/utils/format_input";
 
 export default {
   props: {
     formData: Object,
+    formResultData: Object,
   },
   computed: {
-    localForm: {
-      get() {
-        return this.formData;
-      },
-      set(value) {
-        // Не используется, так как обновление происходит через метод updateForm
-      }
-    }
+    
   },
   methods: {
     updateForm(field, value) {
-      const formattedValue = formatValue(value);
+      const formattedValue = formatFloat(value);
       // Эмитируем событие с обновленным значением поля, используя отформатированное значение
-      this.$emit('update-form', { field, value: formattedValue });
+      this.formData[field] = formattedValue;
+      this.$emit('update-data', field, this.formData[field]);
+    },
+    changeIsMarketing() {
+      this.$emit('is-from-marketing', this.formData.is_from_marketing);
     }
   }
 };

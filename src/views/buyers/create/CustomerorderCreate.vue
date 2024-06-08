@@ -2,21 +2,31 @@
   <div>
     <CreateTop title="Заказы покупателей"/>
     <div class="create-buyers-order">
-      <CustomerorderCreateHeader :formData="myForm" :clients="clients" @update-form="handleFormUpdate"/>
+      <CustomerorderCreateHeader 
+        :clients="clients" 
+        v-model:formData="headForm"
+      />
       <CustomerorderCreateTable
-          :tableData="tableData"
-          @add-row="handleAddRow"/>
-      <CustomerorderCreateFuter :form-data="myForm" @update-form="handleFormUpdate"/>
+          v-model:tableData="tableData"
+          @add-row="handleAddRow"
+          @delete-row="handleDeleteRow"
+          @update-data="handleUpdateTable"
+          @chain-function="handleChainFunction"
+      />
+      <CustomerorderCreateFuter 
+        v-model:formData="footerForm"
+        v-model:formResultData="resultForm"
+        @update-data="handleUpdateFooter"
+        @is-from-marketing="handleIsFromMarketing"
+      />
     </div>
     <el-button
         plain
         type="primary"
-        @click="handleSubmit()"
         style="margin-top: 2rem;"
     >
       Сформировать заказ
     </el-button>
-    {{myForm}}
   </div>
 </template>
 
@@ -24,9 +34,10 @@
 import {defineComponent, onMounted, reactive, ref} from 'vue';
 import CreateTop from "@/components/CreateTop.vue";
 import CustomerorderCreateHeader from '@/views/buyers/create/CustomerorderCreateHeader.vue';
-import CustomerorderCreateFuter from "@/views/buyers/create/CustomerorderCreateFuter.vue";
+import CustomerorderCreateFuter from "@/views/buyers/create/CustomerorderCreateFooter.vue";
 import CustomerorderCreateTable from "@/views/buyers/create/CustomerorderCreateTable.vue";
-import {ICustomerOrderCreate} from '@/interfaces/ICustomerOrder';
+import {ICustFooter, ICustGeneralCost, ICustHead, ICustomerOrderCreate, ICustTable} from '@/interfaces/ICustomerOrder';
+import {calculateFieldsTable, calculateFieldsFooter, calculatePricePerUnitForClient, isFromMarketingCost} from '@/services/utils/customer_order_utils';
 import {getLocationsApi} from '@/api/api_locations';
 import {getPartnersApi} from '@/api/api_partners_get';
 
@@ -43,31 +54,86 @@ export default defineComponent({
     const clients = ref([]);
     const warehouses = ref([]);
 
-    const emptyRow = {
+    const headForm = reactive<ICustHead>({
+      sell_link: '',
+      client_id: undefined,
+      income_ratio: 1.5,
+    })
+
+    const emptyRow:ICustTable = {
       name: '',
       description: '',
-      circulationShipment: '',
-      circulationSetup: '',
-      applicationInfo: '',
-      warehouse: '',
-      costPerUnit: '',
-      applicationCostPerUnit: '',
-      totalCostPerUnit: '',
-      totalCostForCirculation: '',
-      markupForAdditionalCosts: '',
-      priceAdjustment: '',
-      pricePerUnitForClient: '',
-      priceForCirculationForClient: '',
-      margin: '',
-      marginPercentage: '',
+      shipment_count: undefined,
+      adjustment_count: undefined,
+      branding_info: '',
+      shipment_location_id: undefined,
+      plan_product_unit_costprice: undefined,
+      plan_branging_unit_costprice: undefined,
+      total_cost_per_unit: undefined,
+      total_cost_for_circulation: undefined,
+      markup_for_additional_costs: undefined,
+      adjustment_price: undefined,
+      price_per_unit_for_client: undefined,
+      price_for_circulation_for_client: undefined,
+      margin: undefined,
+      margin_percent: undefined,
     };
 
     // Инициализация данных таблицы с одной пустой строкой
     const tableData = ref([ {...emptyRow} ]);
 
+    // Наименования и структура колонок
     const handleAddRow = () => {
       tableData.value.push({ ...emptyRow });
+      calculateFieldsFooter(tableData.value, footerForm, resultForm);
     };
+    // Удаление строки
+    const handleDeleteRow = (index: number) => {
+      tableData.value.splice(index, 1);
+      calculateFieldsFooter(tableData.value, footerForm, resultForm);
+    }
+    // Обновление данных таблицы
+    const handleUpdateTable = ({ index, column, value }) => {
+      const row = tableData.value[index];
+      tableData.value[index][column] = value;
+      calculateFieldsTable(footerForm, headForm, tableData.value, row, resultForm);
+    };
+    // При вводе корректировки цены
+    const handleChainFunction = ({ index }) => {
+      const row = tableData.value[index];
+      calculatePricePerUnitForClient(row, headForm, resultForm, tableData.value);
+    }
+
+    const footerForm = reactive<ICustFooter>({
+        UK: 1024,
+        store_cost: 4500,
+        plan_delivery_cost: undefined,
+        plan_moves_cost: undefined,
+        plan_shipment_cost: undefined,
+        plan_design_cost: undefined,
+        plan_workers_cost: undefined,
+        plan_other_expenses: undefined,
+        is_from_marketing: false,
+        is_from_marketing_cost: 0,
+        sum_cost: 5524,
+    });
+
+    const handleUpdateFooter = (field: string, value: number) => {
+      footerForm[field] = value;
+      calculateFieldsFooter(tableData.value, footerForm, resultForm, headForm);
+    };
+
+    const handleIsFromMarketing = (value: boolean) => {
+      footerForm.is_from_marketing = value;
+      isFromMarketingCost(tableData.value, footerForm);
+    }
+
+    const resultForm = reactive<ICustGeneralCost>({
+        self_order_cost: undefined,
+        sum_client_cost: undefined,
+        margin_cost: undefined,
+        margin_percent: undefined,
+    });
 
     // Асинхронная загрузка данных при монтировании
     onMounted(async () => {
@@ -75,52 +141,30 @@ export default defineComponent({
         clients.value = await getPartnersApi(1000, 'is_other');
         warehouses.value = await getLocationsApi();
       } catch (error) {
-        console.error("Error loading data:", error.message);
+        console.error("Error loading data:", error);
       }
     });
 
     return {
       clients,
       warehouses,
+      headForm,
       tableData,
       handleAddRow,
+      handleDeleteRow,
+      handleUpdateTable,
+      handleChainFunction,
+      footerForm,
+      handleUpdateFooter,
+      handleIsFromMarketing,
+      resultForm,
     };
   },
   data() {
     return {
-      // Форма данных без таблицы
-      myForm: reactive<ICustomerOrderCreate>({
-        creator_id: 12,
-        client_id: undefined,
-        sell_link: '',
-        income_ratio: 1.5, //наценка
-        plan_delivery_cost: undefined, //Стоимость доставки от поставщика (план)
-        plan_moves_cost: undefined, //Стоимость доставок при производстве (план)
-        plan_shipment_cost: undefined, //Стоимость доставки до клиента (план)
-        plan_design_cost: undefined, //Стоимость дизайнерских работ (план)
-        plan_workers_cost: undefined, //Стоимость наемных сотрудников (план)
-        plan_other_expenses: undefined, //Стоимость прочих расходов (план)
-        is_from_marketing: false, //сделка с маркетинга
-
-        UK: undefined, //УК
-        store_cost: undefined, //Оплата за склад
-        is_from_marketing_cost: undefined, //Сделка с маркетинга
-        sum_cost: undefined, //Итого доп.затрат
-
-        self_order_cost: undefined, //Себестоимость всего заказа
-        sum_client_cost: undefined, //Цена всего заказа для клиента
-        margin_cost: undefined, //Маржа по заказу
-        margin_percent: undefined, //Маржинальность по заказу
-      }),
     };
   },
   methods: {
-    handleFormUpdate({ field, value }) {
-      this.myForm[field] = value;
-    },
-    handleSubmit() {
-      console.log(this.myForm);
-    },
   }
 });
 </script>

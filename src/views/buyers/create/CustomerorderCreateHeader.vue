@@ -1,16 +1,12 @@
 <template>
   <el-row style="width: 100%">
     <el-col :span="20" class="top">
-      <el-form
-          label-position="left"
-          size="small"
-          label-width="auto"
-      >
+      <el-form label-position="left" size="small" label-width="auto">
         <el-form-item label="Ссылка на сделку продажи">
-          <el-input v-model="localForm.sell_link" @input="updateForm('sell_link', $event)"/>
+          <el-input v-model="formData.sell_link" />
         </el-form-item>
         <el-form-item label="Клиент">
-          <el-select v-model="localForm.client_id" @change="updateForm('client_id', $event)">
+          <el-select v-model="formData.client_id">
             <el-option
                 v-for="client in clients"
                 :label="client.name"
@@ -20,7 +16,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Наценка">
-          <el-input v-model="localForm.income_ratio" @input="updateForm('income_ratio', $event)"/>
+          <el-input 
+          v-model="formData.income_ratio" 
+          @input="updateForm('income_ratio', $event)"
+          />
         </el-form-item>
       </el-form>
     </el-col>
@@ -28,26 +27,21 @@
 </template>
 
 <script>
+import {formatFloat} from "@/services/utils/format_input";
+
 export default {
   props: {
     formData: Object,
     clients: Array
   },
   computed: {
-    localForm: {
-      get() {
-        return this.formData;
-      },
-      set(value) {
-        // Не используется, так как обновление происходит через метод updateForm
-      }
-    }
   },
   methods: {
     updateForm(field, value) {
-      // Эмитируем событие с обновленным значением поля
-      this.$emit('update-form', { field, value });
-    }
+      const formattedValue = formatFloat(value);
+      // Эмитируем событие с обновленным значением поля, используя отформатированное значение
+      this.formData[field] = formattedValue;
+    },
   }
 };
 </script>

@@ -6,9 +6,8 @@
   border-collapse: collapse;
 
   th {
-    --el-table-header-bg-color:var(--el-color-primary-light-9);
-    --el-table-current-row-bg-color: white;
-    text-align: center;
+    --el-table-header-bg-color: var(--el-color-primary-light-9);
+    --el-table-current-row-bg-color: var(--el-color-primary-light-11); //не работает
     font-size: small;
   }
 }
