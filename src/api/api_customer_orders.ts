@@ -1,7 +1,7 @@
 import axios from "axios";
 import router from '@/router';
 import { success_notification, error_notification } from '@/services/utils/notification_utils';
-import { ICustHead, ICustTable, ICustFooter, ICustGeneralCost, ICustomerOrderCreate, ICustomerOrderCreateProducts } from '@/interfaces/ICustomerOrder';
+import { ICustHead, ICustTable, ICustFooter, ICustGeneralCost, ICustomerOrderCreate } from '@/interfaces/ICustomerOrder';
 
 export async function getCustomerOrdersApi(limit: number = 1000, status_id: number = 1) {
     const params = {

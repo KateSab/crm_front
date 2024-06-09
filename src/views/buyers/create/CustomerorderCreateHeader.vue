@@ -62,8 +62,6 @@ export default {
       console.log("Selected client:", this.formData.client.id);
       this.formData.client.name = selectedClient.label;
     },
-
-
   }
 };
 </script>
