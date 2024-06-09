@@ -6,14 +6,14 @@
           <el-input v-model="formData.sell_link" />
         </el-form-item>
         <el-form-item label="Клиент">
-          <el-select v-model="formData.client_id">
-            <el-option
-                v-for="client in clients"
-                :label="client.name"
-                :value="client.id"
-                :key="client.id"
-            />
-          </el-select>
+          <el-autocomplete
+              v-model="formData.client.name"
+              :fetch-suggestions="handleFetchSuggestions"
+              clearable
+              class="inline-input w-50"
+              @select="client => handleSelectClient(client)"
+              value-key="label"
+          />
         </el-form-item>
         <el-form-item label="Наценка">
           <el-input 
@@ -42,6 +42,28 @@ export default {
       // Эмитируем событие с обновленным значением поля, используя отформатированное значение
       this.formData[field] = formattedValue;
     },
+    handleFetchSuggestions(queryString, cb) {
+      try {
+        const filteredClients = this.clients.filter(client =>
+            client.name.toLowerCase().includes(queryString.toLowerCase())
+        );
+        const suggestions = filteredClients.map(client => ({
+            value: client.id,
+            label: client.name,
+            client
+        }));
+        cb(suggestions);
+      } catch (error) {
+          console.error('Failed to fetch clients:', error);
+      }
+    },
+    handleSelectClient(selectedClient) {
+      this.formData.client.id = selectedClient.client.id;
+      console.log("Selected client:", this.formData.client.id);
+      this.formData.client.name = selectedClient.label;
+    },
+
+
   }
 };
 </script>

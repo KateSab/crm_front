@@ -65,13 +65,13 @@
                         </el-row>
                         Адрес
                         <el-autocomplete
-                        v-model="formTask.to.address"
-                        :fetch-suggestions="handleFetchSuggestions"
-                        clearable
-                        class="inline-input w-50"
-                        placeholder="Введите адрес"
-                        @select="address => handleSelectAddress(address)"
-                        value-key="label"
+                            v-model="formTask.to.address"
+                            :fetch-suggestions="handleFetchSuggestions"
+                            clearable
+                            class="inline-input w-50"
+                            placeholder="Введите адрес"
+                            @select="address => handleSelectAddress(address)"
+                            value-key="label"
                         />
                         Контакт
                         <el-row justify="center">

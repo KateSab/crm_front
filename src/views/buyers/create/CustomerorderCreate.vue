@@ -3,11 +3,12 @@
     <CreateTop title="Заказы покупателей"/>
     <div class="create-buyers-order">
       <CustomerorderCreateHeader 
-        :clients="clients" 
+        :clients="clients"
         v-model:formData="headForm"
       />
       <CustomerorderCreateTable
           v-model:tableData="tableData"
+          :warehouses="warehouses"
           @add-row="handleAddRow"
           @delete-row="handleDeleteRow"
           @update-data="handleUpdateTable"
@@ -24,6 +25,7 @@
         plain
         type="primary"
         style="margin-top: 2rem;"
+        @click="createOrder"
     >
       Сформировать заказ
     </el-button>
@@ -56,7 +58,10 @@ export default defineComponent({
 
     const headForm = reactive<ICustHead>({
       sell_link: '',
-      client_id: undefined,
+      client: {
+        id: undefined,
+        name: '',
+      },
       income_ratio: 1.5,
     })
 
@@ -66,7 +71,10 @@ export default defineComponent({
       shipment_count: undefined,
       adjustment_count: undefined,
       branding_info: '',
-      shipment_location_id: undefined,
+      shipment_location: {
+        id: undefined,
+        name: '',
+      },
       plan_product_unit_costprice: undefined,
       plan_branging_unit_costprice: undefined,
       total_cost_per_unit: undefined,
@@ -135,6 +143,10 @@ export default defineComponent({
         margin_percent: undefined,
     });
 
+    const createOrder = () => {
+      console.log("DATA: ", headForm, tableData.value, footerForm, resultForm);
+    }
+
     // Асинхронная загрузка данных при монтировании
     onMounted(async () => {
       try {
@@ -158,6 +170,7 @@ export default defineComponent({
       handleUpdateFooter,
       handleIsFromMarketing,
       resultForm,
+      createOrder,
     };
   },
   data() {

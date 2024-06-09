@@ -1,7 +1,10 @@
 // Создание
 export interface ICustHead {
     sell_link: string | null;
-    client_id: number | null;
+    client: {
+        id: number | null;
+        name: string | null;
+    };
     income_ratio: number | null; //наценка
 }
 
@@ -11,7 +14,10 @@ export interface ICustTable {
     shipment_count: number | null;
     adjustment_count: number | null;
     branding_info: string | null;
-    shipment_location_id: number | null;
+    shipment_location: {
+        id: number | null;
+        name: string | null;
+    };
     plan_product_unit_costprice: number | null;
     plan_branging_unit_costprice: number | null;
     total_cost_per_unit: number | null;

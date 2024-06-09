@@ -2,7 +2,6 @@ import { ICustFooter, ICustHead, ICustTable, ICustGeneralCost } from "@/interfac
 import { formatToInt, formatToFloat } from "@/services/utils/format_calculating_utils";
 
 export const calculateFieldsTable = (footer: ICustFooter, header: ICustHead, tableData: ICustTable[], row?: ICustTable, result?: ICustGeneralCost) => {
-  console.log("tableData: ", tableData);
   // Себестоимость итого за ед.
   if (row.plan_product_unit_costprice && row.plan_branging_unit_costprice) {
     row.total_cost_per_unit = formatToInt(row.plan_product_unit_costprice) + formatToInt(row.plan_branging_unit_costprice);
@@ -11,6 +10,7 @@ export const calculateFieldsTable = (footer: ICustFooter, header: ICustHead, tab
   if (row.shipment_count && row.adjustment_count && row.total_cost_per_unit) {
     row.total_cost_for_circulation = formatToInt(row.total_cost_per_unit) * (formatToInt(row.shipment_count) + formatToInt(row.adjustment_count));
     calculateSelfOrderCost(tableData, footer, result);
+    isFromMarketingCost(tableData, footer);
   }
   // Наценка за доп. траты
   if (row.shipment_count && row.total_cost_for_circulation) {
@@ -86,10 +86,15 @@ const sumCost = (footerForm: ICustFooter) => {
 // Сделка с маркетинга
 export const isFromMarketingCost = (tableData: ICustTable[], footerForm: ICustFooter) => {
   if (footerForm.is_from_marketing === true) {
-    footerForm.is_from_marketing_cost = tableData.reduce((sum: number, item: ICustTable) => {
-      return sum + parseInt((item.total_cost_for_circulation).toString().replace(/\s/g, ''));
-    }, 0) * 0.07;
-    sumCost(footerForm);
+    if (tableData.some(item => item.total_cost_for_circulation === undefined)) {
+      footerForm.is_from_marketing_cost = 0;
+    } else {
+      const is_from_marketing_cost = tableData.reduce((sum: number, item: ICustTable) => {
+        return sum + parseInt((item.total_cost_for_circulation).toString().replace(/\s/g, ''));
+      }, 0) * 0.07;
+      footerForm.is_from_marketing_cost = formatToFloat(is_from_marketing_cost);
+      sumCost(footerForm);
+    }
   } else {
     footerForm.is_from_marketing_cost = 0;
     sumCost(footerForm);
