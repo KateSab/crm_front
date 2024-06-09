@@ -11,8 +11,8 @@ export const success_notification = (message_text: string) => {
 
 export const error_notification = (error: string) => {
     ElNotification({
-        title: 'Ошибка',
-        message: 'Не удалось сформировать заказ' + error,
+        title: 'Произошла ошибка',
+        message: error,
         type: 'error',
         position: 'bottom-right',
     })

@@ -33,15 +33,16 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive, ref} from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import CreateTop from "@/components/CreateTop.vue";
 import CustomerorderCreateHeader from '@/views/buyers/create/CustomerorderCreateHeader.vue';
 import CustomerorderCreateFuter from "@/views/buyers/create/CustomerorderCreateFooter.vue";
 import CustomerorderCreateTable from "@/views/buyers/create/CustomerorderCreateTable.vue";
-import {ICustFooter, ICustGeneralCost, ICustHead, ICustomerOrderCreate, ICustTable} from '@/interfaces/ICustomerOrder';
+import {ICustFooter, ICustGeneralCost, ICustHead, ICustTable} from '@/interfaces/ICustomerOrder';
 import {calculateFieldsTable, calculateFieldsFooter, calculatePricePerUnitForClient, isFromMarketingCost} from '@/services/utils/customer_order_utils';
-import {getLocationsApi} from '@/api/api_locations';
-import {getPartnersApi} from '@/api/api_partners_get';
+import { getLocationsApi } from '@/api/api_locations';
+import { getPartnersApi } from '@/api/api_partners_get';
+import { jsonCustomerOrder } from '@/api/api_customer_orders';
 
 export default defineComponent({
   name: 'CustomerorderCreate',
@@ -145,6 +146,8 @@ export default defineComponent({
 
     const createOrder = () => {
       console.log("DATA: ", headForm, tableData.value, footerForm, resultForm);
+      // функция для сбора и форматирования данных в json -> отправки данных на бек
+      jsonCustomerOrder(headForm, tableData.value, footerForm, resultForm);
     }
 
     // Асинхронная загрузка данных при монтировании

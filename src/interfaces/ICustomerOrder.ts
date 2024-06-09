@@ -61,7 +61,7 @@ export interface ICustomerOrderCreateProducts {
     branding_info: string;
     plan_product_unit_costprice: number;
     plan_branging_unit_costprice: number;
-    other_unit_expenses: number;
+    adjustment_price: number;
     shipment_location_id: number;
 }
 

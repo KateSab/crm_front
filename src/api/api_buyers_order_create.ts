@@ -56,12 +56,12 @@ export function submitForm(ruleForm, productsList) {
             const message_success: string = `Заказ №№${data.id} сформирован`;
             success_notification(message_success);
             router.push({ path: '/buyers' })
-              .then(() => {
-                console.log('Navigation to /buyers succeeded');
-              })
-              .catch((error) => {
-                console.error('Navigation to /buyers failed', error);
-              });
+                .then(() => {
+                    console.log('Navigation to /buyers succeeded');
+                })
+                .catch((error) => {
+                    console.error('Navigation to /buyers failed', error);
+                });
         })
         .catch(error => {
             console.error('There was an error creating the order:', error);
