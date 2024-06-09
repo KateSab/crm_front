@@ -147,7 +147,7 @@ export default defineComponent({
     const createOrder = () => {
       console.log("DATA: ", headForm, tableData.value, footerForm, resultForm);
       // функция для сбора и форматирования данных в json -> отправки данных на бек
-      jsonCustomerOrder(headForm, tableData.value, footerForm, resultForm);
+      // jsonCustomerOrder(headForm, tableData.value, footerForm, resultForm);
     }
 
     // Асинхронная загрузка данных при монтировании
