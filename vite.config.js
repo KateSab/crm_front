@@ -1,13 +1,16 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import path from 'path'; // Статический импорт модуля path
+// Не импортируем path, если он не нужен для браузера
 
 export default defineConfig({
     plugins: [vue()],
     resolve: {
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
         alias: {
-            '@': path.resolve(__dirname, './src'),
+            '@': '/src' // Используем абсолютный путь от корня проекта
         }
+    },
+    build: {
+        outDir: 'dist', // Указываем путь к выходной директории
     }
 });

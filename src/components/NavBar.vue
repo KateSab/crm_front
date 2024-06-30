@@ -1,14 +1,20 @@
 <template>
   <nav>
-    <router-link to="/" class="nav-link" :class="{ 'active': currentTab === '/' }">Логин и вход в учетку</router-link>
+    <div style="margin-right: auto;">
+      <img src="../assets/logohead.png" alt="россувенир" width="120">
+    </div>
+    <div style="display: flex; justify-content: center; flex-grow: 1;">
+      <!-- <router-link to="/" class="nav-link" :class="{ 'active': currentTab === '/' }">Логин и вход в учетку</router-link> -->
     <router-link to="/buyers" class="nav-link" :class="{ 'active': currentTab === '/buyers' }">Заказы покупателей</router-link>
     <router-link to="/suppliers" class="nav-link" :class="{ 'active': currentTab === '/suppliers' }">Заказы поставщикам</router-link>
-    <router-link to="/contractors" class="nav-link" :class="{ 'active': currentTab === '/contractors' }">Заказы подрядчикам</router-link>
-    <router-link to="/carriers" class="nav-link" :class="{ 'active': currentTab === '/carriers' }">Заказы перевозчикам</router-link>
+    <!-- <router-link to="/contractors" class="nav-link" :class="{ 'active': currentTab === '/contractors' }">Заказы подрядчикам</router-link> -->
+    <!-- <router-link to="/carriers" class="nav-link" :class="{ 'active': currentTab === '/carriers' }">Заказы перевозчикам</router-link> -->
     <router-link to="/moving" class="nav-link" :class="{ 'active': currentTab === '/moving' }">Задачи на перемещение</router-link>
-    <router-link to="/bills" class="nav-link" :class="{ 'active': currentTab === '/bills' }">Счета на оплату</router-link>
-    <router-link to="/stock" class="nav-link" :class="{ 'active': currentTab === '/stock' }">Склад</router-link>
+    <!-- <router-link to="/bills" class="nav-link" :class="{ 'active': currentTab === '/bills' }">Счета на оплату</router-link> -->
+    <!-- <router-link to="/stock" class="nav-link" :class="{ 'active': currentTab === '/stock' }">Склад</router-link> -->
     <router-link to="/partners" class="nav-link" :class="{ 'active': currentTab === '/partners' }">Контрагенты</router-link>
+    <!-- <router-link to="/catalogs" class="nav-link" :class="{ 'active': currentTab === '/catalogs' }">Справочники</router-link> -->
+    </div>
   </nav>
 </template>
 
@@ -21,7 +27,7 @@ export default {
     };
   },
   watch: {
-    '$route'(to, from) {
+    '$route'(to) {
       this.currentTab = to.path;
     }
   }
@@ -30,21 +36,22 @@ export default {
 
 <style lang="scss">
 
-// *{
-//   margin: 0%;
-// }
-
 nav {
-  height: 13lvh;
-  background: rgba(170, 170, 252, 0.897);
+  height: 9lvh;
+  background: white;
+  box-shadow: 0 5px 7px rgba(0,0,0,0.2);
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: auto;
+  padding: 0rem 1rem;
 }
 
 .nav-link {
+  font-family: 'Arimo', sans-serif;
+  font-size: 12px;
   font-weight: bold;
-  color: #2c3e50;
+  color: #4c4c4c;
   padding: 10px 20px;
   border-radius: 20px;
   margin: 0 10px;
@@ -52,12 +59,30 @@ nav {
 }
 
 .nav-link:hover {
-  background-color: rgba(108, 108, 209, 0.2);
+  background-color: #3d9cfb54;
   transform: translateY(-3px);
 }
 
 .active {
-  background-color: rgb(108, 108, 209);
+  background-color: #3d9cfb;
   color: white;
+}
+
+@media screen and (max-width: 1240px) { /* Пример: меняем стили для экранов шириной до 768px */
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    width: 9vw;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  .nav-link {
+    font-size: 14px; /* Уменьшаем размер текста */
+    padding: 8px 12px; /* Уменьшаем отступы */
+    margin: 5px; /* Уменьшаем отступы между ссылками */
+  }
 }
 </style>

@@ -1,27 +1,25 @@
 <template>
-  <div class="header">
-    <NavBar/>
-  </div>
-  <body>
-    <router-view/>
-  </body>
+      <MainPage />
 </template>
 
 
 <script>
-import NavBar from './components/NavBar.vue'
+import MainPage from './views/MainPage.vue';
+import Login from './views/Login.vue';
+
 export default {
   name: 'App',
   components: {
-    NavBar,
-  }
+    MainPage,
+    Login,
+  },
 }
 </script>
 
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Nunito, Roboto, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -29,14 +27,13 @@ export default {
 }
 body {
   padding: 0;
-  margin: 0;
-  padding-top: 40px;
+  margin-top: 20vh;
 }
-.header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
+
+@media screen and (max-width: 1240px) {
+  body {
+    margin-top: 0;
+    margin-left: 5rem;
+  }
 }
 </style>
