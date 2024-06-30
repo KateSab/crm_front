@@ -22,12 +22,12 @@ export function submitForm(ruleForm) {
             const message_success: string = `Заказ  №№${data.id} сформирован`
             success_notification(message_success);
             router.push({ path: '/suppliers' })
-              .then(() => {
-                console.log('Navigation to /suppliers succeeded');
-              })
-              .catch((error) => {
-                console.error('Navigation to /suppliers failed', error);
-              });
+                .then(() => {
+                    console.log('Navigation to /suppliers succeeded');
+                })
+                .catch((error) => {
+                    console.error('Navigation to /suppliers failed', error);
+                });
 
         })
         .catch(error => {

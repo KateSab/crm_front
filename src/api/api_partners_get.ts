@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {PartnerInterface} from "@/interfaces/IPartners";
+import { PartnerInterface } from "@/interfaces/IPartners";
 
 /**
  * Retrieves partners data from the API based on the specified limit and optional keyName filter.
@@ -8,7 +8,7 @@ import {PartnerInterface} from "@/interfaces/IPartners";
  * @returns {Promise<Array<Object>>} A promise that resolves with an array of partner objects.
  * @throws {Error} If there is an error while fetching partners data from the API.
  */
-export async function getPartnersApi(limit: number = 1000, keyName: string = undefined): Promise<Array<object>> {
+export async function getPartnersApi(limit: number = 1000, keyName: string | undefined = undefined): Promise<Array<object>> {
     const url = 'http://89.104.68.248:8000/api/partner/get_filter';
     const params = {
         'limit': limit

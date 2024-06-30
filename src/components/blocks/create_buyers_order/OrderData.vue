@@ -24,7 +24,7 @@
                         <el-date-picker
                             v-model="ruleForm.date"
                             type="date"
-                            label="Pick a date"
+                            ari-label="Pick a date"
                             placeholder="Pick a date"
                             style="width: 100%"
                         />

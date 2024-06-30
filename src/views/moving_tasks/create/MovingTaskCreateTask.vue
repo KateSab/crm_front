@@ -12,6 +12,7 @@
                                 format="hh:mm"
                                 value-format="x"
                                 change="handleChange"
+                                aria-label="Time Picker"
                             />
                             <el-time-picker
                                 v-model="formTask.from.time.max"
@@ -19,6 +20,7 @@
                                 format="hh:mm"
                                 value-format="x"
                                 change="handleChange"
+                                aria-label="Time Picker"
                             />
                         </el-row>
                         Адрес
@@ -54,6 +56,7 @@
                                 format="hh:mm"
                                 value-format="x"
                                 change="handleChange"
+                                aria-label="Time Picker"
                             />
                             <el-time-picker
                                 v-model="formTask.to.time.max"
@@ -61,6 +64,7 @@
                                 format="hh:mm"
                                 value-format="x"
                                 change="handleChange"
+                                aria-label="Time Picker"
                             />
                         </el-row>
                         Адрес
@@ -129,7 +133,6 @@
             <el-button color="#FFFF6F" style="color: #4d4d4d; margin-bottom: 1rem;">Создать задачу</el-button>
         </container>
     </div>
-    {{ formTask }}
 </template>
 
 <script setup lang="ts">

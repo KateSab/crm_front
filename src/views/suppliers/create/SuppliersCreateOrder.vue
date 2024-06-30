@@ -25,7 +25,7 @@
             <el-date-picker
                     v-model="ruleForm.shipment_date_planned"
                     type="date"
-                    label="Pick a date"
+                    aria-label="Pick a date"
                     placeholder="Pick a date"
                     style="width: 100%"
                 />

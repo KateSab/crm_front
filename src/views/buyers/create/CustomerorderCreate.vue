@@ -91,7 +91,6 @@ export default defineComponent({
     // Инициализация данных таблицы с одной пустой строкой
     const tableData = ref([ {...emptyRow} ]);
 
-    // Наименования и структура колонок
     const handleAddRow = () => {
       tableData.value.push({ ...emptyRow });
       calculateFieldsFooter(tableData.value, footerForm, resultForm);

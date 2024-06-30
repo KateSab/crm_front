@@ -18,7 +18,7 @@
           </router-link>
         </div>
     </div>
-    <router-wiew></router-wiew>
+    <router-view></router-view>
 </template>
 
 <script>

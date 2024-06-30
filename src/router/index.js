@@ -1,5 +1,5 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import index from '../store'
+import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store'
 import MainPage from '@/views/MainPage.vue'
 import Login from '@/views/Login.vue'
 import Buyers from '@/views/buyers/Buyers.vue'
@@ -163,16 +163,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(index.getters.isLoggedIn)
-  console.log(index.state.token)
+  console.log("is logged in ", store.getters.isLoggedIn);
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (index.getters.isLoggedIn) {
+    if (store.getters.isLoggedIn) {
       next();
+      return; // Добавьте return, чтобы предотвратить двойной вызов next()
     }
     next('/login');
   } else {
     next();
   }
-})
+});
 
 export default router
